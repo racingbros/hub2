@@ -1,0 +1,55 @@
+:root{
+  --bg:var(--h2-bg); --panel:var(--h2-surface); --panel2:var(--h2-surface-2);
+  --line:var(--h2-line); --line2:var(--h2-line-strong);
+  --ink:var(--h2-fg); --dim:var(--h2-fg-dim); --dimmer:var(--h2-fg-mute);
+  --red:var(--h2-accent); --redink:var(--h2-accent);
+  --mono:var(--h2-mono); --cond:var(--h2-font);
+}
+body{font-size:12px}
+.app{max-width:1180px;border-color:var(--h2-line)}
+.mast{background:var(--h2-bg)}
+.mast-id{padding:22px 24px;min-width:220px;position:relative}
+.mast-id::before{content:"";position:absolute;left:0;top:22px;bottom:22px;width:4px;background:var(--h2-accent)}
+.mast-id .logo{font-size:28px;letter-spacing:.06em}
+.mast-id .sub{font-family:var(--h2-font);font-size:10px;letter-spacing:.24em;font-weight:600}
+.act{background:var(--h2-bg);font-size:13px;font-weight:700;letter-spacing:.16em;min-height:76px;flex-direction:column;align-items:flex-start;justify-content:center;gap:4px}
+.act .k{font-size:10px;letter-spacing:.04em;text-transform:none}
+.act:hover{background:var(--h2-surface-2);color:var(--h2-fg)}
+.act.primary{background:var(--h2-accent);color:var(--h2-accent-fg)}
+.act.primary .k{color:color-mix(in srgb,var(--h2-accent-fg) 70%,transparent)}
+.act.primary:hover{background:var(--h2-accent-hover)}
+.act.danger:hover{background:var(--h2-accent-soft);color:var(--h2-accent)}
+.strip{font-family:var(--h2-font);font-size:10.5px;letter-spacing:.16em;font-weight:600;background:var(--h2-surface)}
+.stat{padding:10px 18px}
+.stat b{font-family:var(--h2-mono);font-weight:600}
+.stat.warn b{color:var(--h2-accent)}
+.stat .lang-pill span{font-family:var(--h2-font);font-weight:700}
+.stat .lang-pill span.on{background:var(--h2-fg);color:var(--h2-bg)}
+.board{padding:18px}
+.cat{background:var(--h2-surface)}
+.cat-head{padding:0 14px;height:48px;background:var(--h2-surface-2)}
+.cat-label{font-size:17px;letter-spacing:.1em}
+.cat-count{font-family:var(--h2-mono);letter-spacing:0}
+.mini{font-family:var(--h2-font);font-weight:700;letter-spacing:.14em;height:24px;padding:0 9px}
+.mini:hover{border-color:var(--h2-fg-dim);color:var(--h2-fg);background:var(--h2-surface-3)}
+.mini.add:hover,.mini.del:hover{border-color:var(--h2-accent);color:var(--h2-accent);background:transparent}
+.row{height:40px;padding:0 14px;background:var(--h2-surface)}
+.row:hover{background:var(--h2-surface-2)}
+.row-name{font-family:var(--h2-font);font-size:13px;letter-spacing:.08em;font-weight:600}
+.row-name input,.field input{background:var(--h2-bg);color:var(--h2-fg)}
+.badge{font-family:var(--h2-font);font-weight:700;letter-spacing:.12em;height:20px;display:inline-flex;align-items:center;justify-content:center}
+.badge.on{color:var(--h2-accent-fg)}
+.add-cat{font-size:13px;font-weight:700;letter-spacing:.24em;height:48px;padding:0}
+.add-cat:hover{color:var(--h2-accent);border-color:var(--h2-accent)}
+.scrim{background:var(--h2-backdrop)}
+.modal{background:var(--h2-bg);border-top:3px solid var(--h2-accent);box-shadow:var(--h2-shadow)}
+.modal-head{font-size:15px;letter-spacing:.18em}
+.modal-head .x:hover{color:var(--h2-accent)}
+.field label{font-family:var(--h2-font);font-size:10.5px;font-weight:700;letter-spacing:.18em}
+.field input{height:36px}
+.modal-warn{background:var(--h2-accent-soft);color:var(--h2-accent);font-family:var(--h2-font);font-weight:600;letter-spacing:.12em}
+.btn{font-size:12px;font-weight:700;letter-spacing:.18em;height:36px;padding:0 20px}
+.btn:hover{border-color:var(--h2-fg-dim);background:var(--h2-surface-2)}
+.btn.go{color:var(--h2-accent-fg)}
+.btn.go:hover{background:var(--h2-accent-hover);border-color:var(--h2-accent-hover)}
+.toast{background:var(--h2-fg);color:var(--h2-bg);border:0;font-size:11px;letter-spacing:.16em;box-shadow:var(--h2-shadow)}

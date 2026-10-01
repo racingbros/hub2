@@ -1,0 +1,3697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<title>RACINGBROS — TOOLKIT HUB 2.0.4</title>
+<style>
+/* ════════════════════════════════════════
+   TOKENS
+   ════════════════════════════════════════ */
+:root{
+  /* dark default — racing red */
+  --bg:#0b0b0c;
+  --surface:#131315;
+  --surface-2:#1a1a1d;
+  --border:#27272b;
+  --border-strong:#3b3b41;
+  --text:#f2f2f3;
+  --text-dim:#9b9ba2;
+  --text-mute:#5d5d65;
+  --accent:#d7282f;
+  --accent-text:#ffffff;
+  --hover:#232327;
+  --ok:#2fb86e;
+  --warn:#e9a23b;
+  --mono:'Cascadia Mono','JetBrains Mono','Roboto Mono',Consolas,monospace;
+
+  --font:'Bahnschrift','Bahnschrift SemiCondensed','DIN Alternate','DIN Condensed','Roboto Condensed','Barlow Condensed','Oswald','Arial Narrow',sans-serif;
+  --font-size:14px;
+  --tracking:0.08em;
+
+  --header-h:58px;
+  --tab-h:44px;
+  --devp-w:380px;
+}
+[data-theme="light"]{
+  --bg:#ffffff;
+  --surface:#f6f6f7;
+  --surface-2:#ededef;
+  --border:#dadade;
+  --border-strong:#b3b3ba;
+  --text:#0b0b0c;
+  --text-dim:#5e5e67;
+  --text-mute:#9b9ba4;
+  --accent-text:#ffffff;
+  --hover:#e3e3e6;
+}
+
+/* ════════════════════════════════════════
+   RESET — no rounded corners anywhere
+   ════════════════════════════════════════ */
+*,*::before,*::after{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+  border-radius:0!important;
+}
+html,body{height:100%;overflow:hidden}
+body{
+  font-family:var(--font);
+  font-size:var(--font-size);
+  line-height:1.4;
+  color:var(--text);
+  background:var(--bg);
+  text-transform:uppercase;
+  letter-spacing:var(--tracking);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  transition:background .18s,color .18s;
+}
+button,input,select,textarea{
+  font-family:inherit;
+  font-size:inherit;
+  color:inherit;
+  background:none;
+  border:none;
+  outline:none;
+  text-transform:inherit;
+  letter-spacing:inherit;
+}
+button{cursor:pointer}
+input[type=text]{text-transform:uppercase}
+
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border-strong)}
+::-webkit-scrollbar-thumb:hover{background:var(--text-mute)}
+
+/* ════════════════════════════════════════
+   APP SHELL
+   ════════════════════════════════════════ */
+#app{
+  display:flex;
+  flex-direction:column;
+  height:100vh;
+  height:100dvh;
+  width:100vw;
+  overflow:hidden;
+}
+
+/* ════════════════════════════════════════
+   HEADER
+   ════════════════════════════════════════ */
+#header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  height:var(--header-h);
+  padding:0 18px;
+  background:var(--bg);
+  border-bottom:1px solid var(--border);
+  flex-shrink:0;
+  position:relative;
+  z-index:10;
+  gap:12px;
+}
+#logo{
+  display:flex;
+  align-items:center;
+  height:40px;
+  color:var(--text);
+  text-decoration:none;
+  flex-shrink:0;
+}
+#logo svg{
+  height:36px;
+  width:auto;
+  display:block;
+}
+#header-title{
+  flex:1;
+  text-align:center;
+  font-size:calc(var(--font-size) * .82);
+  font-weight:600;
+  letter-spacing:.32em;
+  color:var(--text-dim);
+  pointer-events:none;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+#header-title .red{color:var(--accent)}
+#hamburger{
+  width:40px;
+  height:40px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border:1px solid var(--border-strong);
+  background:transparent;
+  color:var(--text);
+  transition:background .12s,border-color .12s,color .12s;
+  flex-shrink:0;
+}
+#hamburger:hover{
+  background:var(--accent);
+  border-color:var(--accent);
+  color:var(--accent-text);
+}
+#hamburger svg{width:18px;height:18px}
+#cmdk-btn{display:flex;align-items:center;gap:10px;height:40px;padding:0 10px 0 12px;border:1px solid var(--border-strong);background:transparent;color:var(--text-dim);font-size:calc(var(--font-size)*.72);font-weight:700;letter-spacing:.2em;flex-shrink:0;transition:border-color .12s,color .12s,background .12s}
+#cmdk-btn:hover{border-color:var(--accent);color:var(--text)}
+#cmdk-btn svg{width:15px;height:15px}
+#cmdk-btn span{min-width:110px;text-align:left}
+#cmdk-btn kbd,#cmdk kbd{display:inline-flex;align-items:center;height:20px;padding:0 6px;border:1px solid var(--border-strong);background:var(--surface-2);font:700 10px/1 var(--mono);letter-spacing:.06em;color:var(--text-mute)}
+#cmdk{position:fixed;inset:0;z-index:700;display:none;justify-content:center;align-items:flex-start;padding:12vh 24px 24px;background:rgba(0,0,0,.55)}
+#cmdk.show{display:flex}
+.ck-box{width:min(680px,100%);max-height:72vh;display:flex;flex-direction:column;background:var(--bg);border:1px solid var(--border-strong);border-top:3px solid var(--accent);box-shadow:0 30px 90px rgba(0,0,0,.55);animation:ckIn .14s ease-out}
+@keyframes ckIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+.ck-in{display:flex;align-items:center;gap:12px;padding:0 16px;height:58px;border-bottom:1px solid var(--border);flex-shrink:0}
+.ck-in svg{width:18px;height:18px;color:var(--accent);flex-shrink:0}
+#ck-q{flex:1;min-width:0;height:100%;background:transparent;border:0;outline:0;color:var(--text);font:600 calc(var(--font-size)*1.05) var(--font);letter-spacing:.02em}
+#ck-q::placeholder{color:var(--text-mute)}
+.ck-list{overflow:auto;min-height:0;padding:6px 0}
+.ck-g{padding:12px 18px 6px;font-size:calc(var(--font-size)*.62);letter-spacing:.24em;font-weight:700;color:var(--text-mute);padding-left:30px;background:linear-gradient(var(--accent),var(--accent)) 18px 13px/3px 9px no-repeat}
+.ck-g small{font-size:1em;color:var(--accent);margin-left:6px}
+.ck-row{display:flex;align-items:center;gap:12px;padding:7px 18px;cursor:pointer;border-left:3px solid transparent}
+.ck-row.on{background:var(--surface-2);border-left-color:var(--accent)}
+.ck-num{width:30px;height:30px;flex-shrink:0;display:flex;align-items:center;justify-content:center;border:1px solid var(--border-strong);font:700 11px/1 var(--mono);color:var(--accent)}
+.ck-num svg{width:15px;height:15px}
+.ck-t{flex:1;min-width:0}
+.ck-t b{display:block;font-size:calc(var(--font-size)*.86);letter-spacing:.12em;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ck-t b.nc{text-transform:none;letter-spacing:.02em;font-weight:600}
+.ck-t small{display:block;margin-top:2px;font-size:calc(var(--font-size)*.68);letter-spacing:.06em;color:var(--text-mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-transform:none}
+.ck-t mark{background:none;color:var(--accent)}
+.ck-hint{font-size:calc(var(--font-size)*.6);letter-spacing:.18em;font-weight:700;color:var(--text-dim);white-space:nowrap}
+.ck-go{width:16px;color:var(--text-mute);opacity:0;font-size:13px}
+.ck-row.on .ck-go{opacity:1;color:var(--accent)}
+.ck-empty{padding:36px 18px;text-align:center;font-size:calc(var(--font-size)*.78);letter-spacing:.2em;color:var(--text-mute);font-weight:700}
+.ck-empty small{display:block;margin-top:8px;font-size:.85em;font-weight:600}
+.ck-foot{display:flex;align-items:center;gap:18px;padding:10px 18px;border-top:1px solid var(--border);font-size:calc(var(--font-size)*.6);letter-spacing:.18em;font-weight:700;color:var(--text-mute);flex-shrink:0}
+.ck-foot kbd{margin-right:4px}
+.ck-ver{margin-left:auto}
+@media (max-width:900px){#cmdk-btn span,#cmdk-btn kbd{display:none}#cmdk-btn{width:40px;justify-content:center;padding:0}.ck-foot span:not(.ck-ver){display:none}}
+
+/* ════════════════════════════════════════
+   TAB BAR
+   ════════════════════════════════════════ */
+#tab-bar{
+  display:flex;
+  align-items:stretch;
+  height:var(--tab-h);
+  background:var(--surface);
+  border-bottom:1px solid var(--border);
+  overflow-x:auto;
+  overflow-y:hidden;
+  flex-shrink:0;
+}
+/* 2px flat rule — no arrows, no track, no rounding.
+   NOTE: do not add `scrollbar-width` here; Chromium ignores every
+   ::-webkit-scrollbar rule on an element that sets it, which drops
+   the bar back to the chunky native Windows widget. */
+#tab-bar::-webkit-scrollbar{height:2px}
+#tab-bar::-webkit-scrollbar-track{background:transparent}
+#tab-bar::-webkit-scrollbar-thumb{background:var(--border-strong);border-radius:0}
+#tab-bar::-webkit-scrollbar-thumb:hover{background:var(--border-strong)}
+#tab-bar::-webkit-scrollbar-button{display:none;width:0;height:0}
+#tab-bar::-webkit-scrollbar-corner{background:transparent}
+.tab{
+  display:flex;
+  align-items:center;
+  padding:0 22px;
+  font-size:calc(var(--font-size) * .9);
+  font-weight:600;
+  letter-spacing:.14em;
+  color:var(--text-dim);
+  background:transparent;
+  border-right:1px solid var(--border);
+  border-bottom:3px solid transparent;
+  white-space:nowrap;
+  transition:color .12s,background .12s,border-color .12s;
+  flex-shrink:0;
+}
+.tab:hover{
+  color:var(--text);
+  background:var(--hover);
+}
+.tab.active{
+  color:var(--text);
+  background:var(--bg);
+  border-bottom-color:var(--accent);
+}
+.tab .tab-num{
+  color:var(--accent);
+  margin-right:10px;
+  font-weight:700;
+  font-variant-numeric:tabular-nums;
+}
+
+/* ════════════════════════════════════════
+   PANELS
+   ════════════════════════════════════════ */
+#panels{
+  flex:1;
+  position:relative;
+  overflow:hidden;
+  background:var(--bg);
+  min-height:0;
+}
+.panel{
+  display:none;
+  position:absolute;
+  inset:0;
+  overflow:auto;
+}
+.panel.active{display:block}
+.panel iframe{
+  width:100%;
+  height:100%;
+  border:0;
+  display:block;
+  background:var(--bg);
+}
+
+/* ════════════════════════════════════════
+   MENU TAB (TAB 01)
+   ════════════════════════════════════════ */
+#menu-panel{
+  padding:48px 36px;
+}
+#menu-eyebrow,.eyebrow{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  font-size:calc(var(--font-size) * .82);
+  color:var(--accent);
+  letter-spacing:.32em;
+  font-weight:700;
+  margin-bottom:14px;
+}
+#menu-eyebrow::before,.eyebrow::before{
+  content:"";
+  display:inline-block;
+  width:28px;
+  height:2px;
+  background:var(--accent);
+}
+#menu-heading{
+  font-size:calc(var(--font-size) * 2.6);
+  font-weight:700;
+  letter-spacing:.04em;
+  margin-bottom:6px;
+  color:var(--text);
+  line-height:1.05;
+}
+#menu-sub{
+  font-size:calc(var(--font-size) * .92);
+  color:var(--text-dim);
+  margin-bottom:42px;
+  letter-spacing:.2em;
+}
+#menu-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(340px,1fr));
+  gap:14px;
+  max-width:1500px;
+}
+.menu-card{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:34px 30px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-left:4px solid var(--border-strong);
+  text-align:left;
+  color:var(--text);
+  transition:border-color .15s,background .15s,transform .15s,padding .15s;
+  min-height:124px;
+  position:relative;
+  overflow:hidden;
+  font-family:inherit;
+}
+.menu-card::after{
+  content:"";
+  position:absolute;
+  top:0;right:0;
+  width:0;
+  height:100%;
+  background:var(--accent);
+  transition:width .25s ease-out;
+  z-index:0;
+}
+.menu-card:hover{
+  border-left-color:var(--accent);
+  background:var(--surface-2);
+}
+.menu-card:hover::after{width:4px}
+.menu-card-text{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  position:relative;
+  z-index:1;
+  min-width:0;
+}
+.menu-card-num{
+  font-size:calc(var(--font-size) * .8);
+  color:var(--accent);
+  font-weight:700;
+  letter-spacing:.28em;
+}
+.menu-card-name{
+  font-size:calc(var(--font-size) * 1.95);
+  font-weight:700;
+  letter-spacing:.06em;
+  line-height:1.1;
+  word-break:break-word;
+}
+.menu-card-arrow{
+  font-size:calc(var(--font-size) * 2);
+  color:var(--text-mute);
+  transition:color .18s,transform .18s;
+  position:relative;
+  z-index:1;
+  margin-left:14px;
+  flex-shrink:0;
+}
+.menu-card:hover .menu-card-arrow{
+  color:var(--accent);
+  transform:translateX(6px);
+}
+#menu-footer{
+  margin-top:48px;
+  padding-top:24px;
+  border-top:1px solid var(--border);
+  font-size:calc(var(--font-size) * .76);
+  color:var(--text-mute);
+  letter-spacing:.2em;
+}
+
+/* ════════════════════════════════════════
+   DEV PANEL
+   ════════════════════════════════════════ */
+#devp-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.5);
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .25s;
+  z-index:99;
+}
+#devp-overlay.show{
+  opacity:1;
+  pointer-events:auto;
+}
+#devp{
+  position:fixed;
+  top:0;
+  right:0;
+  height:100vh;
+  height:100dvh;
+  width:var(--devp-w);
+  max-width:100vw;
+  background:var(--bg);
+  border-left:1px solid var(--border);
+  transform:translateX(100%);
+  transition:transform .25s ease-out;
+  z-index:100;
+  display:flex;
+  flex-direction:column;
+  box-shadow:-10px 0 40px rgba(0,0,0,.55);
+}
+#devp:not(.open){box-shadow:none;visibility:hidden;transition:transform .25s ease-out,visibility 0s .25s}
+#devp.open{transform:translateX(0)}
+
+#devp-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  height:var(--header-h);
+  padding:0 18px;
+  border-bottom:1px solid var(--border);
+  flex-shrink:0;
+}
+#devp-title{
+  font-size:calc(var(--font-size) * 1);
+  font-weight:700;
+  letter-spacing:.26em;
+  color:var(--text);
+}
+#devp-title::before{
+  content:"▌";
+  color:var(--accent);
+  margin-right:8px;
+}
+#devp-close{
+  width:32px;
+  height:32px;
+  color:var(--text);
+  font-size:16px;
+  background:transparent;
+  border:1px solid var(--border-strong);
+  transition:all .12s;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+#devp-close:hover{
+  background:var(--accent);
+  border-color:var(--accent);
+  color:var(--accent-text);
+}
+
+#devp-tabs{
+  display:flex;
+  flex-shrink:0;
+  background:var(--surface);
+  border-bottom:1px solid var(--border);
+}
+.devp-tab{
+  flex:1;
+  padding:14px 6px;
+  font-size:calc(var(--font-size) * .8);
+  font-weight:700;
+  letter-spacing:.18em;
+  color:var(--text-dim);
+  border-bottom:2px solid transparent;
+  background:transparent;
+  transition:all .12s;
+}
+.devp-tab:hover{color:var(--text)}
+.devp-tab.active{
+  color:var(--text);
+  border-bottom-color:var(--accent);
+  background:var(--bg);
+}
+
+#devp-body{
+  flex:1;
+  overflow-y:auto;
+  overflow-x:hidden;
+  min-height:0;
+}
+#devp-body::-webkit-scrollbar{width:5px}
+
+.devp-section{
+  display:none;
+  padding:22px 18px 18px;
+}
+.devp-section.active{display:block}
+
+.devp-group{margin-bottom:28px}
+.devp-group:last-child{margin-bottom:14px}
+
+.devp-label{
+  font-size:calc(var(--font-size) * .76);
+  color:var(--text-dim);
+  letter-spacing:.22em;
+  margin-bottom:12px;
+  font-weight:700;
+}
+.devp-label::before{
+  content:"▌";
+  color:var(--accent);
+  margin-right:6px;
+}
+
+/* TOOLS LIST */
+#tools-list{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  margin-bottom:14px;
+}
+.tool-item{
+  display:flex;
+  align-items:stretch;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-left:3px solid var(--border-strong);
+  transition:border-color .12s,background .12s,opacity .12s;
+  min-height:54px;
+}
+.tool-item:hover{border-left-color:var(--accent)}
+.tool-item.dragging{opacity:.35}
+.tool-item.drag-over{
+  border-color:var(--accent);
+  border-left-color:var(--accent);
+}
+.tool-handle{
+  width:28px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:var(--text-mute);
+  cursor:grab;
+  border-right:1px solid var(--border);
+  flex-shrink:0;
+  user-select:none;
+  font-size:13px;
+}
+.tool-handle:active{cursor:grabbing}
+.tool-handle:hover{color:var(--accent)}
+.tool-info{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  padding:7px 10px;
+  min-width:0;
+  overflow:hidden;
+}
+.tool-name-input{
+  background:transparent;
+  color:var(--text);
+  font-size:calc(var(--font-size) * .92);
+  font-weight:600;
+  letter-spacing:.08em;
+  width:100%;
+  padding:2px 0;
+  border-bottom:1px dashed transparent;
+}
+.tool-name-input:focus{border-bottom-color:var(--accent)}
+.tool-meta{
+  font-size:calc(var(--font-size) * .68);
+  color:var(--text-mute);
+  letter-spacing:.16em;
+  margin-top:3px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  font-weight:600;
+}
+.tool-meta.upload{color:var(--accent)}
+.tool-actions{
+  display:flex;
+  border-left:1px solid var(--border);
+  flex-shrink:0;
+}
+.tool-btn{
+  width:34px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:var(--text-dim);
+  background:transparent;
+  border-left:1px solid var(--border);
+  transition:all .1s;
+}
+.tool-btn:first-child{border-left:0}
+.tool-btn:hover{
+  background:var(--accent);
+  color:var(--accent-text);
+}
+.tool-btn svg{width:14px;height:14px}
+
+/* BUTTONS */
+.btn-primary{
+  width:100%;
+  padding:13px;
+  background:var(--accent);
+  color:var(--accent-text);
+  font-size:calc(var(--font-size) * .88);
+  font-weight:700;
+  letter-spacing:.22em;
+  border:1px solid var(--accent);
+  transition:opacity .12s;
+}
+.btn-primary:hover{opacity:.85}
+.btn-secondary{
+  width:100%;
+  padding:11px;
+  background:transparent;
+  color:var(--text);
+  font-size:calc(var(--font-size) * .82);
+  font-weight:700;
+  letter-spacing:.2em;
+  border:1px solid var(--border-strong);
+  transition:all .12s;
+}
+.btn-secondary:hover{
+  background:var(--text);
+  color:var(--bg);
+  border-color:var(--text);
+}
+
+.empty-tools{
+  padding:30px 16px;
+  text-align:center;
+  color:var(--text-mute);
+  font-size:calc(var(--font-size) * .82);
+  border:1px dashed var(--border-strong);
+  letter-spacing:.14em;
+}
+
+.tip-text{
+  font-size:calc(var(--font-size) * .76);
+  color:var(--text-dim);
+  line-height:1.85;
+  letter-spacing:.1em;
+  font-weight:500;
+}
+.tip-text span{color:var(--accent);font-weight:700}
+
+/* THEME PRESETS */
+#scheme-presets{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:8px;
+}
+.scheme-preset{
+  padding:12px 11px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  text-align:left;
+  transition:border-color .12s,background .12s;
+}
+.scheme-preset:hover{border-color:var(--border-strong)}
+.scheme-preset.active{
+  border-color:var(--accent);
+  background:var(--surface-2);
+}
+.scheme-name{
+  font-size:calc(var(--font-size) * .76);
+  font-weight:700;
+  letter-spacing:.16em;
+  margin-bottom:9px;
+  color:var(--text);
+}
+.scheme-swatches{display:flex;gap:3px}
+.swatch{
+  width:18px;
+  height:18px;
+  border:1px solid rgba(255,255,255,.1);
+}
+
+/* COLOR PICKERS */
+.color-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:9px 0;
+  border-bottom:1px solid var(--border);
+}
+.color-row:last-child{border-bottom:0}
+.color-row-label{
+  font-size:calc(var(--font-size) * .82);
+  color:var(--text);
+  letter-spacing:.12em;
+  font-weight:600;
+}
+.color-controls{display:flex;align-items:center;gap:10px}
+.color-swatch{
+  width:30px;
+  height:30px;
+  border:1px solid var(--border-strong);
+  cursor:pointer;
+  position:relative;
+  overflow:hidden;
+}
+.color-swatch input{
+  position:absolute;
+  inset:-5px;
+  width:calc(100% + 10px);
+  height:calc(100% + 10px);
+  opacity:0;
+  cursor:pointer;
+  border:0;
+  padding:0;
+}
+.color-hex{
+  font-size:calc(var(--font-size) * .76);
+  color:var(--text-dim);
+  font-family:'Consolas','Courier New',monospace;
+  letter-spacing:.04em;
+  width:74px;
+  text-transform:uppercase;
+}
+
+/* SLIDER */
+.slider-row{
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+.slider-row input[type=range]{
+  flex:1;
+  -webkit-appearance:none;
+  appearance:none;
+  height:3px;
+  background:var(--border-strong);
+  outline:none;
+  cursor:pointer;
+}
+.slider-row input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none;
+  appearance:none;
+  width:16px;
+  height:16px;
+  background:var(--accent);
+  cursor:pointer;
+  border:0;
+}
+.slider-row input[type=range]::-moz-range-thumb{
+  width:16px;
+  height:16px;
+  background:var(--accent);
+  border:0;
+  cursor:pointer;
+}
+.slider-val{
+  font-size:calc(var(--font-size) * .82);
+  color:var(--text);
+  width:56px;
+  text-align:right;
+  font-family:'Consolas','Courier New',monospace;
+  letter-spacing:.04em;
+}
+
+/* SELECT */
+.devp-select{
+  width:100%;
+  padding:11px 32px 11px 11px;
+  background:var(--surface);
+  color:var(--text);
+  font-size:calc(var(--font-size) * .86);
+  font-weight:600;
+  letter-spacing:.1em;
+  border:1px solid var(--border-strong);
+  appearance:none;
+  -webkit-appearance:none;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'><path fill='%23888' d='M1 3l4 4 4-4z'/></svg>");
+  background-repeat:no-repeat;
+  background-position:right 11px center;
+}
+.devp-select:focus{border-color:var(--accent)}
+
+/* HIDDEN FILE INPUT */
+.file-hidden{
+  position:absolute;
+  width:1px;
+  height:1px;
+  opacity:0;
+  pointer-events:none;
+  overflow:hidden;
+}
+
+/* FOOTER OF DEVP */
+#devp-footer{
+  padding:14px 18px;
+  border-top:1px solid var(--border);
+  flex-shrink:0;
+}
+#devp-credit{
+  margin-top:14px;
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  font-size:calc(var(--font-size) * .68);
+  letter-spacing:.16em;
+  font-weight:600;
+  color:var(--text-mute);
+  line-height:1.4;
+}
+#devp-credit .cr-row{display:flex;align-items:baseline;justify-content:space-between;gap:12px;white-space:nowrap}
+#devp-credit .cr-ver{color:var(--text-dim);font-weight:700}
+#devp-credit .cr-ver span{font-family:var(--mono);letter-spacing:.04em;margin-left:4px}
+#devp-credit a{
+  color:var(--text-dim);
+  font-weight:700;
+  text-decoration:none;
+  border-bottom:1px solid var(--border-strong);
+  transition:color .12s,border-color .12s;
+}
+#devp-credit a:hover{border-bottom-color:var(--accent)}
+#devp-credit a:hover{
+  color:var(--accent);
+}
+
+/* TOAST */
+#toast{
+  position:fixed;
+  bottom:24px;
+  left:50%;
+  transform:translateX(-50%) translateY(80px);
+  padding:13px 26px;
+  background:var(--accent);
+  color:var(--accent-text);
+  font-size:calc(var(--font-size) * .82);
+  font-weight:700;
+  letter-spacing:.22em;
+  border:1px solid var(--accent);
+  transition:transform .25s,opacity .25s;
+  opacity:0;
+  z-index:300;
+  pointer-events:none;
+  white-space:nowrap;
+  max-width:90vw;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+#toast.show{
+  transform:translateX(-50%) translateY(0);
+  opacity:1;
+}
+
+/* CUSTOM CONFIRM MODAL */
+#confirm-modal{
+  position:fixed;
+  inset:0;
+  z-index:600;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  background:rgba(0,0,0,.6);
+}
+#confirm-modal.show{display:flex}
+.confirm-box{
+  width:min(420px,90vw);
+  background:var(--bg);
+  border:1px solid var(--border-strong);
+  border-top:3px solid var(--accent);
+}
+.confirm-body{
+  padding:24px 24px 18px;
+}
+.confirm-title{
+  font-size:calc(var(--font-size) * 1);
+  font-weight:700;
+  letter-spacing:.18em;
+  color:var(--text);
+  margin-bottom:8px;
+}
+.confirm-msg{
+  font-size:calc(var(--font-size) * .86);
+  color:var(--text-dim);
+  letter-spacing:.1em;
+  line-height:1.6;
+}
+.confirm-actions{
+  display:flex;
+  border-top:1px solid var(--border);
+}
+.confirm-btn{
+  flex:1;
+  padding:14px;
+  font-size:calc(var(--font-size) * .86);
+  font-weight:700;
+  letter-spacing:.2em;
+  color:var(--text-dim);
+  background:transparent;
+  transition:all .12s;
+}
+.confirm-btn+.confirm-btn{border-left:1px solid var(--border)}
+.confirm-btn:hover{
+  background:var(--surface);
+  color:var(--text);
+}
+.confirm-btn.danger:hover{
+  background:var(--accent);
+  color:var(--accent-text);
+}
+
+
+/* menu card — description + formats */
+#header-title .ver{color:var(--text);margin-left:6px;padding:2px 6px;border:1px solid var(--border-strong);letter-spacing:.14em;font-size:.9em}
+.menu-card{min-height:148px;align-items:stretch}
+.menu-card-text{justify-content:center}
+.menu-card-desc{font-size:calc(var(--font-size) * .78);color:var(--text-dim);letter-spacing:.12em;line-height:1.5;font-weight:500;text-transform:none;max-width:44ch}
+.menu-card-fmt{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
+.menu-card-fmt i{font-style:normal;font-family:var(--mono);font-size:calc(var(--font-size) * .66);letter-spacing:.04em;padding:2px 6px;color:var(--text-dim);border:1px solid var(--border-strong);text-transform:uppercase}
+.menu-card:hover .menu-card-fmt i{border-color:var(--text-mute);color:var(--text)}
+.menu-card-arrow{align-self:center}
+#menu-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:18px;margin-bottom:34px}
+#menu-head #menu-sub{margin-bottom:0}
+#menu-libcard{display:flex;align-items:center;gap:14px;padding:12px 16px;border:1px solid var(--border);background:var(--surface);color:var(--text);text-align:left;transition:border-color .15s,background .15s}
+#menu-libcard:hover{border-color:var(--accent);background:var(--surface-2)}
+#menu-libcard b{display:block;font-size:calc(var(--font-size)*.95);letter-spacing:.14em}
+#menu-libcard small{display:block;font-size:calc(var(--font-size)*.7);letter-spacing:.14em;color:var(--text-dim);margin-top:3px}
+#menu-libcard svg{width:22px;height:22px;color:var(--accent);flex-shrink:0}
+
+/* ════════════════════════════════════════
+   LIBRARY TAB
+   ════════════════════════════════════════ */
+.tab .tab-count{margin-left:8px;min-width:20px;padding:2px 5px;font-size:.78em;line-height:1;text-align:center;color:var(--text-dim);border:1px solid var(--border-strong);font-variant-numeric:tabular-nums}
+.tab.active .tab-count{color:var(--text)}
+.tab.lib-drop{background:var(--accent);color:var(--accent-text)}
+.tab.lib-drop .tab-count{color:var(--accent-text);border-color:currentColor}
+.tab-icon{width:14px;height:14px;margin-right:9px;color:var(--accent);flex-shrink:0}
+
+#lib-panel{display:none;flex-direction:column;overflow:hidden}
+#lib-panel.active{display:flex}
+#lib-head{padding:30px 36px 18px;display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px;flex-shrink:0}
+#lib-head h1{font-size:calc(var(--font-size) * 2.2);font-weight:700;letter-spacing:.04em;line-height:1.05;margin-top:10px}
+#lib-meta{font-size:calc(var(--font-size)*.78);letter-spacing:.16em;color:var(--text-dim);margin-top:6px;font-variant-numeric:tabular-nums}
+#lib-meta b{color:var(--text);font-weight:600}
+#lib-head-actions{display:flex;flex-wrap:wrap;gap:8px}
+
+.lbtn{display:inline-flex;align-items:center;gap:7px;height:34px;padding:0 13px;font-size:calc(var(--font-size)*.76);font-weight:700;letter-spacing:.16em;color:var(--text);border:1px solid var(--border-strong);background:transparent;white-space:nowrap;transition:background .12s,border-color .12s,color .12s}
+.lbtn:hover{border-color:var(--text-dim);background:var(--surface-2)}
+.lbtn svg{width:14px;height:14px;flex-shrink:0}
+.lbtn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-text)}
+.lbtn.primary:hover{filter:brightness(1.1)}
+.lbtn.icon{width:34px;padding:0;justify-content:center}
+.lbtn.on{background:var(--text);color:var(--bg);border-color:var(--text)}
+.lbtn:disabled{opacity:.35;pointer-events:none}
+.lbtn.toggle i{width:22px;height:12px;border:1px solid var(--border-strong);position:relative;flex-shrink:0;transition:background .15s,border-color .15s}
+.lbtn.toggle i::after{content:"";position:absolute;top:2px;left:2px;width:6px;height:6px;background:var(--text-mute);transition:left .15s,background .15s}
+.lbtn.toggle.is-on i{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 18%,transparent)}
+.lbtn.toggle.is-on i::after{left:12px;background:var(--ok)}
+
+#lib-bar{display:flex;flex-wrap:wrap;align-items:center;gap:10px;padding:10px 36px;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--surface);flex-shrink:0}
+#lib-crumbs{display:flex;align-items:center;flex-wrap:wrap;gap:2px;flex:1;min-width:200px;font-size:calc(var(--font-size)*.82);letter-spacing:.12em;font-weight:600}
+#lib-crumbs button{padding:6px 8px;color:var(--text-dim)}
+#lib-crumbs button:hover{color:var(--text);background:var(--hover)}
+#lib-crumbs button:last-child{color:var(--text)}
+#lib-crumbs .sep{color:var(--text-mute);padding:0 2px}
+#lib-search{height:34px;width:220px;padding:0 10px 0 32px;border:1px solid var(--border-strong);background:var(--bg) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2.4'><circle cx='10.5' cy='10.5' r='6.5'/><path d='M15.5 15.5L21 21'/></svg>") no-repeat 10px center;font-size:calc(var(--font-size)*.82);letter-spacing:.1em;text-transform:none}
+#lib-search:focus{border-color:var(--accent)}
+#lib-filter{display:flex;border:1px solid var(--border-strong)}
+#lib-filter button{height:32px;padding:0 10px;font-size:calc(var(--font-size)*.7);font-weight:700;letter-spacing:.14em;color:var(--text-dim)}
+#lib-filter button+button{border-left:1px solid var(--border)}
+#lib-filter button:hover{color:var(--text);background:var(--hover)}
+#lib-filter button.on{background:var(--text);color:var(--bg)}
+.lib-seg{display:flex;border:1px solid var(--border-strong)}
+.lib-seg .lbtn{border:0;height:32px}
+.lib-seg .lbtn+.lbtn{border-left:1px solid var(--border)}
+
+#lib-body{flex:1;min-height:0;overflow:auto;position:relative;padding:0 36px 36px}
+#lib-table{width:100%;border-collapse:collapse;font-size:calc(var(--font-size)*.86);letter-spacing:.06em}
+#lib-table th{position:sticky;top:0;z-index:2;background:var(--bg);text-align:left;padding:12px 10px 10px;font-size:calc(var(--font-size)*.68);letter-spacing:.2em;color:var(--text-mute);font-weight:700;border-bottom:1px solid var(--border);white-space:nowrap;cursor:pointer;user-select:none}
+#lib-table th:hover{color:var(--text)}
+#lib-table th.sorted{color:var(--text)}
+#lib-table th.sorted::after{content:" ↓";color:var(--accent)}
+#lib-table th.sorted.asc::after{content:" ↑"}
+#lib-table td{padding:0 10px;height:46px;border-bottom:1px solid var(--border);white-space:nowrap;vertical-align:middle}
+#lib-table tr.row{cursor:default;transition:background .08s}
+#lib-table tr.row:hover{background:var(--surface)}
+#lib-table tr.row.sel{background:var(--surface-2);box-shadow:inset 3px 0 0 var(--accent)}
+#lib-table td.c-name{width:100%;max-width:0;overflow:hidden;text-overflow:ellipsis;text-transform:none;font-weight:600;letter-spacing:.02em}
+#lib-table td.c-name .nm{display:flex;align-items:center;gap:12px;min-width:0}
+#lib-table td.c-name .nm span{overflow:hidden;text-overflow:ellipsis}
+#lib-table td.num{font-family:var(--mono);font-size:calc(var(--font-size)*.76);color:var(--text-dim);text-align:right;letter-spacing:0;font-variant-numeric:tabular-nums}
+#lib-table td.c-tool{color:var(--text-dim);font-size:calc(var(--font-size)*.74);letter-spacing:.14em}
+#lib-table td.c-tool b{color:var(--text);font-weight:600}
+#lib-table td.c-act{width:1%;text-align:right}
+.row .acts{display:inline-flex;gap:4px;opacity:0;transition:opacity .1s}
+.row:hover .acts,.row.sel .acts{opacity:1}
+.acts .lbtn{height:28px;font-size:calc(var(--font-size)*.68)}
+.acts .lbtn.icon{width:28px}
+.ficon{width:30px;height:30px;flex-shrink:0;display:flex;align-items:center;justify-content:center;border:1px solid var(--border-strong);background:var(--surface-2);font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:0;color:var(--text-dim);overflow:hidden;position:relative}
+.ficon img{width:100%;height:100%;object-fit:cover;display:block}
+.ficon.k-folder{color:var(--accent);border-color:var(--accent);background:var(--accent-soft,transparent)}
+.ficon.k-folder svg{width:15px;height:15px}
+.ficon.k-image,.ficon.k-raw{color:#5aa9ff}
+.ficon.k-video{color:#c77dff}
+.ficon.k-table{color:var(--ok)}
+.ficon.k-vector{color:var(--warn)}
+.ficon.k-archive{color:#e5c07b}
+.ficon.k-dyno{color:var(--accent)}
+.ftag{display:inline-block;font-family:var(--mono);font-size:calc(var(--font-size)*.68);letter-spacing:0;padding:2px 6px;border:1px solid var(--border-strong);color:var(--text-dim);text-transform:uppercase}
+
+#lib-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:12px;padding-top:18px}
+.gcard{display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--border);text-align:left;transition:border-color .12s,background .12s;min-width:0}
+.gcard:hover{border-color:var(--border-strong);background:var(--surface-2)}
+.gcard.sel{border-color:var(--accent)}
+.gthumb{aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;background:var(--bg);border-bottom:1px solid var(--border);overflow:hidden;font-family:var(--mono);font-size:18px;font-weight:700;color:var(--text-mute)}
+.gthumb img{width:100%;height:100%;object-fit:contain}
+.gthumb.k-folder{color:var(--accent)}
+.gthumb.k-folder svg{width:42px;height:42px}
+.gmeta{padding:9px 10px 10px;min-width:0}
+.gname{font-size:calc(var(--font-size)*.8);font-weight:600;letter-spacing:.02em;text-transform:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gsub{display:flex;justify-content:space-between;gap:6px;margin-top:5px;font-size:calc(var(--font-size)*.66);letter-spacing:.12em;color:var(--text-mute);font-variant-numeric:tabular-nums}
+
+/* empty / connect states */
+#lib-empty{max-width:760px;margin:40px auto 0;padding:56px 40px;border:1px dashed var(--border-strong);text-align:center;display:flex;flex-direction:column;align-items:center;gap:14px}
+#lib-empty .big{width:54px;height:54px;color:var(--accent)}
+#lib-empty h2{font-size:calc(var(--font-size)*1.3);letter-spacing:.18em}
+#lib-empty p{font-size:calc(var(--font-size)*.8);letter-spacing:.1em;color:var(--text-dim);line-height:1.8;max-width:56ch;text-transform:none}
+#lib-empty code{font-family:var(--mono);color:var(--text);background:var(--surface-2);padding:1px 6px}
+#lib-empty .row-btns{display:flex;gap:8px;margin-top:6px;flex-wrap:wrap;justify-content:center}
+
+/* drop overlay */
+#lib-drop{position:absolute;inset:0;z-index:20;display:none;align-items:center;justify-content:center;background:color-mix(in srgb,var(--bg) 82%,transparent);pointer-events:none}
+#lib-drop.show{display:flex}
+#lib-drop div{padding:38px 54px;border:2px dashed var(--accent);background:var(--bg);text-align:center;font-weight:700;letter-spacing:.24em;font-size:calc(var(--font-size)*1.1)}
+#lib-drop small{display:block;margin-top:8px;font-size:.66em;color:var(--text-dim);letter-spacing:.18em}
+
+/* status strip */
+#lib-foot{display:flex;justify-content:space-between;gap:12px;padding:8px 36px;border-top:1px solid var(--border);font-size:calc(var(--font-size)*.68);letter-spacing:.16em;color:var(--text-mute);flex-shrink:0;background:var(--surface)}
+#lib-foot .dot{display:inline-block;width:7px;height:7px;margin-right:7px;background:var(--text-mute)}
+#lib-foot .dot.ok{background:var(--ok)}
+#lib-foot .dot.warn{background:var(--warn)}
+
+/* context menu */
+#lib-ctx{position:fixed;z-index:500;min-width:220px;background:var(--bg);border:1px solid var(--border-strong);box-shadow:0 16px 40px rgba(0,0,0,.45);padding:4px 0;display:none}
+#lib-ctx.show{display:block}
+#lib-ctx button{display:flex;width:100%;align-items:center;justify-content:space-between;gap:16px;padding:9px 14px;font-size:calc(var(--font-size)*.76);letter-spacing:.14em;font-weight:600;color:var(--text);text-align:left}
+#lib-ctx button:hover{background:var(--accent);color:var(--accent-text)}
+#lib-ctx button small{color:var(--text-mute);font-family:var(--mono);letter-spacing:0;font-size:.9em}
+#lib-ctx button:hover small{color:inherit}
+#lib-ctx hr{border:0;border-top:1px solid var(--border);margin:4px 0}
+#lib-ctx .cx-label{padding:8px 14px 4px;font-size:calc(var(--font-size)*.64);letter-spacing:.22em;color:var(--text-mute);font-weight:700}
+
+/* modal (chooser / viewer / prompt) */
+.lmodal{position:fixed;inset:0;z-index:450;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.62);padding:24px}
+.lmodal.show{display:flex}
+.lbox{width:min(560px,100%);max-height:100%;display:flex;flex-direction:column;background:var(--bg);border:1px solid var(--border-strong);border-top:3px solid var(--accent);box-shadow:0 30px 80px rgba(0,0,0,.5)}
+.lbox.wide{width:min(1180px,100%);height:min(860px,100%)}
+.lbox-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 20px;border-bottom:1px solid var(--border);flex-shrink:0}
+.lbox-title{font-weight:700;letter-spacing:.18em;font-size:calc(var(--font-size)*.95);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#lv-title,#lc-sub{text-transform:none}
+#lv-sub{text-transform:uppercase}
+.lbox-title small{display:block;margin-top:4px;font-size:.72em;color:var(--text-dim);letter-spacing:.16em;font-weight:600}
+.lbox-body{padding:18px 20px;overflow:auto;min-height:0;flex:1}
+.lbox-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 20px;border-top:1px solid var(--border);flex-shrink:0}
+.choose-list{display:flex;flex-direction:column;gap:6px}
+.choose-item{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px 16px;border:1px solid var(--border);border-left:3px solid var(--border-strong);background:var(--surface);text-align:left;transition:all .12s}
+.choose-item:hover{border-left-color:var(--accent);background:var(--surface-2)}
+.choose-item b{display:block;font-size:calc(var(--font-size)*.95);letter-spacing:.12em}
+.choose-item small{display:block;margin-top:4px;font-size:calc(var(--font-size)*.72);letter-spacing:.1em;color:var(--text-dim);text-transform:none}
+.choose-item .why{font-size:calc(var(--font-size)*.64);letter-spacing:.18em;color:var(--accent);font-weight:700;white-space:nowrap}
+.lcheck{display:flex;align-items:center;gap:8px;font-size:calc(var(--font-size)*.72);letter-spacing:.14em;color:var(--text-dim);cursor:pointer}
+.lcheck input{accent-color:var(--accent);width:14px;height:14px}
+#lv-body{padding:0;display:flex;background:var(--surface)}
+#lv-body textarea{flex:1;width:100%;padding:18px 20px;resize:none;background:var(--bg);color:var(--text);font:13px/1.65 var(--mono);letter-spacing:0;text-transform:none;tab-size:2;white-space:pre;overflow:auto}
+#lv-body img,#lv-body video{max-width:100%;max-height:100%;margin:auto;display:block;object-fit:contain}
+#lv-body iframe{flex:1;border:0;background:#fff}
+#lv-body audio{margin:auto}
+.lv-info{margin:auto;text-align:center;padding:40px;color:var(--text-dim);letter-spacing:.14em;line-height:2;font-size:calc(var(--font-size)*.82)}
+.lv-info b{display:block;color:var(--text);font-size:1.4em;letter-spacing:.1em;margin-bottom:6px}
+#lv-state{font-size:calc(var(--font-size)*.7);letter-spacing:.16em;color:var(--text-mute)}
+#lv-state.dirty{color:var(--warn)}
+.lfield{width:100%;height:38px;padding:0 12px;border:1px solid var(--border-strong);background:var(--surface);font-size:calc(var(--font-size)*.9);letter-spacing:.04em;text-transform:none}
+.lfield:focus{border-color:var(--accent)}
+@media(max-width:768px){
+  #lib-head,#lib-bar,#lib-foot{padding-left:16px;padding-right:16px}
+  #lib-body{padding:0 16px 24px}
+  #lib-search{width:100%}
+  #lib-table .c-tool,#lib-table .c-date,#lib-table th.c-tool,#lib-table th.c-date{display:none}
+  #lib-head{padding-top:22px}
+  #lib-head h1{font-size:calc(var(--font-size)*1.8)}
+  #lib-head-actions .lbtn{height:32px;padding:0 10px}
+  #lib-foot>span:last-child{display:none}
+  .row .acts{opacity:1}
+  .acts .lbtn:not(.icon){display:none}
+}
+
+
+/* ── 2.0.2: open-file bar, tab badge, quick strips, details pane ── */
+.tab .tab-file{margin-left:10px;max-width:160px;overflow:hidden;text-overflow:ellipsis;font-size:.78em;letter-spacing:.04em;text-transform:none;color:var(--text-dim);font-weight:500;padding:2px 7px;border:1px solid var(--border-strong)}
+.tab.active .tab-file{color:var(--text);border-color:var(--accent)}
+#filebar{display:flex;align-items:center;gap:14px;height:38px;padding:0 14px 0 18px;background:var(--surface-2);border-bottom:1px solid var(--border);flex-shrink:0;font-size:calc(var(--font-size)*.74);letter-spacing:.14em;overflow:hidden}
+#filebar[hidden]{display:none}
+.fb-lab{font-weight:700;color:var(--accent);white-space:nowrap;padding-left:10px;background:linear-gradient(var(--accent),var(--accent)) 0 50%/3px 11px no-repeat}
+.fb-path{display:flex;align-items:center;gap:6px;min-width:0;overflow:hidden;white-space:nowrap;color:var(--text-dim)}
+.fb-path i{font-style:normal;color:var(--text-mute)}
+.fb-path b{color:var(--text);text-transform:none;letter-spacing:.02em;font-weight:600;overflow:hidden;text-overflow:ellipsis}
+.fb-meta{color:var(--text-mute);white-space:nowrap;font-family:var(--mono);letter-spacing:.02em}
+.fb-acts{margin-left:auto;display:flex;gap:6px}
+.lbtn.sm{height:26px;padding:0 10px;font-size:calc(var(--font-size)*.68)}
+.lbtn.sm.icon{width:26px;padding:0}
+.lbtn.ghost{border-color:transparent;color:var(--text-dim)}
+.lbtn.ghost:hover{color:var(--text);border-color:var(--border-strong)}
+.lbtn .cnt{display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:16px;padding:0 4px;background:var(--surface-2);border:1px solid var(--border-strong);font-family:var(--mono);font-size:.92em;letter-spacing:0;color:var(--text-dim)}
+#lib-selbar{position:sticky;top:0;z-index:6;display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:12px 0 0;padding:8px 10px 8px 14px;background:var(--surface-2);border:1px solid var(--border-strong);border-left:3px solid var(--accent);box-shadow:0 8px 20px rgba(0,0,0,.25)}
+#lib-selbar[hidden]{display:none}
+#lib-selbar .sb-n{font-weight:700;letter-spacing:.18em;font-size:calc(var(--font-size)*.74);color:var(--accent);margin-right:8px;white-space:nowrap}
+#lib-selbar .sb-hint{margin-left:auto;font-size:calc(var(--font-size)*.6);letter-spacing:.16em;color:var(--text-mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.dragging-items [data-n].sel{opacity:.45}
+.drop-target{outline:2px solid var(--accent)!important;outline-offset:-2px;background:var(--accent-soft,color-mix(in srgb,var(--accent) 14%,transparent))!important}
+#lib-sheet .lbox{width:min(520px,100%)}
+.tree{display:flex;flex-direction:column;border:1px solid var(--border)}
+.tree-row{display:flex;align-items:center;gap:10px;height:36px;padding-right:14px;text-align:left;border-bottom:1px solid var(--border);color:var(--text);font-size:calc(var(--font-size)*.82);letter-spacing:.04em;transition:background .12s}
+.tree-row:last-child{border-bottom:0}
+.tree-row svg{width:16px;height:16px;flex-shrink:0;color:var(--text-dim)}
+.tree-row span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-transform:none}
+.tree-row small{font-size:.72em;letter-spacing:.2em;color:var(--text-mute);font-weight:700}
+.tree-row:not(:disabled):hover{background:var(--surface-2);box-shadow:inset 3px 0 0 var(--accent)}
+.tree-row:not(:disabled):hover svg{color:var(--accent)}
+.tree-row.here,.tree-row:disabled{color:var(--text-mute);cursor:default}
+.trash-list{display:flex;flex-direction:column;border:1px solid var(--border)}
+.trash-row{display:flex;align-items:center;gap:12px;padding:10px 12px;border-bottom:1px solid var(--border)}
+.trash-row:last-child{border-bottom:0}
+.trash-row:hover{background:var(--surface-2)}
+.trash-row .ficon{flex-shrink:0}
+.tr-n{flex:1;min-width:0}
+.tr-n b{display:block;text-transform:none;letter-spacing:.02em;font-weight:600;font-size:calc(var(--font-size)*.86);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tr-n small{display:block;margin-top:3px;font-size:calc(var(--font-size)*.64);letter-spacing:.14em;color:var(--text-mute);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.quick{display:flex;flex-direction:column;gap:8px;padding:16px 0 4px}
+.qrow{display:flex;align-items:flex-start;gap:14px;min-width:0}
+.qlab{flex-shrink:0;width:74px;padding-top:7px;font-size:calc(var(--font-size)*.64);letter-spacing:.22em;font-weight:700;color:var(--text-mute)}
+.qlist{display:flex;flex-wrap:wrap;gap:6px;min-width:0}
+.qchip{display:inline-flex;align-items:center;gap:8px;height:30px;padding:0 10px 0 6px;border:1px solid var(--border);background:var(--surface);max-width:420px;transition:border-color .12s,background .12s}
+.qchip:hover{border-color:var(--accent);background:var(--surface-2)}
+.qchip .qn{text-transform:none;letter-spacing:.02em;font-weight:600;font-size:calc(var(--font-size)*.8);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.qchip .qs{font-size:calc(var(--font-size)*.62);letter-spacing:.14em;color:var(--text-mute);white-space:nowrap}
+#menu-quick:empty{display:none}
+#menu-quick .quick{padding:0 0 26px;max-width:1500px}
+#lib-split{display:flex;align-items:flex-start;gap:20px}
+#lib-main{flex:1;min-width:0}
+#lib-details{display:none;position:sticky;top:12px;width:320px;flex-shrink:0;margin-top:12px;border:1px solid var(--border);background:var(--surface);max-height:calc(100% - 24px);overflow:auto}
+#lib-split.has-details #lib-details{display:block}
+.ld-prev{border-bottom:1px solid var(--border)}
+.ld-head{display:flex;align-items:flex-start;gap:10px;padding:14px 16px 6px}
+.ld-name{flex:1;min-width:0;font-weight:700;letter-spacing:.02em;text-transform:none;font-size:calc(var(--font-size)*.95);word-break:break-all}
+.star{font-size:16px;line-height:1;color:var(--text-mute);padding:2px 4px}
+.star:hover,.star.on{color:var(--warn)}
+.lbtn.star{font-size:14px}
+.lbtn.star.on{color:var(--warn);border-color:var(--warn)}
+.st-on{font-style:normal;color:var(--warn);font-size:12px;margin-left:2px}
+.ld-meta{display:grid;grid-template-columns:auto 1fr;gap:6px 12px;padding:8px 16px 14px;margin:0;font-size:calc(var(--font-size)*.74)}
+.ld-meta dt{color:var(--text-mute);letter-spacing:.16em;font-weight:700;font-size:.9em;padding-top:1px}
+.ld-meta dd{margin:0;color:var(--text);letter-spacing:.04em;text-transform:none;word-break:break-word;font-variant-numeric:tabular-nums}
+.ld-acts{display:flex;gap:6px;padding:0 16px 16px}
+.ld-acts .lbtn{flex:1;justify-content:center}
+.ld-acts .lbtn.icon{flex:0 0 34px}
+.pv{aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;overflow:hidden;background:var(--bg);font-family:var(--mono);color:var(--text-mute);font-weight:700}
+.pv-img img{width:100%;height:100%;object-fit:contain;background:repeating-conic-gradient(var(--surface) 0% 25%,var(--bg) 0% 50%) 50%/14px 14px}
+.pv-tbl{align-items:flex-start;justify-content:flex-start;padding:8px;background:#fff}
+.pv-tbl table{border-collapse:collapse;font:10px/1.3 var(--mono);color:#222;text-transform:none;letter-spacing:0}
+.pv-tbl th,.pv-tbl td{border:1px solid #ddd;padding:2px 5px;max-width:90px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:left}
+.pv-tbl th{background:#eee;font-weight:700}
+.pv-list{flex-direction:column;align-items:stretch;justify-content:flex-start;padding:10px 12px;gap:3px;font:10.5px/1.35 var(--mono);text-transform:none;letter-spacing:0;font-weight:400;color:var(--text-dim)}
+.pv-list div{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pv-text{align-items:flex-start;justify-content:flex-start;padding:10px 12px}
+.pv-text pre{margin:0;font:10.5px/1.45 var(--mono);color:var(--text-dim);white-space:pre-wrap;word-break:break-all;text-transform:none;letter-spacing:0;font-weight:400}
+.gthumb .pv{width:100%;height:100%;aspect-ratio:auto}
+.gcard{position:relative}
+.gstar{position:absolute;top:6px;right:8px;font-style:normal;color:var(--warn);font-size:14px}
+@media(max-width:1100px){#lib-details,#lib-split.has-details #lib-details{display:none}}
+@media(max-width:768px){#filebar .fb-path,#filebar .fb-meta{display:none}.qlab{width:auto}}
+
+/* ════════════════════════════════════════
+   RESPONSIVE
+   ════════════════════════════════════════ */
+@media(max-width:768px){
+  :root{
+    --header-h:52px;
+    --tab-h:40px;
+    --devp-w:100vw;
+  }
+  #header{padding:0 14px;gap:8px}
+  #logo svg{height:28px}
+  #header-title{display:none}
+  .tab{padding:0 14px;font-size:calc(var(--font-size) * .82)}
+  .tab .tab-num{margin-right:6px}
+  #menu-panel{padding:30px 18px}
+  #menu-heading{font-size:calc(var(--font-size) * 1.9)}
+  #menu-grid{grid-template-columns:1fr;gap:10px}
+  .menu-card{padding:24px 20px;min-height:100px}
+  .menu-card-name{font-size:calc(var(--font-size) * 1.45)}
+  .menu-card-arrow{font-size:calc(var(--font-size) * 1.6)}
+}
+@media(max-width:480px){
+  .tab{padding:0 11px;font-size:calc(var(--font-size) * .76)}
+}
+</style>
+</head>
+<body data-theme="dark">
+
+<div id="app">
+  <!-- ═════════ HEADER ═════════ -->
+  <header id="header">
+    <a id="logo" href="#" aria-label="RACINGBROS">
+      <!-- INLINE LOGO — white parts via currentColor, red kept as brand red -->
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 227.5 60" aria-hidden="true">
+        <g fill="currentColor">
+          <path d="M73.85,24.93c.34,0,.5.15.5.45,0,.14-.04.29-.13.45l-1.04,1.79c-.14.25-.34.46-.63.64-.28.17-.54.26-.78.26h-4.48c-.35,0-.52-.15-.52-.45,0-.14.04-.29.13-.45l.52-.9c.09-.16.13-.31.13-.45,0-.3-.17-.45-.5-.45-.25,0-.51.09-.78.26-.27.17-.49.38-.64.63l-4.16,7.16c-.14.25-.34.47-.63.64-.28.18-.54.27-.77.27h-4.47c-.35,0-.52-.15-.52-.45,0-.13.04-.28.13-.45l4.66-8.06c.14-.25.35-.46.63-.63.28-.18.54-.26.79-.26h12.55Z"/>
+          <path d="M89.66,24.93c.34,0,.5.15.5.45,0,.14-.04.29-.13.45l-4.67,8.06c-.14.25-.35.46-.63.64-.28.17-.54.26-.77.26h-12.55c-.35,0-.52-.15-.52-.45,0-.13.04-.28.13-.45l2.07-3.59c.15-.25.36-.46.63-.63.28-.18.54-.26.79-.26h6.27c.25,0,.51-.09.79-.26.27-.18.49-.38.64-.63l1.03-1.79c.08-.16.12-.32.12-.45,0-.3-.17-.45-.5-.45-.25,0-.5.09-.78.26-.27.18-.48.39-.63.64l-.52.9c-.14.25-.35.46-.62.63-.28.18-.54.26-.78.26h-4.5c-.35,0-.52-.15-.52-.45,0-.14.05-.29.13-.45l1.04-1.79c.14-.25.35-.46.63-.63.28-.18.54-.26.79-.26h12.55ZM80.65,31.21c.09-.16.13-.31.13-.45,0-.3-.17-.45-.52-.45-.25,0-.51.09-.78.26-.27.17-.48.39-.62.63l-1.05,1.79c-.09.17-.13.31-.13.45,0,.3.17.45.5.45.25,0,.51-.09.79-.26.28-.18.49-.39.63-.64l1.04-1.79Z"/>
+          <path d="M98.82,28.52c-.35,0-.52-.15-.52-.45,0-.14.04-.29.13-.45l.52-.9c.09-.16.13-.31.13-.45,0-.3-.17-.45-.5-.45-.25,0-.51.09-.78.26-.27.17-.49.39-.63.63l-3.62,6.27c-.09.16-.13.31-.13.45,0,.3.17.45.5.45.25,0,.52-.09.79-.26.28-.18.49-.39.63-.64l1.55-2.69c.15-.25.36-.46.63-.64.27-.18.54-.26.78-.26h4.48c.35,0,.52.15.52.45,0,.14-.05.29-.15.45l-2.07,3.59c-.13.25-.34.46-.62.64-.28.17-.54.26-.78.26h-12.55c-.35,0-.52-.15-.52-.45,0-.13.04-.28.13-.45l4.67-8.06c.13-.25.34-.46.63-.63.28-.18.54-.26.79-.26h12.54c.33,0,.51.15.51.45,0,.14-.05.29-.13.45l-1.05,1.79c-.14.25-.34.46-.62.64-.28.17-.54.26-.78.26h-4.48Z"/>
+          <path d="M102.94,34.79c-.35,0-.52-.15-.52-.45,0-.13.04-.28.13-.45l4.67-8.06c.14-.25.35-.46.63-.63.28-.17.54-.26.79-.26h4.48c.33,0,.5.15.5.45,0,.14-.04.29-.13.45l-4.67,8.06c-.14.25-.35.46-.63.64-.28.17-.54.26-.78.26h-4.48Z"/>
+          <path d="M128.92,24.93c.34,0,.51.15.51.45,0,.14-.04.29-.13.45l-4.67,8.06c-.14.25-.35.46-.62.64-.28.17-.54.26-.78.26h-4.48c-.35,0-.52-.15-.52-.45,0-.13.04-.28.13-.45l4.14-7.17c.09-.16.13-.31.13-.45,0-.3-.17-.45-.5-.45-.25,0-.51.09-.79.26-.27.17-.49.39-.64.63l-4.15,7.17c-.13.25-.34.46-.62.64-.28.17-.54.26-.78.26h-4.48c-.35,0-.52-.15-.52-.45,0-.13.04-.28.13-.45l4.67-8.06c.13-.25.34-.46.62-.63.28-.18.55-.26.8-.26h12.54Z"/>
+          <path d="M133,36.94c-.07-.13-.11-.31-.11-.52,0-.31.08-.59.23-.84.06-.12.09-.24.09-.35,0-.29-.18-.43-.54-.43h-6.27c-.35,0-.53-.15-.53-.45,0-.13.04-.28.13-.45l4.67-8.06c.14-.25.35-.46.63-.63.28-.18.54-.26.79-.26h12.54c.34,0,.51.15.51.45,0,.14-.05.29-.13.45l-1.05,1.79c-.13.25-.35.46-.62.63-.29.17-.54.26-.77.26h-4.48c-.35,0-.52-.15-.52-.45,0-.14.04-.29.13-.45l.52-.9c.09-.16.14-.31.14-.45,0-.3-.16-.45-.51-.45-.24,0-.51.09-.78.26-.27.17-.48.38-.63.63l-3.62,6.27c-.09.17-.13.31-.13.45,0,.3.16.45.5.45.25,0,.51-.09.79-.26.28-.18.48-.39.62-.64l1.55-2.69c.15-.25.36-.46.64-.63.27-.18.54-.26.78-.26h4.48c.35,0,.53.15.53.45,0,.14-.05.29-.15.45l-6.06,10.53c-.19.32-.39.49-.6.49-.11,0-.2-.06-.26-.18l-2.48-4.2Z"/>
+          <path d="M160.62,24.93c.34,0,.51.15.51.45,0,.14-.04.29-.13.45l-4.67,8.06c-.14.25-.35.46-.62.64-.28.17-.54.26-.78.26h-12.54c-.35,0-.52-.15-.52-.45,0-.13.04-.28.13-.45l8.68-15.01c.19-.32.38-.49.58-.49.12,0,.21.06.28.17l2.48,4.22c.07.12.11.3.11.51,0,.31-.07.6-.22.86-.08.13-.11.24-.11.36,0,.29.18.43.56.43h6.27ZM154.2,26.73c.09-.16.13-.31.13-.45,0-.3-.17-.45-.51-.45-.24,0-.51.09-.78.26-.27.17-.48.39-.63.64l-3.62,6.27c-.09.16-.13.31-.13.45,0,.3.17.45.5.45.25,0,.52-.09.79-.26.28-.18.49-.39.62-.64l3.62-6.27Z"/>
+          <path d="M176.81,24.93c.34,0,.5.15.5.45,0,.14-.04.29-.13.45l-1.04,1.79c-.14.25-.34.46-.62.64-.28.17-.54.26-.78.26h-4.47c-.35,0-.53-.15-.53-.45,0-.14.04-.29.13-.45l.52-.9c.09-.16.13-.31.13-.45,0-.3-.17-.45-.5-.45-.25,0-.51.09-.79.26-.28.17-.49.38-.63.63l-4.16,7.16c-.14.25-.34.47-.63.64-.28.18-.54.27-.77.27h-4.47c-.35,0-.52-.15-.52-.45,0-.13.04-.28.13-.45l4.67-8.06c.14-.25.34-.46.63-.63.28-.18.54-.26.79-.26h12.55Z"/>
+          <path d="M192.43,24.93c.33,0,.5.15.5.45,0,.14-.04.29-.13.45l-4.67,8.06c-.14.25-.35.46-.63.64-.28.17-.54.26-.78.26h-12.54c-.35,0-.52-.15-.52-.45,0-.13.04-.28.13-.45l4.67-8.06c.14-.25.35-.46.63-.63.28-.18.55-.26.79-.26h12.55ZM186.01,26.73c.09-.16.13-.31.13-.45,0-.3-.17-.45-.5-.45-.25,0-.51.09-.78.26-.28.17-.48.39-.64.64l-3.62,6.27c-.08.16-.13.31-.13.45,0,.3.17.45.5.45.25,0,.51-.09.79-.26.28-.18.49-.39.63-.64l3.62-6.27Z"/>
+          <path d="M202.06,28.52c-.35,0-.52-.15-.52-.45,0-.14.04-.29.13-.45l.52-.9c.09-.16.13-.31.13-.45,0-.3-.17-.45-.5-.45-.25,0-.51.09-.79.26-.27.17-.48.38-.63.63l-1.04,1.78c-.09.17-.13.32-.13.46,0,.3.17.45.52.45h6.28c.35,0,.53.15.53.45,0,.14-.05.29-.15.45l-2.07,3.59c-.13.25-.34.46-.62.64-.28.17-.54.26-.78.26h-12.54c-.35,0-.53-.15-.53-.45,0-.13.05-.28.13-.45l1.04-1.79c.14-.25.35-.46.63-.64.28-.17.54-.26.79-.26h4.48c.34,0,.51.15.51.45,0,.14-.04.29-.13.45l-.52.89c-.08.17-.13.31-.13.45,0,.3.17.45.51.45.25,0,.51-.09.79-.26.29-.18.5-.39.63-.64l1.05-1.79c.08-.16.13-.32.13-.45,0,-.3-.17-.45-.52-.45h-6.27c-.34,0-.51-.14-.51-.45,0-.13.05-.28.13-.45l2.07-3.58c.14-.25.35-.46.62-.63.28-.18.54-.26.8-.26h12.54c.33,0,.5.15.5.45,0,.14-.05.29-.13.45l-1.04,1.79c-.14.25-.35.46-.63.64-.28.17-.54.26-.77.26h-4.48Z"/>
+        </g>
+        <rect fill="#d7282f" x="14.5" y="13.54" width="32.68" height="32.68" rx="2.98" ry="2.98"/>
+        <path fill="currentColor" d="M44.82,28.91h-8.23c-.12,0-.22-.01-.31-.04-.27-.07-.4-.25-.4-.53,0-.14.04-.31.13-.46.19-.35.3-.72.3-1.13,0-.28-.05-.5-.14-.66l-2.26-3.85h4.21c.32,0,.67-.11,1.04-.35.37-.22.64-.5.82-.83l1.35-2.36c.13-.2.2-.4.2-.59,0-.39-.22-.58-.68-.58h-16.46c-.33,0-.68.11-1.03.35-.36.22-.64.5-.84.82l-6.12,10.59c-.12.21-.18.41-.18.59,0,.39.22.59.66.59h5.87c.33,0,.68-.11,1.04-.34.37-.23.64-.5.82-.84l5.47-9.4c.18-.32.45-.6.82-.83.36-.23.7-.34,1.01-.34.46,0,.69.19.69.59,0,.18-.06.37-.18.59l-.58,1s-.04.06-.06.09l-11.4,19.68c-.11.21-.18.41-.18.59,0,.39.22.59.66.59h16.46c.33,0,.68-.11,1.05-.34.36-.23.64-.51.81-.84l6.12-10.57c.14-.21.2-.42.2-.59,0-.4-.22-.59-.68-.59ZM36.42,31.27l-4.77,8.22c-.2.32-.47.61-.84.83-.35.23-.71.34-1.02.34-.46,0-.7-.2-.7-.58,0-.18.08-.38.21-.59l4.77-8.22c.18-.33.46-.61.82-.84.36-.22.7-.34,1.01-.34.45,0,.68.19.68.59,0,.18-.06.37-.17.59Z"/>
+      </svg>
+    </a>
+    <div id="header-title">▌ TOOLKIT <span class="red">/</span> HUB <span class="ver" id="hub-ver">2.0.4</span></div>
+    <button id="cmdk-btn" type="button" aria-label="Search tools, files and commands" title="Search tools, files and commands (Ctrl+K)" onclick="Palette.open()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="square"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21"/></svg>
+      <span>SEARCH</span><kbd>CTRL K</kbd>
+    </button>
+    <button id="hamburger" aria-label="Open developer panel" title="OPEN DEV PANEL">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square">
+        <line x1="3" y1="6.5" x2="21" y2="6.5"/>
+        <line x1="3" y1="12" x2="21" y2="12"/>
+        <line x1="3" y1="17.5" x2="21" y2="17.5"/>
+      </svg>
+    </button>
+  </header>
+
+  <!-- ═════════ TAB BAR ═════════ -->
+  <nav id="tab-bar" role="tablist"></nav>
+  <div id="filebar" hidden></div>
+
+  <!-- ═════════ PANELS ═════════ -->
+  <main id="panels"></main>
+</div>
+
+<!-- ═════════ DEV PANEL ═════════ -->
+<div id="devp-overlay"></div>
+<aside id="devp" aria-label="Developer panel">
+  <div id="devp-header">
+    <span id="devp-title">DEV PANEL</span>
+    <button id="devp-close" aria-label="Close">✕</button>
+  </div>
+  <nav id="devp-tabs">
+    <button class="devp-tab active" data-section="tools">TOOLS</button>
+    <button class="devp-tab" data-section="theme">THEME</button>
+    <button class="devp-tab" data-section="type">TYPE</button>
+  </nav>
+  <div id="devp-body">
+
+    <!-- TOOLS SECTION -->
+    <section class="devp-section active" data-section="tools">
+      <div class="devp-group">
+        <div class="devp-label">MANAGE TOOLS</div>
+        <div id="tools-list"></div>
+        <button id="add-tool-btn" class="btn-primary">＋ ADD TOOL</button>
+        <input type="file" id="add-tool-input" class="file-hidden" accept=".html,.htm">
+      </div>
+      <div class="devp-group">
+        <div class="devp-label">USAGE</div>
+        <p class="tip-text">
+          <span>▦</span> &nbsp;DRAG TO REORDER<br>
+          <span>⤓</span> &nbsp;DOWNLOAD CURRENT FILE<br>
+          <span>↻</span> &nbsp;REPLACE / UPDATE BY UPLOAD<br>
+          <span>✕</span> &nbsp;REMOVE TOOL<br>
+          <span>•</span> &nbsp;CLICK NAME TO RENAME
+        </p>
+      </div>
+    </section>
+
+    <!-- THEME SECTION -->
+    <section class="devp-section" data-section="theme">
+      <div class="devp-group">
+        <div class="devp-label">COLOR SCHEME</div>
+        <div id="scheme-presets"></div>
+      </div>
+      <div class="devp-group">
+        <div class="devp-label">CUSTOM COLORS</div>
+        <div id="color-pickers"></div>
+      </div>
+      <div class="devp-group">
+        <button id="reset-theme" class="btn-secondary">↺ RESET COLORS</button>
+      </div>
+    </section>
+
+    <!-- TYPE SECTION -->
+    <section class="devp-section" data-section="type">
+      <div class="devp-group">
+        <div class="devp-label">FONT FAMILY</div>
+        <select id="font-select" class="devp-select"></select>
+        <p class="tip-text" style="margin-top:8px;line-height:1.55">
+          BAHNSCHRIFT IS A WINDOWS SYSTEM FONT. ON OTHER OS THE STACK FALLS BACK GRACEFULLY.
+        </p>
+      </div>
+      <div class="devp-group">
+        <div class="devp-label">FONT SIZE</div>
+        <div class="slider-row">
+          <input type="range" id="font-size-slider" min="11" max="20" step="1" value="14">
+          <span class="slider-val" id="font-size-val">14PX</span>
+        </div>
+      </div>
+      <div class="devp-group">
+        <div class="devp-label">LETTER SPACING</div>
+        <div class="slider-row">
+          <input type="range" id="tracking-slider" min="0" max="20" step="1" value="8">
+          <span class="slider-val" id="tracking-val">0.08</span>
+        </div>
+      </div>
+      <div class="devp-group">
+        <button id="reset-type" class="btn-secondary">↺ RESET TYPOGRAPHY</button>
+      </div>
+    </section>
+
+  </div>
+  <div id="devp-footer">
+    <button id="reset-all" class="btn-secondary">↺ RESET EVERYTHING</button>
+    <div id="devp-credit">
+      <div class="cr-row"><span class="cr-ver">HUB <span id="devp-ver">2.0.4</span></span><span>© 2026 <a href="https://racingbros.com" target="_blank" rel="noopener noreferrer">RACINGBROS</a></span></div>
+      <div class="cr-row"><span>DESIGN &amp; DEVELOPMENT</span><a href="https://13studio.co" target="_blank" rel="noopener noreferrer">13STUDIO</a></div>
+    </div>
+  </div>
+</aside>
+
+<!-- TOAST -->
+<div id="toast"></div>
+
+<!-- CONFIRM MODAL -->
+<div id="confirm-modal">
+  <div class="confirm-box">
+    <div class="confirm-body">
+      <div class="confirm-title" id="confirm-title">CONFIRM</div>
+      <div class="confirm-msg" id="confirm-msg"></div>
+    </div>
+    <div class="confirm-actions">
+      <button class="confirm-btn" id="confirm-cancel">CANCEL</button>
+      <button class="confirm-btn danger" id="confirm-ok">CONFIRM</button>
+    </div>
+  </div>
+</div>
+
+<!-- LIBRARY: context menu -->
+<div id="lib-ctx" role="menu"></div>
+
+<!-- LIBRARY: open-with chooser -->
+<div class="lmodal" id="lib-chooser">
+  <div class="lbox">
+    <div class="lbox-head"><div class="lbox-title" id="lc-title">OPEN WITH<small id="lc-sub"></small></div><button class="lbtn icon" data-close aria-label="Close">✕</button></div>
+    <div class="lbox-body"><div class="choose-list" id="lc-list"></div></div>
+    <div class="lbox-foot"><label class="lcheck"><input type="checkbox" id="lc-remember"> ALWAYS USE FOR THIS FORMAT</label><button class="lbtn" data-close>CANCEL</button></div>
+  </div>
+</div>
+
+<!-- LIBRARY: built-in viewer / text editor -->
+<div class="lmodal" id="lib-viewer">
+  <div class="lbox wide">
+    <div class="lbox-head">
+      <div class="lbox-title" id="lv-title">FILE<small id="lv-sub"></small></div>
+      <div style="display:flex;gap:6px;align-items:center">
+        <span id="lv-state"></span>
+        <button class="lbtn" id="lv-download">DOWNLOAD</button>
+        <button class="lbtn primary" id="lv-save" hidden>SAVE</button>
+        <button class="lbtn icon" data-close aria-label="Close">✕</button>
+      </div>
+    </div>
+    <div class="lbox-body" id="lv-body"></div>
+  </div>
+</div>
+
+<!-- LIBRARY: name prompt -->
+<div class="lmodal" id="lib-prompt">
+  <div class="lbox">
+    <div class="lbox-head"><div class="lbox-title" id="lp-title">NAME</div><button class="lbtn icon" data-close aria-label="Close">✕</button></div>
+    <div class="lbox-body"><input class="lfield" id="lp-input" spellcheck="false"></div>
+    <div class="lbox-foot"><span></span><div style="display:flex;gap:6px"><button class="lbtn" data-close>CANCEL</button><button class="lbtn primary" id="lp-ok">OK</button></div></div>
+  </div>
+</div>
+<input type="file" id="lib-import-input" class="file-hidden" multiple>
+
+<script>
+/* ════════════════════════════════════════
+   DEFAULTS
+   ════════════════════════════════════════ */
+const DEFAULT_TOOLS = [
+  { id:'t_big',    name:'BIG',                   source:'path', path:'BIG.html' },
+  { id:'t_global', name:'DISTRIBUTOR — GLOBAL', source:'path', path:'DISTRIBUTORS_GLOBAL.html' },
+  { id:'t_taiwan', name:'DISTRIBUTOR — TAIWAN', source:'path', path:'DISTRIBUTORS_TAIWAN.html' },
+  { id:'t_pubsys', name:'PUBSYS',                source:'path', path:'PUBSYS.html' },
+  { id:'t_post',   name:'POST CREATOR',          source:'path', path:'POST_CREATOR.html' },
+  { id:'t_rdpm',   name:'RDPM',                  source:'path', path:'RDPM.html' },
+  { id:'t_dng',    name:'DNG → PNG',             source:'path', path:'DNG_TO_PNG.html' },
+  { id:'t_manual', name:'MANUAL CREATOR',        source:'path', path:'MANUAL_CREATOR.html' },
+  { id:'t_reader', name:'READER',               source:'path', path:'READER.html' },
+  { id:'t_pe',     name:'PE',                    source:'path', path:'PE.html' },
+  { id:'t_pvp',    name:'PVP VIEWER',             source:'path', path:'PVP_VIEWER.html' },
+];
+
+const COLOR_KEYS = [
+  { key:'bg',            label:'BACKGROUND' },
+  { key:'surface',       label:'SURFACE' },
+  { key:'surface-2',     label:'SURFACE 2' },
+  { key:'hover',         label:'HOVER' },
+  { key:'border',        label:'BORDER' },
+  { key:'border-strong', label:'BORDER STRONG' },
+  { key:'text',          label:'TEXT' },
+  { key:'text-dim',      label:'TEXT DIM' },
+  { key:'text-mute',     label:'TEXT MUTE · HINTS' },
+  { key:'accent',        label:'ACCENT' },
+  { key:'accent-text',   label:'TEXT ON ACCENT' },
+];
+
+const SCHEMES = {
+  racing:{
+    name:'RACING RED',
+    swatches:['#0b0b0c','#d7282f','#f2f2f3','#9b9ba2'],
+    theme:'dark',
+    colors:{ bg:'#0b0b0c',surface:'#131315','surface-2':'#1a1a1d',border:'#27272b','border-strong':'#3b3b41',text:'#f2f2f3','text-dim':'#9b9ba2','text-mute':'#5d5d65',accent:'#d7282f','accent-text':'#ffffff',hover:'#232327' }
+  },
+  pit:{
+    name:'PIT WHITE',
+    swatches:['#ffffff','#d7282f','#0a0a0a','#888'],
+    theme:'light',
+    colors:{ bg:'#ffffff',surface:'#f6f6f7','surface-2':'#ededef',border:'#dadade','border-strong':'#b3b3ba',text:'#0b0b0c','text-dim':'#5e5e67','text-mute':'#9b9ba4',accent:'#d7282f','accent-text':'#ffffff',hover:'#e3e3e6' }
+  },
+  graphite:{
+    name:'GRAPHITE',
+    swatches:['#17191d','#d7282f','#ffffff','#a4abb7'],
+    theme:'dark',
+    colors:{ bg:'#17191d',surface:'#1f2228','surface-2':'#272b32',border:'#3b414b','border-strong':'#5a6270',text:'#ffffff','text-dim':'#d2d6de','text-mute':'#a4abb7',accent:'#d7282f','accent-text':'#ffffff',hover:'#2e333b' }
+  },
+  paper:{
+    name:'PAPER',
+    swatches:['#fbfaf7','#c0121b','#121212','#5f5b52'],
+    theme:'light',
+    colors:{ bg:'#fbfaf7',surface:'#f2f0ea','surface-2':'#e9e6de',border:'#cfc9bc','border-strong':'#8f897c',text:'#121212','text-dim':'#3a3a3a','text-mute':'#5f5b52',accent:'#c0121b','accent-text':'#ffffff',hover:'#e1ddd2' }
+  }
+};
+
+const FONTS = [
+  { value:"'Bahnschrift','Bahnschrift SemiCondensed','DIN Alternate','DIN Condensed','Roboto Condensed','Barlow Condensed','Oswald','Arial Narrow',sans-serif", label:'BAHNSCHRIFT — DEFAULT' },
+  { value:"'Roboto Condensed','Barlow Condensed','Arial Narrow',sans-serif",                           label:'ROBOTO CONDENSED' },
+  { value:"'Barlow Condensed','Roboto Condensed','Arial Narrow',sans-serif",                          label:'BARLOW CONDENSED' },
+  { value:"'Oswald','Impact','Arial Narrow',sans-serif",                                              label:'OSWALD' },
+  { value:"'DIN Alternate','DIN Condensed','Bahnschrift','Roboto Condensed',sans-serif",              label:'DIN ALTERNATE' },
+  { value:"'Inter','Helvetica Neue','Helvetica','Arial',sans-serif",                                  label:'INTER' },
+  { value:"'Helvetica Neue','Helvetica','Arial',sans-serif",                                          label:'HELVETICA' },
+  { value:"'Courier New','Consolas',monospace",                                                       label:'COURIER — MONO' },
+  { value:"Impact,'Haettenschweiler','Arial Narrow',sans-serif",                                      label:'IMPACT' },
+];
+
+const LS_KEY  = 'rbros_hub_state_v1';
+const IDB_NAME= 'rbros_hub_db';
+const IDB_STORE='tools';
+
+let state = {
+  tools: structuredClone(DEFAULT_TOOLS),
+  activeTab:'menu',
+  theme:'dark',
+  scheme:'racing',
+  customColors:{},
+  font: FONTS[0].value,
+  fontSize: 14,
+  tracking: 8,
+  seededDefaults: DEFAULT_TOOLS.map(d=>d.id),  // bundled tools already merged into state
+  lib: { view:'list', saveExports:true, assoc:{}, sort:'name', asc:true, recent:[], stars:[], links:{} },
+};
+
+/* ════════════════════════════════════════
+   INDEXEDDB (uploaded tool HTML content)
+   ════════════════════════════════════════ */
+let _dbPromise = null;
+function openDB(){
+  if(_dbPromise) return _dbPromise;
+  _dbPromise = new Promise((resolve,reject)=>{
+    const req = indexedDB.open(IDB_NAME,2);
+    req.onupgradeneeded = e => {
+      const db = e.target.result;
+      if(!db.objectStoreNames.contains(IDB_STORE))
+        db.createObjectStore(IDB_STORE,{ keyPath:'id' });
+      if(!db.objectStoreNames.contains('handles'))
+        db.createObjectStore('handles',{ keyPath:'id' });
+    };
+    req.onsuccess = ()=>resolve(req.result);
+    req.onerror   = ()=>reject(req.error);
+  });
+  return _dbPromise;
+}
+async function idbPut(id, content){
+  const db = await openDB();
+  return new Promise((res,rej)=>{
+    const tx = db.transaction(IDB_STORE,'readwrite');
+    tx.objectStore(IDB_STORE).put({ id, content });
+    tx.oncomplete = ()=>res();
+    tx.onerror    = ()=>rej(tx.error);
+  });
+}
+async function idbGet(id){
+  const db = await openDB();
+  return new Promise((res,rej)=>{
+    const tx = db.transaction(IDB_STORE,'readonly');
+    const r  = tx.objectStore(IDB_STORE).get(id);
+    r.onsuccess = ()=>res(r.result?.content || null);
+    r.onerror   = ()=>rej(r.error);
+  });
+}
+async function idbDelete(id){
+  const db = await openDB();
+  return new Promise((res,rej)=>{
+    const tx = db.transaction(IDB_STORE,'readwrite');
+    tx.objectStore(IDB_STORE).delete(id);
+    tx.oncomplete = ()=>res();
+    tx.onerror    = ()=>rej(tx.error);
+  });
+}
+
+/* ════════════════════════════════════════
+   LOCAL STORAGE
+   ════════════════════════════════════════ */
+function saveState(){
+  const safe = {
+    tools: state.tools.map(t=>({ id:t.id, name:t.name, source:t.source, path:t.path, fileName:t.fileName })),
+    activeTab: state.activeTab,
+    theme: state.theme,
+    scheme: state.scheme,
+    customColors: state.customColors,
+    font: state.font,
+    fontSize: state.fontSize,
+    tracking: state.tracking,
+    seededDefaults: state.seededDefaults,
+    lib: state.lib,
+  };
+  try { localStorage.setItem(LS_KEY, JSON.stringify(safe)); } catch(e){}
+}
+function loadState(){
+  try{
+    const raw = localStorage.getItem(LS_KEY);
+    if(!raw) return;
+    const p = JSON.parse(raw);
+    if(Array.isArray(p.tools) && p.tools.length) state.tools = p.tools;
+    if(p.activeTab) state.activeTab = p.activeTab;
+    if(p.theme)     state.theme     = p.theme;
+    if(p.scheme)    state.scheme    = SCHEMES[p.scheme] ? p.scheme : (p.theme==='light' ? 'pit' : 'racing');   /* retired schemes fall back to the stock pair */
+    if(p.customColors) state.customColors = p.customColors;
+    if(p.font)      state.font      = p.font;
+    if(typeof p.fontSize === 'number') state.fontSize = p.fontSize;
+    if(typeof p.tracking === 'number') state.tracking = p.tracking;
+    if(p.lib && typeof p.lib === 'object') state.lib = Object.assign({}, state.lib, p.lib);
+
+    /* Reconcile bundled tools that shipped after this state was saved.
+       Without this, a returning user's cached tool list permanently
+       hides any newly-added default tool. Legacy states (no
+       seededDefaults) treat the defaults they already hold as "seen",
+       so only genuinely-new defaults get appended — as the last tab. */
+    const savedIds = new Set(state.tools.map(t=>t.id));
+    const seeded = new Set(
+      Array.isArray(p.seededDefaults)
+        ? p.seededDefaults
+        : DEFAULT_TOOLS.map(d=>d.id).filter(id=>savedIds.has(id))
+    );
+    DEFAULT_TOOLS.forEach((d,di)=>{
+      if(!savedIds.has(d.id) && !seeded.has(d.id)){
+        state.tools.splice(Math.min(di, state.tools.length), 0, structuredClone(d));  // insert at canonical position
+      }
+      seeded.add(d.id);   // mark every current default seen → user removals persist
+    });
+
+    /* Retire path-based defaults that have been dropped from the build.
+       Targets these specific ids only, so user-uploaded tools are safe. */
+    const RETIRED = new Set(['t_logo']);
+    state.tools = state.tools.filter(t=>!RETIRED.has(t.id));
+    state.seededDefaults = [...seeded].filter(id=>!RETIRED.has(id));
+  }catch(e){}
+}
+
+/* ════════════════════════════════════════
+   THEME APPLICATION
+   ════════════════════════════════════════ */
+function applyScheme(key){
+  const s = SCHEMES[key];
+  if(!s) return;
+  // wipe inline overrides first so scheme defines all
+  COLOR_KEYS.forEach(({key:k})=>document.documentElement.style.removeProperty('--'+k));
+  ['surface-2','border-strong','accent-text','hover','text-mute'].forEach(k=>document.documentElement.style.removeProperty('--'+k));
+  Object.entries(s.colors).forEach(([k,v])=>{
+    document.documentElement.style.setProperty('--'+k,v);
+  });
+  state.theme = s.theme;
+  document.body.setAttribute('data-theme', state.theme);
+}
+function applyCustomColors(){
+  Object.entries(state.customColors).forEach(([k,v])=>{
+    if(v) document.documentElement.style.setProperty('--'+k,v);
+  });
+}
+function applyTypography(){
+  document.documentElement.style.setProperty('--font',state.font);
+  document.documentElement.style.setProperty('--font-size', state.fontSize + 'px');
+  document.documentElement.style.setProperty('--tracking', (state.tracking/100) + 'em');
+}
+function applyAllTheme(){
+  applyScheme(state.scheme);
+  applyCustomColors();
+  applyTypography();
+  document.body.setAttribute('data-theme', state.theme);
+  Bridge.broadcastTheme();
+}
+
+/* ════════════════════════════════════════
+   TABS & PANELS
+   ════════════════════════════════════════ */
+const tabBarEl = document.getElementById('tab-bar');
+const panelsEl = document.getElementById('panels');
+
+function renderTabsAndPanels(){
+  tabBarEl.innerHTML = '';
+  panelsEl.innerHTML = '';
+
+  // Menu tab
+  const menuTab = document.createElement('button');
+  menuTab.className = 'tab';
+  menuTab.dataset.tab = 'menu';
+  menuTab.innerHTML = `MENU`;
+  menuTab.onclick = ()=>setActive('menu');
+  tabBarEl.appendChild(menuTab);
+
+  // Library tab — sits right after MENU
+  const libTab = document.createElement('button');
+  libTab.className = 'tab';
+  libTab.id = 'lib-tab';
+  libTab.dataset.tab = 'library';
+  libTab.innerHTML = `<svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="square"><path d="M3 6h7l2 2h9v11H3z"/></svg>LIBRARY<span class="tab-count" id="lib-tab-count">–</span>`;
+  libTab.onclick = ()=>setActive('library');
+  tabBarEl.appendChild(libTab);
+  Library.bindTabDrop(libTab);
+
+  const menuPanel = document.createElement('div');
+  menuPanel.className = 'panel';
+  menuPanel.dataset.tab = 'menu';
+  menuPanel.id = 'menu-panel';
+  panelsEl.appendChild(menuPanel);
+
+  const libPanel = document.createElement('div');
+  libPanel.className = 'panel';
+  libPanel.dataset.tab = 'library';
+  libPanel.id = 'lib-panel';
+  panelsEl.appendChild(libPanel);
+  Library.mount(libPanel);
+
+  // Tool tabs
+  state.tools.forEach((tool,i)=>{
+    const num = String(i+1).padStart(2,'0');
+    const tab = document.createElement('button');
+    tab.className = 'tab';
+    tab.dataset.tab = tool.id;
+    tab.innerHTML = `<span class="tab-num">${num}</span>${escapeHtml(tool.name)}`;
+    tab.onclick = ()=>setActive(tool.id);
+    tabBarEl.appendChild(tab);
+
+    const panel = document.createElement('div');
+    panel.className = 'panel';
+    panel.dataset.tab = tool.id;
+    panelsEl.appendChild(panel);
+  });
+
+  renderMenu();
+  Library.decorateTabs();
+  const validTab = state.activeTab === 'menu' || state.activeTab === 'library' || state.tools.find(t=>t.id===state.activeTab);
+  setActive(validTab ? state.activeTab : 'menu', { skipSave:true });
+}
+
+function renderMenu(){
+  const mp = document.getElementById('menu-panel');
+  if(!mp) return;
+  const cards = state.tools.map((t,i)=>{
+    const info = TOOL_INFO[t.path] || null;
+    const fmts = info ? info.formats.map(f=>`<i>.${f}</i>`).join('') : '';
+    return `
+    <button class="menu-card" data-go="${t.id}">
+      <span class="menu-card-text">
+        <span class="menu-card-num">TOOL ${String(i+1).padStart(2,'0')}</span>
+        <span class="menu-card-name">${escapeHtml(t.name)}</span>
+        <span class="menu-card-desc">${escapeHtml(info ? info.desc : (t.source==='upload' ? 'Uploaded tool' : ''))}</span>
+        ${fmts ? `<span class="menu-card-fmt">${fmts}</span>` : ''}
+      </span>
+      <span class="menu-card-arrow">→</span>
+    </button>`;
+  }).join('');
+  mp.innerHTML = `
+    <div id="menu-eyebrow">RACINGBROS TOOLKIT · HUB ${HUB_VERSION}</div>
+    <h1 id="menu-heading">SELECT A TOOL</h1>
+    <div id="menu-head">
+      <p id="menu-sub">${state.tools.length} TOOL${state.tools.length===1?'':'S'} ACTIVE  /  TAP A CARD OR USE THE TAB BAR</p>
+      <button id="menu-libcard" data-go="library">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"><path d="M3 6h7l2 2h9v11H3z"/></svg>
+        <span><b>LIBRARY</b><small id="menu-lib-status">${Library.statusLine()}</small></span>
+      </button>
+    </div>
+    <div id="menu-quick">${Library.menuStrip()}</div>
+    <div id="menu-grid">${cards || '<p style="color:var(--text-dim);letter-spacing:.16em">NO TOOLS LOADED — OPEN THE DEV PANEL TO ADD ONE.</p>'}</div>
+    <div id="menu-footer">▌ DEV PANEL — TOP RIGHT — TO ADD / REORDER / RESKIN</div>
+  `;
+  mp.querySelectorAll('[data-go]').forEach(b=>{
+    b.onclick = ()=>setActive(b.dataset.go);
+  });
+  Library.bindQuick(mp);
+}
+
+async function setActive(tab, opts={}){
+  state.activeTab = tab;
+  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active', t.dataset.tab===tab));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active', p.dataset.tab===tab));
+
+  if(tab === 'library'){
+    Library.onShow();
+  } else if(tab !== 'menu'){
+    const tool = state.tools.find(t=>t.id===tab);
+    if(tool) await loadIframe(tool);
+  }
+  Library.refreshFilebar();
+  if(!opts.skipSave) saveState();
+}
+
+async function loadIframe(tool){
+  const panel = document.querySelector(`.panel[data-tab="${cssEsc(tool.id)}"]`);
+  if(!panel) return;
+
+  let src;
+  if(tool.source === 'upload'){
+    const content = await idbGet(tool.id);
+    if(!content){
+      panel.innerHTML = `<div style="padding:30px;color:var(--text-dim);letter-spacing:.12em">▌ UPLOADED TOOL DATA NOT FOUND — RE-UPLOAD VIA DEV PANEL.</div>`;
+      return;
+    }
+    const blob = new Blob([content], { type:'text/html' });
+    src = URL.createObjectURL(blob);
+  } else {
+    src = tool.path;
+  }
+
+  const existing = panel.querySelector('iframe');
+  if(existing && existing.dataset.srcKey === (tool.source+'|'+(tool.path||tool.id))) return;
+
+  panel.innerHTML = '';
+  const iframe = document.createElement('iframe');
+  iframe.src = src;
+  iframe.dataset.srcKey = tool.source+'|'+(tool.path||tool.id);
+  iframe.title = tool.name;
+  iframe.allow = 'clipboard-read; clipboard-write; fullscreen';
+  iframe.dataset.toolId = tool.id;
+  Bridge.forget(tool.id);
+  panel.appendChild(iframe);
+}
+
+function invalidateIframe(toolId){
+  const panel = document.querySelector(`.panel[data-tab="${cssEsc(toolId)}"]`);
+  if(!panel) return;
+  panel.innerHTML = '';
+}
+
+/* ════════════════════════════════════════
+   TOOLS LIST IN DEV PANEL
+   ════════════════════════════════════════ */
+const toolsListEl = document.getElementById('tools-list');
+
+function renderToolsList(){
+  toolsListEl.innerHTML = '';
+  if(!state.tools.length){
+    toolsListEl.innerHTML = '<div class="empty-tools">▌ NO TOOLS — TAP "ADD TOOL" BELOW</div>';
+    return;
+  }
+  state.tools.forEach((tool, idx)=>{
+    const item = document.createElement('div');
+    item.className = 'tool-item';
+    item.draggable = true;
+    item.dataset.idx = idx;
+    item.dataset.id  = tool.id;
+    item.innerHTML = `
+      <div class="tool-handle" title="DRAG TO REORDER">▦</div>
+      <div class="tool-info">
+        <input class="tool-name-input" type="text" value="${escapeAttr(tool.name)}" spellcheck="false" data-action="rename">
+        <div class="tool-meta ${tool.source==='upload'?'upload':''}">${tool.source==='upload' ? '⬆ UPLOADED' : '↪ '+(tool.path||'')}</div>
+      </div>
+      <div class="tool-actions">
+        <button class="tool-btn" data-action="download" title="DOWNLOAD">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square" stroke-linejoin="miter"><path d="M12 3v13M6 11l6 6 6-6M4 21h16"/></svg>
+        </button>
+        <button class="tool-btn" data-action="replace" title="REPLACE / UPDATE">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square" stroke-linejoin="miter"><path d="M21 8a9 9 0 0 0-15-3M3 16a9 9 0 0 0 15 3M21 3v5h-5M3 21v-5h5"/></svg>
+        </button>
+        <button class="tool-btn" data-action="remove" title="REMOVE">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square"><path d="M5 5l14 14M5 19L19 5"/></svg>
+        </button>
+      </div>
+    `;
+
+    // RENAME
+    const renameInput = item.querySelector('[data-action="rename"]');
+    renameInput.addEventListener('change', e=>{
+      const v = e.target.value.trim();
+      if(v){
+        tool.name = v;
+        saveState();
+        renderTabsAndPanels();
+      } else {
+        e.target.value = tool.name;
+      }
+    });
+    renameInput.addEventListener('keydown', e=>{
+      if(e.key==='Enter') e.target.blur();
+    });
+
+    // ACTIONS
+    item.querySelector('[data-action="download"]').onclick = ()=>downloadTool(tool);
+    item.querySelector('[data-action="replace"]').onclick  = ()=>replaceTool(tool);
+    item.querySelector('[data-action="remove"]').onclick   = ()=>removeTool(tool);
+
+    // DRAG & DROP
+    item.addEventListener('dragstart', e=>{
+      item.classList.add('dragging');
+      e.dataTransfer.setData('text/plain', String(idx));
+      e.dataTransfer.effectAllowed = 'move';
+    });
+    item.addEventListener('dragend', ()=>{
+      item.classList.remove('dragging');
+      document.querySelectorAll('.tool-item').forEach(x=>x.classList.remove('drag-over'));
+    });
+    item.addEventListener('dragover', e=>{
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+      item.classList.add('drag-over');
+    });
+    item.addEventListener('dragleave', ()=>item.classList.remove('drag-over'));
+    item.addEventListener('drop', e=>{
+      e.preventDefault();
+      item.classList.remove('drag-over');
+      const from = parseInt(e.dataTransfer.getData('text/plain'),10);
+      const to   = parseInt(item.dataset.idx,10);
+      if(isNaN(from)||isNaN(to)||from===to) return;
+      const [moved] = state.tools.splice(from,1);
+      state.tools.splice(to,0,moved);
+      saveState();
+      renderToolsList();
+      renderTabsAndPanels();
+    });
+
+    toolsListEl.appendChild(item);
+  });
+}
+
+/* ════════════════════════════════════════
+   TOOL ACTIONS
+   ════════════════════════════════════════ */
+async function downloadTool(tool){
+  let content;
+  let filename = tool.fileName || (tool.path ? tool.path.split('/').pop() : tool.name.toLowerCase().replace(/[^a-z0-9_-]+/g,'_')+'.html');
+  if(tool.source === 'upload'){
+    content = await idbGet(tool.id);
+    if(!content){ toast('NO CONTENT TO DOWNLOAD'); return; }
+  } else {
+    try{
+      const r = await fetch(tool.path);
+      if(!r.ok) throw new Error('HTTP '+r.status);
+      content = await r.text();
+    }catch(err){
+      toast('FETCH FAILED — KEEP TOOL FILES IN THE SAME FOLDER AS HUB.HTML');
+      return;
+    }
+  }
+  const blob = new Blob([content], { type:'text/html' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url), 1500);
+  toast('DOWNLOADED  ·  '+filename.toUpperCase());
+}
+
+function replaceTool(tool){
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = '.html,.htm';
+  input.onchange = async ()=>{
+    const f = input.files && input.files[0];
+    if(!f) return;
+    try{
+      const text = await f.text();
+      await idbPut(tool.id, text);
+      tool.source   = 'upload';
+      tool.fileName = f.name;
+      delete tool.path;
+      invalidateIframe(tool.id);
+      saveState();
+      renderToolsList();
+      if(state.activeTab === tool.id) loadIframe(tool);
+      toast('REPLACED  ·  '+tool.name);
+    }catch(err){ toast('FAILED TO READ FILE'); }
+  };
+  input.click();
+}
+
+function removeTool(tool){
+  showConfirm({
+    title:'REMOVE TOOL',
+    msg:`REMOVE "${tool.name}"? THIS CANNOT BE UNDONE.`,
+    okLabel:'REMOVE',
+    danger:true,
+    onOk: async ()=>{
+      if(tool.source === 'upload') await idbDelete(tool.id);
+      state.tools = state.tools.filter(t=>t.id !== tool.id);
+      if(state.activeTab === tool.id) state.activeTab = 'menu';
+      saveState();
+      renderToolsList();
+      renderTabsAndPanels();
+      toast('REMOVED');
+    }
+  });
+}
+
+document.getElementById('add-tool-btn').onclick = ()=>{
+  document.getElementById('add-tool-input').click();
+};
+document.getElementById('add-tool-input').onchange = async e =>{
+  const f = e.target.files && e.target.files[0];
+  if(!f) return;
+  try{
+    const text = await f.text();
+    const id   = 't_' + Math.random().toString(36).slice(2,10);
+    const name = f.name.replace(/\.html?$/i,'').replace(/[_-]+/g,' ').toUpperCase();
+    await idbPut(id, text);
+    state.tools.push({ id, name, source:'upload', fileName:f.name });
+    saveState();
+    renderToolsList();
+    renderTabsAndPanels();
+    toast('ADDED  ·  '+name);
+  }catch(err){ toast('FAILED TO READ FILE'); }
+  e.target.value = '';
+};
+
+/* ════════════════════════════════════════
+   THEME CONTROLS
+   ════════════════════════════════════════ */
+function renderSchemePresets(){
+  const wrap = document.getElementById('scheme-presets');
+  wrap.innerHTML = '';
+  Object.entries(SCHEMES).forEach(([key,s])=>{
+    const btn = document.createElement('button');
+    btn.className = 'scheme-preset' + (state.scheme===key ? ' active' : '');
+    btn.dataset.scheme = key;
+    btn.innerHTML = `
+      <div class="scheme-name">${s.name}</div>
+      <div class="scheme-swatches">${s.swatches.map(c=>`<div class="swatch" style="background:${c}"></div>`).join('')}</div>
+    `;
+    btn.onclick = ()=>setScheme(key);
+    wrap.appendChild(btn);
+  });
+}
+
+function setScheme(key){
+  if(!SCHEMES[key]) return;
+  state.scheme = key;
+  state.customColors = {};
+  applyAllTheme();
+  renderSchemePresets();
+  renderColorPickers();
+  saveState();
+}
+
+function renderColorPickers(){
+  const wrap = document.getElementById('color-pickers');
+  wrap.innerHTML = '';
+  COLOR_KEYS.forEach(({ key, label })=>{
+    const raw = state.customColors[key] || getComputedStyle(document.documentElement).getPropertyValue('--'+key).trim();
+    const hex = normalizeHex(raw);
+    const row = document.createElement('div');
+    row.className = 'color-row';
+    row.innerHTML = `
+      <span class="color-row-label">${label}</span>
+      <span class="color-controls">
+        <span class="color-hex">${hex.toUpperCase()}</span>
+        <span class="color-swatch" style="background:${hex}">
+          <input type="color" value="${hex}" data-cvar="${key}">
+        </span>
+      </span>
+    `;
+    row.querySelector('input').addEventListener('input', e=>{
+      const v = e.target.value;
+      state.customColors[key] = v;
+      document.documentElement.style.setProperty('--'+key, v);
+      row.querySelector('.color-swatch').style.background = v;
+      row.querySelector('.color-hex').textContent = v.toUpperCase();
+      saveState();
+      Bridge.broadcastTheme();
+    });
+    wrap.appendChild(row);
+  });
+}
+
+document.getElementById('reset-theme').onclick = ()=>{
+  state.scheme = 'racing';
+  state.customColors = {};
+  applyAllTheme();
+  renderSchemePresets();
+  renderColorPickers();
+  saveState();
+  toast('COLORS RESET');
+};
+
+/* ════════════════════════════════════════
+   TYPOGRAPHY CONTROLS
+   ════════════════════════════════════════ */
+function renderFontSelect(){
+  const sel = document.getElementById('font-select');
+  sel.innerHTML = '';
+  FONTS.forEach(f=>{
+    const opt = document.createElement('option');
+    opt.value = f.value;
+    opt.textContent = f.label;
+    if(f.value === state.font) opt.selected = true;
+    sel.appendChild(opt);
+  });
+}
+document.getElementById('font-select').onchange = e=>{
+  state.font = e.target.value;
+  applyTypography();
+  saveState();
+  Bridge.broadcastTheme();
+};
+
+const fsSlider = document.getElementById('font-size-slider');
+const fsVal    = document.getElementById('font-size-val');
+fsSlider.addEventListener('input', ()=>{
+  state.fontSize = parseInt(fsSlider.value,10);
+  fsVal.textContent = state.fontSize + 'PX';
+  applyTypography();
+  saveState();
+});
+
+const trSlider = document.getElementById('tracking-slider');
+const trVal    = document.getElementById('tracking-val');
+trSlider.addEventListener('input', ()=>{
+  state.tracking = parseInt(trSlider.value,10);
+  trVal.textContent = (state.tracking/100).toFixed(2);
+  applyTypography();
+  saveState();
+});
+
+document.getElementById('reset-type').onclick = ()=>{
+  state.font     = FONTS[0].value;
+  state.fontSize = 14;
+  state.tracking = 8;
+  fsSlider.value = state.fontSize;
+  trSlider.value = state.tracking;
+  fsVal.textContent = state.fontSize + 'PX';
+  trVal.textContent = (state.tracking/100).toFixed(2);
+  renderFontSelect();
+  applyTypography();
+  saveState();
+  toast('TYPOGRAPHY RESET');
+};
+
+/* ════════════════════════════════════════
+   RESET ALL
+   ════════════════════════════════════════ */
+document.getElementById('reset-all').onclick = ()=>{
+  showConfirm({
+    title:'RESET EVERYTHING',
+    msg:'RESET ALL TOOLS, THEMES AND TYPOGRAPHY TO DEFAULT? ANY UPLOADED TOOL FILES WILL BE PURGED.',
+    okLabel:'RESET ALL',
+    danger:true,
+    onOk: async ()=>{
+      for(const t of state.tools){
+        if(t.source === 'upload'){
+          try{ await idbDelete(t.id); }catch(e){}
+        }
+      }
+      state = {
+        tools: structuredClone(DEFAULT_TOOLS),
+        activeTab:'menu',
+        theme:'dark',
+        scheme:'racing',
+        customColors:{},
+        font: FONTS[0].value,
+        fontSize: 14,
+        tracking: 8,
+        seededDefaults: DEFAULT_TOOLS.map(d=>d.id),
+        lib: { view:'list', saveExports:true, assoc:{}, sort:'name', asc:true, recent:[], stars:[], links:{} },
+      };
+      saveState();
+      applyAllTheme();
+      renderTabsAndPanels();
+      renderToolsList();
+      renderSchemePresets();
+      renderColorPickers();
+      renderFontSelect();
+      fsSlider.value = 14;
+      trSlider.value = 8;
+      fsVal.textContent = '14PX';
+      trVal.textContent = '0.08';
+      toast('RESET TO DEFAULTS');
+    }
+  });
+};
+
+/* ════════════════════════════════════════
+   DEV PANEL OPEN/CLOSE & SECTION SWITCH
+   ════════════════════════════════════════ */
+const devp        = document.getElementById('devp');
+const devpOverlay = document.getElementById('devp-overlay');
+const hamburger   = document.getElementById('hamburger');
+
+function openDevp(){
+  devp.classList.add('open');
+  devpOverlay.classList.add('show');
+}
+function closeDevp(){
+  devp.classList.remove('open');
+  devpOverlay.classList.remove('show');
+}
+hamburger.onclick = openDevp;
+document.getElementById('devp-close').onclick = closeDevp;
+devpOverlay.onclick = closeDevp;
+document.addEventListener('keydown', e=>{
+  if(e.key === 'Escape'){
+    if(document.getElementById('confirm-modal').classList.contains('show')){
+      hideConfirm();
+    } else if(Library.closeTop()){
+      /* closed a library modal / menu */
+    } else if(devp.classList.contains('open')){
+      closeDevp();
+    }
+  }
+});
+
+document.querySelectorAll('.devp-tab').forEach(t=>{
+  t.onclick = ()=>{
+    document.querySelectorAll('.devp-tab').forEach(x=>x.classList.toggle('active', x===t));
+    document.querySelectorAll('.devp-section').forEach(s=>s.classList.toggle('active', s.dataset.section === t.dataset.section));
+  };
+});
+
+/* ════════════════════════════════════════
+   CONFIRM MODAL
+   ════════════════════════════════════════ */
+const confirmModal = document.getElementById('confirm-modal');
+const confirmTitle = document.getElementById('confirm-title');
+const confirmMsg   = document.getElementById('confirm-msg');
+const confirmOk    = document.getElementById('confirm-ok');
+const confirmCancel= document.getElementById('confirm-cancel');
+let _confirmHandler = null;
+
+function showConfirm({ title='CONFIRM', msg='', okLabel='CONFIRM', danger=false, onOk }){
+  confirmTitle.textContent = title;
+  confirmMsg.textContent   = msg;
+  confirmOk.textContent    = okLabel;
+  confirmOk.classList.toggle('danger', !!danger);
+  _confirmHandler = onOk;
+  confirmModal.classList.add('show');
+}
+function hideConfirm(){
+  confirmModal.classList.remove('show');
+  _confirmHandler = null;
+}
+confirmOk.onclick = ()=>{
+  const h = _confirmHandler;
+  hideConfirm();
+  if(typeof h === 'function') h();
+};
+confirmCancel.onclick = hideConfirm;
+confirmModal.addEventListener('click', e=>{ if(e.target === confirmModal) hideConfirm(); });
+
+/* ════════════════════════════════════════
+   UTILITIES
+   ════════════════════════════════════════ */
+function toast(msg){
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(toast._t);
+  toast._t = setTimeout(()=>el.classList.remove('show'), 2400);
+}
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function escapeAttr(s){ return escapeHtml(s).replace(/"/g,'&quot;'); }
+function cssEsc(s){ return (CSS && CSS.escape) ? CSS.escape(s) : String(s).replace(/"/g,'\\"'); }
+function normalizeHex(v){
+  v = (v||'').trim();
+  if(/^#[0-9a-fA-F]{6}$/.test(v)) return v.toLowerCase();
+  if(/^#[0-9a-fA-F]{3}$/.test(v)){
+    return '#' + [...v.slice(1)].map(x=>x+x).join('').toLowerCase();
+  }
+  const m = v.match(/rgba?\(\s*(\d+)[\s,]+(\d+)[\s,]+(\d+)/);
+  if(m){
+    return '#' + [m[1],m[2],m[3]].map(n=>(+n).toString(16).padStart(2,'0')).join('');
+  }
+  return '#000000';
+}
+
+/*HUB2:LIBRARY:BEGIN*/
+/* release stamp — written from /VERSION by tools/sync-kit.js */
+const HUB_VERSION = '2.0.4';
+
+/* ════════════════════════════════════════
+   HUB 2.0 — TOOL REGISTRY
+   ════════════════════════════════════════ */
+const TOOL_INFO = {
+  'BIG.html':                 { desc:'Brand identity guideline — premium edition, 18 pages.',            formats:[] },
+  'DISTRIBUTORS_GLOBAL.html': { desc:'World distributor map + list per division. Exports embeddable HTML.', formats:['csv','svg'] },
+  'DISTRIBUTORS_TAIWAN.html': { desc:'Taiwan test-ride dealer map per brand. Exports embeddable HTML.',   formats:['csv','svg'] },
+  'PUBSYS.html':              { desc:'Spec-table publisher: CSV in, styled tables and packs out.',       formats:['csv','tsv','svg','zip','pubsys'] },
+  'POST_CREATOR.html':        { desc:'Layered social-post composer built on SVG templates.',             formats:['svg','png','jpg'] },
+  'RDPM.html':                { desc:'Download-page menu manager. EN / 繁 links, dead-link check.',       formats:['html'] },
+  'DNG_TO_PNG.html':          { desc:'Batch-convert DNG packs to resized PNG, repacked as ZIP.',          formats:['dng','zip','tif'] },
+  'MANUAL_CREATOR.html':      { desc:'Block-based product manual builder with HTML / ZIP export.',        formats:['zip','csv'] },
+  'READER.html':              { desc:'Catalogue flip-reader for page images and HTML pages.',            formats:['jpg','png','html'] },
+  'PE.html':                  { desc:'Watermark and branding for photos and short video.',               formats:['jpg','png','mp4','mov'] },
+  'PVP_VIEWER.html':          { desc:'Shock-dyno PVP plotter: force, velocity, displacement.',           formats:['pvp'] },
+};
+/* every extension each tool can open (open-with list) */
+const OPENS = {
+  'PE.html':                  ['jpg','jpeg','png','webp','gif','bmp','avif','mp4','mov','webm','m4v'],
+  'DNG_TO_PNG.html':          ['dng','tif','tiff','zip','jpg','jpeg','png','webp'],
+  'PVP_VIEWER.html':          ['pvp'],
+  'PUBSYS.html':              ['pubsys','zip','csv','tsv','txt','svg'],
+  'MANUAL_CREATOR.html':      ['zip','csv'],
+  'POST_CREATOR.html':        ['svg','jpg','jpeg','png','webp'],
+  'DISTRIBUTORS_TAIWAN.html': ['csv','svg'],
+  'DISTRIBUTORS_GLOBAL.html': ['csv','svg'],
+  'RDPM.html':                ['html','htm'],
+  'READER.html':              ['html','htm','jpg','jpeg','png','webp','gif'],
+};
+/* default target per extension ('@view' = built-in viewer/editor) */
+const DEFAULT_OPEN = {
+  pvp:'PVP_VIEWER.html', dng:'DNG_TO_PNG.html', tif:'DNG_TO_PNG.html', tiff:'DNG_TO_PNG.html',
+  pubsys:'PUBSYS.html', tsv:'PUBSYS.html',
+  jpg:'PE.html', jpeg:'PE.html', png:'PE.html', webp:'PE.html', gif:'PE.html', bmp:'PE.html', avif:'PE.html',
+  mp4:'PE.html', mov:'PE.html', webm:'PE.html', m4v:'PE.html',
+  txt:'@view',
+};
+const KINDS = {
+  image:['jpg','jpeg','png','webp','gif','bmp','avif','heic','heif','ico'],
+  raw:['dng','tif','tiff','cr2','cr3','nef','arw','raf','orf','rw2'],
+  video:['mp4','mov','webm','m4v','avi','mkv','wmv'],
+  audio:['mp3','wav','aac','flac','ogg','m4a'],
+  vector:['svg','ai','eps'],
+  table:['csv','tsv','xlsx','xls','numbers','ods'],
+  doc:['pdf','doc','docx','ppt','pptx','key','pages','odt','odf','rtf'],
+  web:['html','htm'],
+  data:['json','xml','yml','yaml'],
+  text:['txt','md','log','ini','cfg','css','js','ts','srt','vtt'],
+  archive:['zip','pubsys','rar','7z','gz','tar'],
+  dyno:['pvp'],
+  font:['ttf','otf','woff','woff2'],
+  cad:['step','stp','iges','igs','stl','obj','3mf','dxf','dwg','sldprt','f3d'],
+};
+const FILTERS = [
+  ['all','ALL'], ['image','IMAGES', ['image','raw']], ['video','VIDEO', ['video','audio']],
+  ['table','TABLES', ['table','data']], ['vector','VECTOR', ['vector']], ['doc','DOCS', ['doc','web','text']],
+  ['archive','PACKS', ['archive','dyno']], ['other','OTHER', null],
+];
+const TEXT_EDITABLE = new Set(['txt','md','log','ini','cfg','css','js','ts','json','xml','yml','yaml','csv','tsv','svg','html','htm','srt','vtt']);
+const EXT_KIND = {};
+Object.entries(KINDS).forEach(([k,list])=>list.forEach(e=>EXT_KIND[e]=k));
+function extOf(n){ const m=/\.([a-z0-9]+)$/i.exec(n||''); return m ? m[1].toLowerCase() : ''; }
+function kindOf(n){ return EXT_KIND[extOf(n)] || 'other'; }
+function fmtSize(b){
+  if(b==null) return '';
+  if(b<1024) return b+' B';
+  const u=['KB','MB','GB','TB']; let i=-1; do{ b/=1024; i++; }while(b>=1024 && i<u.length-1);
+  return (b>=100?b.toFixed(0):b>=10?b.toFixed(1):b.toFixed(2))+' '+u[i];
+}
+function fmtDate(t){
+  if(!t) return '';
+  const d=new Date(t), p=n=>String(n).padStart(2,'0');
+  return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`;
+}
+function toolByPath(path){ return state.tools.find(t=>t.path===path) || null; }
+function toolsFor(ext){
+  return Object.entries(OPENS).filter(([,l])=>l.includes(ext)).map(([p])=>toolByPath(p)).filter(Boolean);
+}
+const ICON_FOLDER = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"><path d="M3 6h7l2 2h9v11H3z"/></svg>';
+
+/* ════════════════════════════════════════
+   HUB 2.0 — BRIDGE (hub side)
+   ════════════════════════════════════════ */
+const Bridge = (()=>{
+  const ready = new Set();
+  const queue = new Map();
+  const caps = {};   /* toolId → extensions the tool can SAVE back (glue/<TOOL>.js) */
+  const THEME_KEY = 'hub2_theme_v1';
+  const VAR_KEYS = ['bg','surface','surface-2','border','border-strong','text','text-dim','text-mute','accent','accent-text','hover'];
+  function frames(){ return [...document.querySelectorAll('#panels iframe[data-tool-id]')]; }
+  function frameFor(id){ return frames().find(f=>f.dataset.toolId===id) || null; }
+  function idFor(src){ const f=frames().find(f=>f.contentWindow===src); return f ? f.dataset.toolId : null; }
+  function themePayload(){
+    /* stock RACING / PIT WHITE schemes equal the kit defaults → send only the mode;
+       any other scheme or custom color travels as explicit values */
+    const custom = !['racing','pit'].includes(state.scheme) || Object.keys(state.customColors||{}).length;
+    const vars = {};
+    if(custom){ const cs = getComputedStyle(document.documentElement); VAR_KEYS.forEach(k=>{ const v = cs.getPropertyValue('--'+k).trim(); if(v) vars[k]=v; }); }
+    return { theme: state.theme, vars, font: state.font===FONTS[0].value ? null : state.font };
+  }
+  function post(win, msg){ try{ win && win.postMessage(msg,'*'); }catch(e){} }
+  function broadcastTheme(){
+    const t = themePayload();
+    try{ localStorage.setItem(THEME_KEY, JSON.stringify(t)); }catch(e){}
+    frames().forEach(f=>post(f.contentWindow,{ type:'hub2:theme', theme:t }));
+  }
+  function libMsg(){ return { type:'hub2:lib', connected: Library.connected(), saveExports: !!state.lib.saveExports }; }
+  function broadcastLib(){ frames().forEach(f=>post(f.contentWindow, libMsg())); }
+  function flush(id){
+    const q = queue.get(id); const f = frameFor(id);
+    if(!q || !q.length || !f) return;
+    queue.delete(id);
+    q.forEach(file=>post(f.contentWindow,{ type:'hub2:open', file, id:Math.random().toString(36).slice(2) }));
+  }
+  function send(id, file){
+    if(!queue.has(id)) queue.set(id,[]);
+    queue.get(id).push(file);
+    if(ready.has(id)) flush(id);
+    else setTimeout(()=>{
+      if(queue.get(id)?.includes(file)){
+        queue.delete(id);
+        toast('TOOL DID NOT RESPOND — IS IT A HUB 2.0 TOOL?');
+      }
+    }, 15000);
+  }
+  function forget(id){ ready.delete(id); }
+  window.addEventListener('message', async e=>{
+    const d = e.data; if(!d || typeof d.type!=='string' || !d.type.startsWith('hub2:')) return;
+    const id = idFor(e.source); if(!id) return;
+    const tool = state.tools.find(t=>t.id===id);
+    if(d.type==='hub2:ready'){
+      ready.add(id);
+      caps[id] = Array.isArray(d.saves) ? d.saves : [];
+      Library.refreshFilebar();
+      post(e.source,{ type:'hub2:theme', theme: themePayload() });
+      post(e.source, libMsg());
+      flush(id);
+    } else if(d.type==='hub2:palette'){
+      try{ window.focus(); }catch(err){}
+      Palette.open();
+    } else if(d.type==='hub2:save-unsupported'){
+      Library.saveFailed(id);
+      toast(`${tool?tool.name:'TOOL'} CANNOT SAVE .${String(d.ext||'').toUpperCase()} — USE ITS OWN EXPORT`);
+    } else if(d.type==='hub2:open-failed'){
+      toast(`${tool?tool.name:'TOOL'} CANNOT OPEN ${d.name}`);
+    } else if(d.type==='hub2:save' && d.blob){
+      const saved = await Library.saveExport(id, d.name, d.blob);
+      if(saved) post(e.source,{ type:'hub2:saved', name:saved });
+      else downloadBlob(d.blob, d.name);
+    }
+  });
+  function canSave(id, ext){ return (caps[id]||[]).includes(ext); }
+  function requestSave(id, ext){
+    const f = frameFor(id);
+    if(!f || !ready.has(id)){ toast('TOOL IS STILL LOADING'); return false; }
+    post(f.contentWindow,{ type:'hub2:save-request', ext });
+    return true;
+  }
+  return { send, forget, broadcastTheme, broadcastLib, canSave, requestSave };
+})();
+function downloadBlob(blob, name){
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href=url; a.download=name||'download';
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url), 4000);
+}
+
+/* ════════════════════════════════════════
+   HUB 2.0 — LIBRARY
+   Folder on disk (File System Access API). Chosen once,
+   remembered in IndexedDB, re-allowed with one click per session.
+   ════════════════════════════════════════ */
+const Library = (()=>{
+  const supported = typeof window.showDirectoryPicker === 'function';
+  let root = null, perm = 'none', stack = [], entries = [], sel = null;
+  let query = '', filter = 'all', el = null, loading = false, rootCount = null;
+  const thumbs = new Map();
+  const picked = new Set();   /* multi-selection (ctrl / shift click) */
+  let anchor = null;          /* shift-range anchor */
+  let trashCount = 0;
+  const TRASH = '.trash', DRAG_T = 'application/x-hub2-lib';
+  const lastOpen = {};   /* toolId → { dir, path, name, ext, t, restored } — mirrored to state.lib.links so it survives reloads */
+  function persistLinks(){
+    const out = {};
+    Object.entries(lastOpen).forEach(([id,lo])=>{ out[id] = { path: lo.path, name: lo.name, ext: lo.ext, t: lo.t }; });
+    state.lib.links = out; saveState();
+  }
+  function restoreLinks(){
+    Object.entries(state.lib.links||{}).forEach(([id,l])=>{
+      if(!lastOpen[id] && l && l.name && state.tools.some(t=>t.id===id)) lastOpen[id] = { dir:null, path:l.path||[], name:l.name, ext:l.ext, t:l.t, restored:true };
+    });
+  }
+  async function dirOf(lo){
+    if(lo.dir) return lo.dir;
+    try{ let d = root; for(const p of lo.path) d = await d.getDirectoryHandle(p); lo.dir = d; return d; }catch(e){ return null; }
+  }
+  let dragDepth = 0;
+
+  const cwd = ()=> stack.length ? stack[stack.length-1].handle : root;
+  const connected = ()=> !!root && perm==='granted';
+
+  /* ── persistence of the folder handle ── */
+  async function idbHandle(op, value){
+    const db = await openDB();
+    return new Promise((res,rej)=>{
+      const tx = db.transaction('handles', op==='get'?'readonly':'readwrite');
+      const st = tx.objectStore('handles');
+      const r = op==='get' ? st.get('library') : op==='del' ? st.delete('library') : st.put({ id:'library', handle:value });
+      r.onsuccess = ()=>res(op==='get' ? (r.result?.handle||null) : true);
+      r.onerror = ()=>rej(r.error);
+    });
+  }
+  async function init(){
+    restoreLinks(); decorateTabs();
+    if(!supported){ refreshChrome(); return; }
+    try{
+      root = await idbHandle('get');
+      if(root){
+        perm = await root.queryPermission({ mode:'readwrite' });
+        if(perm==='granted') await load();
+      }
+    }catch(e){ root = null; perm = 'none'; }
+    refreshChrome(); refreshFilebar();
+  }
+  async function connect(){
+    if(!supported) return;
+    try{
+      const h = await window.showDirectoryPicker({ id:'hub2-library', mode:'readwrite' });
+      root = h; perm = 'granted'; stack = []; sel = null;
+      await idbHandle('put', h);
+      await load();
+      toast('LIBRARY CONNECTED  ·  '+h.name.toUpperCase());
+    }catch(e){ if(e && e.name!=='AbortError') toast('COULD NOT OPEN FOLDER'); }
+    refreshChrome();
+  }
+  async function reconnect(){
+    if(!root) return connect();
+    try{ perm = await root.requestPermission({ mode:'readwrite' }); }catch(e){ perm='denied'; }
+    if(perm==='granted') await load();
+    refreshChrome();
+  }
+  function refreshChrome(){
+    render();
+    updateBadges();
+    refreshMenu();
+    Bridge.broadcastLib();
+  }
+  function updateBadges(){
+    const c = document.getElementById('lib-tab-count');
+    if(c) c.textContent = connected() && rootCount!=null ? String(rootCount) : (root ? '!' : '–');
+    const m = document.getElementById('menu-lib-status');
+    if(m) m.textContent = statusLine();
+  }
+  function statusLine(){
+    if(!supported) return 'NEEDS CHROME OR EDGE';
+    if(!root) return 'NOT CONNECTED — CLICK TO SET UP';
+    if(perm!=='granted') return 'CLICK TO RECONNECT  ·  '+root.name.toUpperCase();
+    return `${root.name.toUpperCase()}  ·  ${rootCount??0} ITEM${rootCount===1?'':'S'}`;
+  }
+
+  /* ── reading ── */
+  let idxCache = null;
+  async function load(){
+    const dir = cwd(); if(!dir) return;
+    loading = true; idxCache = null;
+    const list = [];
+    try{
+      for await (const [name, h] of dir.entries()){
+        if(name.startsWith('.') || name.startsWith('~$') || name==='desktop.ini' || name==='Thumbs.db') continue;
+        const path = stack.map(s=>s.name);
+        if(h.kind==='directory'){ list.push({ name, handle:h, dir:true, kind:'folder', ext:'', size:null, mtime:0, path, dirHandle:dir }); continue; }
+        let f=null; try{ f = await h.getFile(); }catch(e){}
+        list.push({ name, handle:h, dir:false, kind:kindOf(name), ext:extOf(name), size:f?f.size:null, mtime:f?f.lastModified:0, type:f?f.type:'' , file:f, path, dirHandle:dir });
+      }
+    }catch(e){
+      if(e && e.name==='NotAllowedError'){ perm='prompt'; }
+      else if(e && e.name==='NotFoundError'){ stack=[]; }
+    }
+    thumbs.forEach(u=>URL.revokeObjectURL(u)); thumbs.clear();
+    entries = list;
+    if(!stack.length) rootCount = list.length;
+    loading = false;
+    if(sel && !entries.find(x=>x.name===sel)) sel = null;
+    [...picked].forEach(n=>{ if(!entries.find(x=>x.name===n)) picked.delete(n); });
+    trashCount = await countTrash();
+    render(); updateBadges();
+    /* content sniffing for ambiguous formats → accurate OPENS IN column */
+    const amb = list.filter(x=>x.file && ['zip','csv','html','htm'].includes(x.ext));
+    if(amb.length){
+      await Promise.all(amb.map(async x=>{ x.sniff = await sniff(x, x.file); }));
+      if(entries===list) render();
+    }
+    /* table / pack previews for grid cards */
+    const pv = list.filter(x=>x.file && ['csv','tsv','zip','pubsys'].includes(x.ext) && x.size < 4*1024*1024);
+    if(pv.length){
+      await Promise.all(pv.map(x=>makePreview(x).catch(()=>{})));
+      if(entries===list && state.lib.view==='grid') render();
+    }
+  }
+  function visible(){
+    const q = query.trim().toLowerCase();
+    const fdef = FILTERS.find(f=>f[0]===filter);
+    const known = new Set(FILTERS.filter(f=>f[2]).flatMap(f=>f[2]));
+    const list = entries.filter(x=>{
+      if(q && !x.name.toLowerCase().includes(q)) return false;
+      if(filter==='all') return true;
+      if(x.dir) return false;
+      if(filter==='other') return !known.has(x.kind);
+      return !!(fdef && fdef[2] && fdef[2].includes(x.kind));
+    });
+    const key = state.lib.sort || 'name', dir = state.lib.asc ? 1 : -1;
+    list.sort((a,b)=>{
+      if(a.dir!==b.dir) return a.dir ? -1 : 1;
+      let r = 0;
+      if(key==='size') r = (a.size||0)-(b.size||0);
+      else if(key==='date') r = a.mtime-b.mtime;
+      else if(key==='type') r = (a.ext||'').localeCompare(b.ext||'') || a.name.localeCompare(b.name,undefined,{numeric:true});
+      else r = a.name.localeCompare(b.name, undefined, { numeric:true, sensitivity:'base' });
+      return r*dir;
+    });
+    return list;
+  }
+  /* ── previews for grid cards + details pane ── */
+  function parseCSVRows(t, max, sep){
+    const rows = []; let row = [], f = '', q = false;
+    for(let i=0;i<t.length && rows.length<max;i++){
+      const c = t[i];
+      if(q){ if(c==='"'){ if(t[i+1]==='"'){ f+='"'; i++; } else q=false; } else f+=c; }
+      else if(c==='"') q=true;
+      else if(c===sep){ row.push(f); f=''; }
+      else if(c==='\n' || c==='\r'){ if(c==='\r' && t[i+1]==='\n') i++; row.push(f); rows.push(row); row=[]; f=''; }
+      else f+=c;
+    }
+    if((f || row.length) && rows.length<max){ row.push(f); rows.push(row); }
+    return rows;
+  }
+  async function makePreview(x){
+    if(x.preview) return x.preview;
+    const f = x.file || await x.handle.getFile();
+    let p = null;
+    if(['csv','tsv'].includes(x.ext)){
+      const t = (await f.slice(0, 64*1024).text()).replace(/^\ufeff/,'');
+      const rows = parseCSVRows(t, 8, x.ext==='tsv'?'\t':',');
+      const lines = (await f.slice(0, Math.min(f.size, 4*1024*1024)).text()).split(/\r?\n/).filter(Boolean).length;
+      p = { kind:'table', rows, info: `${Math.max(0,lines-1)} ROWS · ${(rows[0]||[]).length} COLS` };
+    } else if(['zip','pubsys'].includes(x.ext)){
+      const names = await zipNames(f);
+      p = { kind:'list', items: names.filter(n=>!n.endsWith('/')).slice(0, 14), info: `${names.filter(n=>!n.endsWith('/')).length} FILES IN PACK` };
+    } else if(x.kind==='image' || x.ext==='svg'){
+      const url = thumbFor(Object.assign({}, x, { file:f }));
+      let dims = '';
+      if(x.ext==='svg'){
+        const t = await f.slice(0, 8192).text();
+        const vb = /viewBox=["']\s*[\d.\-]+[\s,]+[\d.\-]+[\s,]+([\d.]+)[\s,]+([\d.]+)/i.exec(t);
+        const w = /<svg[^>]*\swidth=["']([\d.]+)/i.exec(t), h = /<svg[^>]*\sheight=["']([\d.]+)/i.exec(t);
+        if(w && h) dims = `${Math.round(w[1])} × ${Math.round(h[1])}`; else if(vb) dims = `${Math.round(vb[1])} × ${Math.round(vb[2])} (VIEWBOX)`;
+      } else if(url){
+        dims = await new Promise(res=>{ const im = new Image(); im.onload=()=>res(`${im.naturalWidth} × ${im.naturalHeight} PX`); im.onerror=()=>res(''); im.src=url; });
+      }
+      p = { kind:'image', url, info: dims };
+    } else if(x.kind==='video'){
+      const url = URL.createObjectURL(f);
+      const meta = await new Promise(res=>{ const v=document.createElement('video'); v.preload='metadata'; v.onloadedmetadata=()=>res(`${v.videoWidth} × ${v.videoHeight} · ${Math.round(v.duration)} S`); v.onerror=()=>res(''); v.src=url; });
+      URL.revokeObjectURL(url);
+      p = { kind:'info', info: meta };
+    } else if(x.ext==='html' || x.ext==='htm'){
+      const t = await f.slice(0, 256*1024).text();
+      const ti = /<title[^>]*>([^<]*)<\/title>/i.exec(t);
+      p = { kind:'text', text: ti ? ti[1].trim() : '(no title)', info: 'HTML PAGE' };
+    } else if(TEXT_EDITABLE.has(x.ext) || x.kind==='text' || x.kind==='data'){
+      const t = await f.slice(0, 4096).text();
+      p = { kind:'text', text: t.split(/\r?\n/).slice(0, 14).join('\n'), info: '' };
+    } else {
+      p = { kind:'info', info: '' };
+    }
+    x.preview = p; return p;
+  }
+  function previewBox(x, big){
+    const p = x.preview;
+    if(!p) return `<div class="pv pv-wait">${escapeHtml((x.ext||'?').toUpperCase())}</div>`;
+    if(p.kind==='image' && p.url) return `<div class="pv pv-img"><img src="${p.url}" alt=""></div>`;
+    if(p.kind==='table') return `<div class="pv pv-tbl"><table>${p.rows.slice(0, big?8:5).map((r,i)=>`<tr>${r.slice(0, big?6:4).map(c=>i?`<td>${escapeHtml(c)}</td>`:`<th>${escapeHtml(c)}</th>`).join('')}</tr>`).join('')}</table></div>`;
+    if(p.kind==='list') return `<div class="pv pv-list">${p.items.slice(0, big?14:6).map(n=>`<div>${escapeHtml(n)}</div>`).join('')}</div>`;
+    if(p.kind==='text') return `<div class="pv pv-text"><pre>${escapeHtml(p.text)}</pre></div>`;
+    return `<div class="pv pv-wait">${escapeHtml((x.ext||'?').toUpperCase())}</div>`;
+  }
+  function detailsHTML(x){
+    if(!x || x.dir) return '';
+    const star = isStar(x.path, x.name), lo = lastOpenedOf(x.path, x.name);
+    const p = x.preview;
+    const rows = [
+      ['TYPE', (x.ext||'—').toUpperCase()+(x.sniff?'  ·  '+x.sniff.why:'')],
+      ['SIZE', fmtSize(x.size)],
+      ['MODIFIED', fmtDate(x.mtime)],
+      p && p.info ? [p.kind==='image'?'DIMENSIONS':'CONTENT', p.info] : null,
+      ['OPENS IN', defaultLabel(x)],
+      ['LAST OPENED', lo ? fmtDate(lo) : '—'],
+      ['FOLDER', [root?root.name:'LIBRARY', ...(x.path||[])].join(' / ')],
+    ].filter(Boolean);
+    return `<div class="ld-prev">${previewBox(x, true)}</div>
+      <div class="ld-head"><span class="ld-name">${escapeHtml(x.name)}</span>
+        <button class="star ${star?'on':''}" data-d="star" title="${star?'Unstar':'Star'}">${star?'★':'☆'}</button></div>
+      <dl class="ld-meta">${rows.map(([k,v])=>`<dt>${k}</dt><dd>${escapeHtml(v)}</dd>`).join('')}</dl>
+      <div class="ld-acts"><button class="lbtn primary" data-d="open">OPEN</button><button class="lbtn" data-d="more">OPEN WITH…</button><button class="lbtn icon" data-d="dl" title="DOWNLOAD"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square"><path d="M12 3v13M6 11l6 6 6-6M4 21h16"/></svg></button></div>`;
+  }
+  function paintDetails(){
+    const aside = el && el.querySelector('#lib-details'); if(!aside) return;
+    const x = picked.size > 1 ? null : entries.find(e=>e.name===sel && !e.dir);
+    el.querySelector('#lib-split')?.classList.toggle('has-details', !!x);
+    if(!x){ aside.innerHTML=''; return; }
+    aside.innerHTML = detailsHTML(x);
+    aside.querySelectorAll('[data-d]').forEach(b=>b.onclick = e=>{
+      const a = b.dataset.d;
+      if(a==='open') open(x);
+      else if(a==='star') toggleStar(x);
+      else if(a==='dl') download(x);
+      else { const bb=b.getBoundingClientRect(); showCtx(x, bb.left, bb.bottom+4); }
+    });
+    if(!x.preview) makePreview(x).then(()=>{ if(sel===x.name) paintDetails(); }).catch(()=>{});
+  }
+  function thumbFor(x){
+    if(x.dir || !x.file) return null;
+    if(!(x.kind==='image' || x.ext==='svg')) return null;
+    if(x.size > 25*1024*1024) return null;
+    const k = x.name+'|'+x.mtime;
+    if(!thumbs.has(k)) thumbs.set(k, URL.createObjectURL(x.file));
+    return thumbs.get(k);
+  }
+
+  /* ── target resolution ── */
+  async function sniff(x, file){
+    const ext = x.ext;
+    try{
+      if(ext==='zip'){
+        const names = await zipNames(file);
+        if(names.some(n=>/\.dng$/i.test(n))) return { path:'DNG_TO_PNG.html', why:'DNG PACK' };
+        if(names.includes('project.json') && names.some(n=>/MANUAL_CREATOR\.html$/i.test(n))) return { path:'MANUAL_CREATOR.html', why:'MANUAL PROJECT' };
+        if(names.includes('manifest.json')) return { path:'PUBSYS.html', why:'PUBSYS PACK' };
+      } else if(ext==='csv'){
+        const head = (await file.slice(0,4096).text()).replace(/^﻿/,'').split(/\r?\n/)[0].toLowerCase();
+        if(/^"?city"?,/.test(head)) return { path:'DISTRIBUTORS_TAIWAN.html', why:'STORE LIST · CITY' };
+        if(/^"?region"?,/.test(head)) return { path:'DISTRIBUTORS_GLOBAL.html', why:'STORE LIST · COUNTRY' };
+        if(head.includes('brand') && head.includes('model')) return { path:'PUBSYS.html', why:'SPEC TABLE' };
+      } else if(ext==='html' || ext==='htm'){
+        const t = await file.slice(0, 2*1024*1024).text();
+        if(/const\s+data\s*=/.test(t) && /currentLang/.test(t)) return { path:'RDPM.html', why:'DOWNLOAD MENU' };
+        return { path:'READER.html', why:'HTML PAGE' };
+      }
+    }catch(e){}
+    return null;
+  }
+  async function zipNames(file){
+    const tailLen = Math.min(file.size, 66000);
+    const tail = new DataView(await file.slice(file.size-tailLen).arrayBuffer());
+    let eocd = -1;
+    for(let i=tailLen-22;i>=0;i--){ if(tail.getUint32(i,true)===0x06054b50){ eocd=i; break; } }
+    if(eocd<0) return [];
+    const cdSize = tail.getUint32(eocd+12,true), cdOff = tail.getUint32(eocd+16,true);
+    if(cdOff+cdSize > file.size) return [];
+    const cd = new DataView(await file.slice(cdOff, cdOff+cdSize).arrayBuffer());
+    const names = [], dec = new TextDecoder();
+    let p = 0;
+    while(p+46 <= cd.byteLength && cd.getUint32(p,true)===0x02014b50 && names.length<5000){
+      const nl = cd.getUint16(p+28,true), xl = cd.getUint16(p+30,true), cl = cd.getUint16(p+32,true);
+      names.push(dec.decode(new Uint8Array(cd.buffer, cd.byteOffset+p+46, nl)));
+      p += 46+nl+xl+cl;
+    }
+    return names;
+  }
+  async function open(x, forcePath){
+    if(!x) return;
+    if(x.dir){ stack.push({ name:x.name, handle:x.handle }); sel=null; picked.clear(); await load(); return; }
+    let file; try{ file = await x.handle.getFile(); }catch(e){ toast('FILE IS NO LONGER AVAILABLE'); return load(); }
+    if(forcePath==='@view') return viewer(x, file);
+    if(forcePath){ const t = toolByPath(forcePath); if(t) return sendTo(t, x, file); }
+    const tools = toolsFor(x.ext);
+    const remembered = state.lib.assoc[x.ext];
+    if(remembered==='@view') return viewer(x, file);
+    if(remembered && toolByPath(remembered)) return sendTo(toolByPath(remembered), x, file);
+    const hit = x.sniff || await sniff(x, file);
+    if(hit && toolByPath(hit.path)) return sendTo(toolByPath(hit.path), x, file);
+    const def = DEFAULT_OPEN[x.ext];
+    if(def==='@view') return viewer(x, file);
+    if(def && toolByPath(def)) return sendTo(toolByPath(def), x, file);
+    if(tools.length===1) return sendTo(tools[0], x, file);
+    if(tools.length>1) return chooser(x, file, tools);
+    return viewer(x, file);
+  }
+  async function sendTo(tool, x, file){
+    const path = x.path || stack.map(s=>s.name);
+    lastOpen[tool.id] = { dir: x.dirHandle || cwd(), path, name: x.name, ext: x.ext, t: Date.now() };
+    persistLinks();
+    addRecent(path, x.name, x.ext, tool.path);
+    decorateTabs();
+    await setActive(tool.id);
+    Bridge.send(tool.id, file);
+  }
+  /* ── recent + starred (persisted in state.lib, keyed by folder path inside the library) ── */
+  const keyOf = (path, name)=> [...(path||[]), name].join('/');
+  function addRecent(path, name, ext, tool){
+    const k = keyOf(path, name);
+    const r = (state.lib.recent||[]).filter(e=>keyOf(e.path,e.name)!==k);
+    r.unshift({ path, name, ext, tool, t: Date.now() });
+    state.lib.recent = r.slice(0, 12); saveState(); refreshMenu();
+  }
+  function isStar(path, name){ return (state.lib.stars||[]).includes(keyOf(path, name)); }
+  function toggleStar(x){
+    const k = keyOf(x.path||stack.map(s=>s.name), x.name);
+    const st = new Set(state.lib.stars||[]);
+    if(st.has(k)){ st.delete(k); toast('UNSTARRED  ·  '+x.name); } else { st.add(k); toast('STARRED  ·  '+x.name); }
+    state.lib.stars = [...st]; saveState(); render(); refreshMenu();
+  }
+  function lastOpenedOf(path, name){ const k = keyOf(path, name); const e = (state.lib.recent||[]).find(e=>keyOf(e.path,e.name)===k); return e ? e.t : 0; }
+  async function resolve(path, name){
+    if(!connected()) return null;
+    try{
+      let d = root; for(const p of path) d = await d.getDirectoryHandle(p);
+      const h = await d.getFileHandle(name);
+      return { name, handle:h, dir:false, kind:kindOf(name), ext:extOf(name), path, dirHandle:d };
+    }catch(e){ return null; }
+  }
+  async function reveal(path, name){
+    if(!connected()){ setActive('library'); return; }
+    stack = []; let d = root;
+    try{ for(const p of path||[]){ d = await d.getDirectoryHandle(p); stack.push({ name:p, handle:d }); } }catch(e){ stack = []; }
+    sel = name; picked.clear(); query=''; filter='all';
+    if(state.activeTab==='library') await load(); else await setActive('library');
+    setTimeout(()=>el && el.querySelector(`[data-n="${cssEsc(name)}"]`)?.scrollIntoView({ block:'center' }), 60);
+  }
+  async function openKey(k, toolPath){
+    if(!connected()){ setActive('library'); toast(root ? 'ALLOW LIBRARY ACCESS FIRST' : 'CONNECT THE LIBRARY FOLDER FIRST'); return; }
+    const parts = String(k).split('/'), name = parts.pop();
+    const x = await resolve(parts, name);
+    if(!x){
+      toast('NOT FOUND  ·  '+name);
+      state.lib.recent = (state.lib.recent||[]).filter(e=>keyOf(e.path,e.name)!==k);
+      saveState(); render(); refreshMenu(); return;
+    }
+    open(x, toolPath && toolByPath(toolPath) ? toolPath : undefined);
+  }
+  function ago(t){
+    const s = Math.max(1, Math.round((Date.now()-t)/1000));
+    if(s<60) return 'NOW'; const m = Math.round(s/60); if(m<60) return m+' MIN';
+    const h = Math.round(m/60); if(h<24) return h+' H'; const d = Math.round(h/24); return d+' D';
+  }
+  function chip(path, name, ext, sub, tool){
+    const k = keyOf(path, name);
+    return `<button class="qchip" data-rk="${escapeAttr(k)}" data-rt="${escapeAttr(tool||'')}" title="${escapeAttr((path.length?path.join(' / ')+' / ':'')+name)}">
+      <span class="ftag">${escapeHtml(ext||'—')}</span><span class="qn">${escapeHtml(name)}</span><span class="qs">${escapeHtml(sub||'')}</span></button>`;
+  }
+  function quickHTML(compact){
+    const stars = (state.lib.stars||[]).map(k=>{ const p=k.split('/'), n=p.pop(); return chip(p, n, extOf(n), '★', ''); });
+    const rec = (state.lib.recent||[]).slice(0, compact?6:10).map(e=>{ const t=toolByPath(e.tool); return chip(e.path, e.name, e.ext, (t?t.name+' · ':'')+ago(e.t), e.tool); });
+    if(!stars.length && !rec.length) return '';
+    return `<div class="quick ${compact?'compact':''}">
+      ${stars.length?`<div class="qrow"><span class="qlab">STARRED</span><div class="qlist">${stars.join('')}</div></div>`:''}
+      ${rec.length?`<div class="qrow"><span class="qlab">RECENT</span><div class="qlist">${rec.join('')}</div></div>`:''}
+    </div>`;
+  }
+  function bindQuick(scope){
+    scope.querySelectorAll('[data-rk]').forEach(b=>{
+      b.onclick = ()=>openKey(b.dataset.rk, b.dataset.rt || undefined);
+    });
+  }
+  function menuStrip(){ return connected() ? quickHTML(true) : ''; }
+  function refreshMenu(){
+    const box = document.getElementById('menu-quick');
+    if(box){ box.innerHTML = menuStrip(); bindQuick(box); }
+  }
+  /* ── open-file bar + tab badges ── */
+  const pending = {};   /* toolId → { mode:'over'|'copy', t } while a SAVE is in flight */
+  function decorateTabs(){
+    state.tools.forEach(t=>{
+      const tab = document.querySelector(`#tab-bar .tab[data-tab="${cssEsc(t.id)}"]`); if(!tab) return;
+      let sp = tab.querySelector('.tab-file');
+      const lo = lastOpen[t.id];
+      if(!lo){ sp && sp.remove(); return; }
+      if(!sp){ sp = document.createElement('span'); sp.className='tab-file'; tab.appendChild(sp); }
+      sp.textContent = lo.name; sp.title = 'Open from LIBRARY: '+keyOf(lo.path, lo.name);
+    });
+  }
+  function refreshFilebar(){
+    const bar = document.getElementById('filebar'); if(!bar) return;
+    const id = state.activeTab, lo = lastOpen[id], tool = state.tools.find(t=>t.id===id);
+    if(!lo || !tool){ bar.hidden = true; bar.innerHTML=''; return; }
+    const can = Bridge.canSave(id, lo.ext);
+    const crumbs = [root?root.name:'LIBRARY', ...lo.path].map(p=>`<span>${escapeHtml(p.toUpperCase())}</span><i>/</i>`).join('');
+    bar.hidden = false;
+    bar.innerHTML = `
+      <span class="fb-lab">LIBRARY FILE</span>
+      <span class="fb-path">${crumbs}<b>${escapeHtml(lo.name)}</b></span>
+      <span class="fb-meta">${lo.restored ? 'LINKED FROM LAST SESSION · REOPEN LOADS THE FILE' : 'OPENED '+fmtDate(lo.t).slice(11)}${pending[id]?'  ·  SAVING…':''}</span>
+      <span class="fb-acts">
+        <button class="lbtn sm primary" data-fb="over" ${can?'':'disabled'} title="${can?'Write the tool\'s current work back over '+escapeAttr(lo.name):'This tool has no save for .'+escapeAttr(lo.ext)+' — its own exports still land in the library'}">SAVE</button>
+        <button class="lbtn sm" data-fb="copy" ${can?'':'disabled'} title="Save as a new file next to the original">SAVE COPY</button>
+        <button class="lbtn sm" data-fb="reopen" title="Load the file from the LIBRARY into the tool again (drops unsaved changes in the tool)">REOPEN</button>
+        <button class="lbtn sm" data-fb="show" title="Show in LIBRARY">SHOW</button>
+        <button class="lbtn sm icon" data-fb="close" title="Detach this file from the tool">✕</button>
+      </span>`;
+    bar.querySelectorAll('[data-fb]').forEach(b=>b.onclick = ()=>{
+      const a = b.dataset.fb;
+      if(a==='over' || a==='copy'){
+        if(!connected()){ toast('ALLOW LIBRARY ACCESS FIRST'); setActive('library'); return; }
+        pending[id] = { mode:a, t:Date.now() };
+        if(!Bridge.requestSave(id, lo.ext)) delete pending[id];
+        refreshFilebar();
+        setTimeout(()=>{ if(pending[id] && Date.now()-pending[id].t>=60000){ delete pending[id]; refreshFilebar(); } }, 60500);
+      } else if(a==='show'){
+        reveal(lo.path, lo.name);
+      } else if(a==='reopen'){
+        (async()=>{ const x = await resolve(lo.path, lo.name); if(!x){ toast('NOT FOUND  ·  '+lo.name); return; }
+          const tool = state.tools.find(t=>t.id===id); if(tool) sendTo(tool, x, await x.handle.getFile()); })();
+      } else if(a==='close'){ delete lastOpen[id]; persistLinks(); decorateTabs(); refreshFilebar(); }
+    });
+  }
+  function saveFailed(id){ delete pending[id]; refreshFilebar(); }
+  function defaultLabel(x){
+    if(x.dir) return 'OPEN FOLDER';
+    const r = state.lib.assoc[x.ext] || (x.sniff && x.sniff.path) || DEFAULT_OPEN[x.ext];
+    if(r==='@view') return TEXT_EDITABLE.has(x.ext) ? 'TEXT EDITOR' : 'QUICK VIEW';
+    const t = r && toolByPath(r);
+    if(t) return t.name;
+    const tools = toolsFor(x.ext);
+    if(tools.length===1) return tools[0].name;
+    if(tools.length>1) return 'CHOOSE…';
+    return TEXT_EDITABLE.has(x.ext) ? 'TEXT EDITOR' : 'QUICK VIEW';
+  }
+
+  /* ── writing ── */
+  function cleanName(n){ return String(n||'file').replace(/[\\/:*?"<>|\u0000-\u001f]/g,'_').trim() || 'file'; }
+  async function exists(dir, name){
+    try{ await dir.getFileHandle(name); return true; }catch(e){}
+    try{ await dir.getDirectoryHandle(name); return true; }catch(e){}
+    return false;
+  }
+  async function uniqueName(dir, name){
+    if(!(await exists(dir,name))) return name;
+    const m = /^(.*?)(\.[^.]+)?$/.exec(name), base=m[1], ext=m[2]||'';
+    for(let i=2;i<999;i++){ const n=`${base} (${i})${ext}`; if(!(await exists(dir,n))) return n; }
+    return `${base} ${Date.now()}${ext}`;
+  }
+  async function writeFile(dir, name, data){
+    const fh = await dir.getFileHandle(name, { create:true });
+    const w = await fh.createWritable();
+    await w.write(data); await w.close();
+    return fh;
+  }
+  async function saveExport(toolId, name, blob){
+    const pd = pending[toolId] && Date.now()-pending[toolId].t < 60000 ? pending[toolId] : null;
+    if(!connected() || (!state.lib.saveExports && !pd)) return null;
+    const lo = lastOpen[toolId];
+    const dir = (lo && await dirOf(lo)) || root;
+    let n = cleanName(name);
+    try{
+      if(pd && lo){
+        /* SAVE: overwrite the opened file (same base name if the tool exports another extension); SAVE COPY: new file beside it */
+        delete pending[toolId];
+        const base = lo.name.replace(/\.[^.]+$/,''), ex = extOf(n) || lo.ext;
+        n = pd.mode==='over' ? (ex===lo.ext ? lo.name : base+'.'+ex) : await uniqueName(dir, base+' (edited).'+ex);
+        if(pd.mode==='over'){ lo.t = Date.now(); lo.restored = false; persistLinks(); }
+        refreshFilebar();
+      }
+      else if(!(lo && lo.name===n)) n = await uniqueName(dir, n);
+      await writeFile(dir, n, blob);
+      if(dir===cwd()) await load(); else if(dir===root){ rootCount = null; }
+      toast((lo && lo.name===n ? 'UPDATED IN LIBRARY  ·  ' : 'SAVED TO LIBRARY  ·  ')+n);
+      return n;
+    }catch(e){
+      if(e && e.name==='NotAllowedError'){ perm='prompt'; refreshChrome(); }
+      toast('LIBRARY WRITE FAILED — DOWNLOADING INSTEAD');
+      return null;
+    }
+  }
+  async function importFiles(files, dir){
+    dir = dir || cwd();
+    if(!connected()){ toast('CONNECT THE LIBRARY FOLDER FIRST'); setActive('library'); return 0; }
+    let n = 0;
+    for(const f of files){
+      try{ const nm = await uniqueName(dir, cleanName(f.name)); await writeFile(dir, nm, f); n++; }catch(e){}
+    }
+    return n;
+  }
+  async function copyDir(src, dest){
+    const target = await dest.getDirectoryHandle(await uniqueName(dest, cleanName(src.name)), { create:true });
+    let n = 0;
+    for await (const [name, h] of src.entries()){
+      if(h.kind==='directory') n += await copyDir(h, target);
+      else { try{ await writeFile(target, cleanName(name), await h.getFile()); n++; }catch(e){} }
+    }
+    return n;
+  }
+  async function importDataTransfer(dt, dir){
+    if(!connected()){ toast('CONNECT THE LIBRARY FOLDER FIRST'); setActive('library'); return; }
+    dir = dir || cwd();
+    const items = [...(dt.items||[])].filter(i=>i.kind==='file');
+    let n = 0;
+    if(items.length && typeof items[0].getAsFileSystemHandle==='function'){
+      const handles = await Promise.all(items.map(i=>i.getAsFileSystemHandle().catch(()=>null)));
+      for(const h of handles){
+        if(!h) continue;
+        try{
+          if(h.kind==='directory') n += await copyDir(h, dir);
+          else { const f = await h.getFile(); await writeFile(dir, await uniqueName(dir, cleanName(f.name)), f); n++; }
+        }catch(e){}
+      }
+    } else {
+      n = await importFiles([...(dt.files||[])], dir);
+    }
+    if(dir===cwd()) await load(); else if(dir===root){ stack=[]; await load(); }
+    toast(n ? `ADDED ${n} FILE${n===1?'':'S'} TO LIBRARY` : 'NOTHING WAS ADDED');
+  }
+  function targets(x){ return x && picked.has(x.name) && picked.size>1 ? entries.filter(e=>picked.has(e.name)) : (x ? [x] : entries.filter(e=>picked.has(e.name))); }
+  async function remove(x){
+    const items = targets(x); if(!items.length) return;
+    const label = items.length===1 ? `"${items[0].name}"` : items.length+' ITEMS';
+    showConfirm({ title:'MOVE TO TRASH', msg:`MOVE ${label} TO THE LIBRARY TRASH? YOU CAN RESTORE FROM TRASH LATER.`, okLabel:'MOVE TO TRASH', danger:true,
+      onOk: async ()=>{ const n = await trashItems(items); toast(n ? `MOVED ${n} TO TRASH` : 'NOTHING WAS MOVED'); picked.clear(); sel = null; await load(); }});
+  }
+  /* ── move / copy primitives (FileSystemHandle.move when the browser has it, copy + remove otherwise) ── */
+  async function copyInto(h, dest, name){
+    if(h.kind==='directory'){
+      const t = await dest.getDirectoryHandle(name, { create:true });
+      for await (const [n, c] of h.entries()) await copyInto(c, t, n);
+    } else await writeFile(dest, name, await h.getFile());
+  }
+  async function moveHandle(x, fromDir, dest, name){
+    if(typeof x.handle.move==='function'){ try{ await x.handle.move(dest, name); return; }catch(e){ /* fall back */ } }
+    await copyInto(x.handle, dest, name);
+    await fromDir.removeEntry(x.name, { recursive:true });
+  }
+  function rekey(oldPath, oldName, newPath, newName){
+    const ok = keyOf(oldPath, oldName), nk = keyOf(newPath, newName);
+    let ch = false;
+    (state.lib.recent||[]).forEach(e=>{ if(keyOf(e.path,e.name)===ok){ e.path=newPath; e.name=newName; ch=true; } });
+    state.lib.stars = (state.lib.stars||[]).map(k=>{ if(k===ok){ ch=true; return nk; } return k; });
+    Object.values(lastOpen).forEach(lo=>{ if(keyOf(lo.path, lo.name)===ok){ lo.path=newPath; lo.name=newName; lo.dir=null; ch=true; } });
+    if(ch){ persistLinks(); refreshMenu(); decorateTabs(); refreshFilebar(); }
+  }
+  async function moveItems(items, dest, destPath){
+    const here = stack.map(s=>s.name);
+    if(keyOf(destPath,'')===keyOf(here,'')) return 0;
+    let n = 0;
+    for(const x of items){
+      const own = [...(x.path||here), x.name];
+      if(x.dir && keyOf(destPath,'').startsWith(keyOf(own,''))){ toast('A FOLDER CANNOT MOVE INTO ITSELF'); continue; }
+      try{
+        const nm = await uniqueName(dest, x.name);
+        await moveHandle(x, x.dirHandle || cwd(), dest, nm);
+        if(!x.dir) rekey(x.path||here, x.name, destPath, nm);
+        n++;
+      }catch(e){ toast('MOVE FAILED  ·  '+x.name); }
+    }
+    return n;
+  }
+  /* ── trash: LIBRARY/.trash + .trash/index.json (original location) ── */
+  async function trashDir(create){ try{ return await root.getDirectoryHandle(TRASH, { create:!!create }); }catch(e){ return null; } }
+  async function readTrashIndex(td){
+    try{ return JSON.parse(await (await (await td.getFileHandle('index.json')).getFile()).text()) || {}; }catch(e){ return {}; }
+  }
+  async function writeTrashIndex(td, idx){ await writeFile(td, 'index.json', JSON.stringify(idx, null, 1)); }
+  async function countTrash(){ const td = connected() ? await trashDir(false) : null; if(!td) return 0; return Object.keys(await readTrashIndex(td)).length; }
+  async function trashItems(items){
+    const td = await trashDir(true); if(!td) return 0;
+    const idx = await readTrashIndex(td); const here = stack.map(s=>s.name); let n = 0;
+    for(const x of items){
+      const tn = Date.now().toString(36)+Math.random().toString(36).slice(2,6)+'__'+x.name;
+      try{
+        await moveHandle(x, x.dirHandle || cwd(), td, tn);
+        idx[tn] = { path: x.path||here, name: x.name, dir: !!x.dir, t: Date.now(), size: x.size||null };
+        n++;
+      }catch(e){}
+    }
+    await writeTrashIndex(td, idx);
+    return n;
+  }
+  async function restoreTrash(tn){
+    const td = await trashDir(false); if(!td) return false;
+    const idx = await readTrashIndex(td); const it = idx[tn]; if(!it) return false;
+    let d = root; for(const p of it.path) d = await d.getDirectoryHandle(p, { create:true });
+    const h = it.dir ? await td.getDirectoryHandle(tn) : await td.getFileHandle(tn);
+    const nm = await uniqueName(d, it.name);
+    await moveHandle({ handle:h, name:tn }, td, d, nm);
+    delete idx[tn]; await writeTrashIndex(td, idx);
+    return nm;
+  }
+  async function purgeTrash(tn){
+    const td = await trashDir(false); if(!td) return;
+    const idx = await readTrashIndex(td);
+    for(const k of (tn ? [tn] : Object.keys(idx))){ try{ await td.removeEntry(k, { recursive:true }); }catch(e){} delete idx[k]; }
+    if(!tn){ for await (const [k] of td.entries()){ if(k!=='index.json'){ try{ await td.removeEntry(k, { recursive:true }); }catch(e){} } } }
+    await writeTrashIndex(td, idx);
+  }
+  /* small self-contained modal used by MOVE TO… and TRASH */
+  function sheet(title, sub, bodyHTML, footHTML){
+    let m = document.getElementById('lib-sheet');
+    if(!m){ m = document.createElement('div'); m.id='lib-sheet'; m.className='lmodal'; document.body.appendChild(m);
+      m.addEventListener('click', e=>{ if(e.target===m || e.target.closest('[data-close]')) m.classList.remove('show'); }); }
+    m.innerHTML = `<div class="lbox"><div class="lbox-head"><div class="lbox-title">${escapeHtml(title)}<small>${escapeHtml(sub||'')}</small></div><button class="lbtn icon" data-close aria-label="Close">✕</button></div>
+      <div class="lbox-body">${bodyHTML}</div>${footHTML?`<div class="lbox-foot">${footHTML}</div>`:''}</div>`;
+    m.classList.add('show'); return m;
+  }
+  async function folderTree(){
+    const out = [{ path:[], name:(root.name||'LIBRARY'), depth:0 }];
+    async function walk(d, path, depth){
+      if(depth>4) return;
+      const kids = [];
+      for await (const [n, h] of d.entries()) if(h.kind==='directory' && !n.startsWith('.')) kids.push([n,h]);
+      kids.sort((a,b)=>a[0].localeCompare(b[0], undefined, { numeric:true }));
+      for(const [n,h] of kids){ out.push({ path:[...path, n], name:n, depth }); await walk(h, [...path, n], depth+1); }
+    }
+    await walk(root, [], 1);
+    return out;
+  }
+  /* every file in the library (for the command palette); skips dot-folders such as .trash */
+  async function indexAll(){
+    if(!connected()) return [];
+    if(idxCache && Date.now()-idxCache.t < 15000) return idxCache.list;
+    const out = [];
+    async function walk(d, path, depth){
+      if(depth>6 || out.length>5000) return;
+      for await (const [n, h] of d.entries()){
+        if(n.startsWith('.')) continue;
+        if(h.kind==='directory') await walk(h, [...path, n], depth+1);
+        else out.push({ path, name:n, ext:extOf(n), kind:kindOf(n) });
+      }
+    }
+    try{ await walk(root, [], 0); }catch(e){}
+    idxCache = { t: Date.now(), list: out };
+    return out;
+  }
+  async function moveDialog(x){
+    const items = targets(x); if(!items.length) return;
+    const tree = await folderTree(), here = keyOf(stack.map(s=>s.name),'');
+    const m = sheet('MOVE TO', items.length===1 ? items[0].name : items.length+' ITEMS',
+      `<div class="tree">${tree.map((f,i)=>`<button class="tree-row ${keyOf(f.path,'')===here?'here':''}" data-i="${i}" style="padding-left:${14+f.depth*18}px" ${keyOf(f.path,'')===here?'disabled':''}>${ICON_FOLDER}<span>${escapeHtml(f.depth? f.name : f.name.toUpperCase())}</span>${keyOf(f.path,'')===here?'<small>HERE</small>':''}</button>`).join('')}</div>`,
+      `<span class="lcheck">${items.length} ITEM${items.length===1?'':'S'}</span><button class="lbtn" data-close>CANCEL</button>`);
+    m.querySelectorAll('[data-i]').forEach(b=>b.onclick = async ()=>{
+      const f = tree[+b.dataset.i]; let d = root; for(const p of f.path) d = await d.getDirectoryHandle(p);
+      m.classList.remove('show');
+      const n = await moveItems(items, d, f.path); picked.clear();
+      toast(n ? `MOVED ${n} TO ${(f.path.length?f.path[f.path.length-1]:root.name).toUpperCase()}` : 'NOTHING WAS MOVED');
+      await load();
+    });
+  }
+  async function trashDialog(){
+    const td = await trashDir(false); const idx = td ? await readTrashIndex(td) : {};
+    const list = Object.entries(idx).sort((a,b)=>b[1].t-a[1].t);
+    const body = list.length ? `<div class="trash-list">${list.map(([k,it])=>`<div class="trash-row" data-k="${escapeAttr(k)}">
+        <span class="ficon k-${it.dir?'folder':kindOf(it.name)}">${it.dir?ICON_FOLDER:escapeHtml((extOf(it.name)||'?').slice(0,4).toUpperCase())}</span>
+        <span class="tr-n"><b>${escapeHtml(it.name)}</b><small>${escapeHtml([root.name, ...it.path].join(' / ').toUpperCase())}  ·  ${escapeHtml(fmtDate(it.t))}${it.size?'  ·  '+fmtSize(it.size):''}</small></span>
+        <button class="lbtn sm" data-t="restore">RESTORE</button><button class="lbtn sm icon" data-t="purge" title="Delete forever">✕</button></div>`).join('')}</div>`
+      : `<div class="lv-info"><b>TRASH IS EMPTY</b>DELETED FILES WAIT HERE UNTIL YOU EMPTY THE TRASH</div>`;
+    const m = sheet('TRASH', list.length+' ITEM'+(list.length===1?'':'S')+'  ·  '+(root?root.name:'')+' / .trash', body,
+      list.length ? `<button class="lbtn" data-t="empty">EMPTY TRASH</button><button class="lbtn" data-close>CLOSE</button>` : '');
+    m.querySelectorAll('[data-t]').forEach(b=>b.onclick = async ()=>{
+      const t = b.dataset.t, k = b.closest('[data-k]')?.dataset.k;
+      if(t==='restore'){ try{ const nm = await restoreTrash(k); toast('RESTORED  ·  '+nm); }catch(e){ toast('RESTORE FAILED'); } await load(); trashDialog(); }
+      else if(t==='purge'){ showConfirm({ title:'DELETE FOREVER', msg:`DELETE "${idx[k].name}" PERMANENTLY? THIS CANNOT BE UNDONE.`, okLabel:'DELETE', danger:true, onOk: async ()=>{ await purgeTrash(k); await load(); trashDialog(); } }); }
+      else if(t==='empty'){ showConfirm({ title:'EMPTY TRASH', msg:`PERMANENTLY DELETE ALL ${list.length} ITEMS IN THE TRASH? THIS CANNOT BE UNDONE.`, okLabel:'EMPTY TRASH', danger:true, onOk: async ()=>{ await purgeTrash(); await load(); m.classList.remove('show'); toast('TRASH EMPTIED'); } }); }
+    });
+  }
+  async function downloadMany(x){
+    const items = targets(x).filter(i=>!i.dir);
+    for(const i of items){ await download(i); await new Promise(r=>setTimeout(r, 250)); }
+  }
+  async function rename(x){
+    const nn = await promptName('RENAME', x.name); if(!nn || nn===x.name) return;
+    const n = cleanName(nn);
+    if(await exists(cwd(), n)){ toast('A FILE WITH THAT NAME EXISTS'); return; }
+    try{
+      if(typeof x.handle.move==='function') await x.handle.move(n);
+      else if(!x.dir){ await writeFile(cwd(), n, await x.handle.getFile()); await cwd().removeEntry(x.name); }
+      else { toast('FOLDER RENAME NOT SUPPORTED IN THIS BROWSER'); return; }
+      sel = n; toast('RENAMED  ·  '+n);
+    }catch(e){ toast('RENAME FAILED'); }
+    await load();
+  }
+  async function newFolder(){
+    const nn = await promptName('NEW FOLDER', 'NEW FOLDER'); if(!nn) return;
+    try{ const n = await uniqueName(cwd(), cleanName(nn)); await cwd().getDirectoryHandle(n, { create:true }); sel=n; }catch(e){ toast('COULD NOT CREATE FOLDER'); }
+    await load();
+  }
+  async function download(x){ try{ downloadBlob(await x.handle.getFile(), x.name); }catch(e){ toast('DOWNLOAD FAILED'); } }
+
+  /* ── modals ── */
+  function modal(id, show){ document.getElementById(id).classList.toggle('show', show); }
+  document.querySelectorAll('.lmodal').forEach(m=>{
+    m.addEventListener('click', e=>{ if(e.target===m || e.target.closest('[data-close]')) closeModal(m.id); });
+  });
+  function closeModal(id){
+    if(id==='lib-viewer' && viewerState.dirty){
+      showConfirm({ title:'DISCARD CHANGES', msg:'CLOSE WITHOUT SAVING? YOUR EDITS TO THIS FILE WILL BE LOST.', okLabel:'DISCARD', danger:true,
+        onOk:()=>{ viewerState.dirty=false; closeModal(id); } });
+      return;
+    }
+    modal(id,false);
+    if(id==='lib-viewer') teardownViewer();
+    if(id==='lib-prompt' && promptState.resolve){ promptState.resolve(null); promptState.resolve=null; }
+  }
+  const promptState = { resolve:null };
+  function promptName(title, value){
+    return new Promise(res=>{
+      promptState.resolve = res;
+      document.getElementById('lp-title').textContent = title;
+      const inp = document.getElementById('lp-input'); inp.value = value||'';
+      modal('lib-prompt', true);
+      setTimeout(()=>{ inp.focus(); const dot = value ? value.lastIndexOf('.') : -1; inp.setSelectionRange(0, dot>0?dot:inp.value.length); }, 30);
+    });
+  }
+  document.getElementById('lp-ok').onclick = ()=>{ const r=promptState.resolve; promptState.resolve=null; modal('lib-prompt',false); r && r(document.getElementById('lp-input').value.trim()); };
+  document.getElementById('lp-input').addEventListener('keydown', e=>{ if(e.key==='Enter') document.getElementById('lp-ok').click(); });
+
+  function chooser(x, file, tools, hint){
+    document.getElementById('lc-sub').textContent = x.name;
+    document.getElementById('lc-remember').checked = false;
+    const list = document.getElementById('lc-list');
+    const opts = tools.map(t=>({ id:t.path, name:t.name, desc:(TOOL_INFO[t.path]||{}).desc||'' }));
+    if(TEXT_EDITABLE.has(x.ext) || ['image','video','audio','doc'].includes(x.kind)) opts.push({ id:'@view', name: TEXT_EDITABLE.has(x.ext)?'TEXT EDITOR':'QUICK VIEW', desc:'Built into the hub. Edit and save back in place.' });
+    list.innerHTML = opts.map(o=>`<button class="choose-item" data-p="${escapeAttr(o.id)}"><span><b>${escapeHtml(o.name)}</b><small>${escapeHtml(o.desc)}</small></span><span class="why">OPEN →</span></button>`).join('');
+    list.querySelectorAll('[data-p]').forEach(b=>b.onclick = ()=>{
+      const p = b.dataset.p;
+      if(document.getElementById('lc-remember').checked){ state.lib.assoc[x.ext]=p; saveState(); }
+      modal('lib-chooser', false);
+      if(p==='@view') viewer(x, file); else sendTo(toolByPath(p), x, file);
+    });
+    modal('lib-chooser', true);
+  }
+
+  const viewerState = { url:null, x:null, dirty:false };
+  function teardownViewer(){
+    if(viewerState.url) URL.revokeObjectURL(viewerState.url);
+    viewerState.url=null; viewerState.x=null; viewerState.dirty=false;
+    document.getElementById('lv-body').innerHTML='';
+  }
+  async function viewer(x, file){
+    teardownViewer();
+    viewerState.x = x;
+    const body = document.getElementById('lv-body');
+    const save = document.getElementById('lv-save');
+    const st = document.getElementById('lv-state');
+    document.getElementById('lv-title').firstChild.textContent = x.name;
+    document.getElementById('lv-sub').textContent = `${x.ext ? '.'+x.ext.toUpperCase()+'  ·  ' : ''}${fmtSize(file.size)}  ·  ${fmtDate(file.lastModified)}`;
+    save.hidden = true; st.textContent = ''; st.classList.remove('dirty');
+    document.getElementById('lv-download').onclick = ()=>downloadBlob(file, x.name);
+    if(TEXT_EDITABLE.has(x.ext) && file.size < 8*1024*1024){
+      const ta = document.createElement('textarea');
+      ta.spellcheck = false; ta.value = await file.text();
+      body.appendChild(ta);
+      save.hidden = false; st.textContent = 'SAVED';
+      ta.addEventListener('input', ()=>{ viewerState.dirty = true; st.textContent='UNSAVED CHANGES'; st.classList.add('dirty'); });
+      ta.addEventListener('keydown', e=>{
+        if((e.ctrlKey||e.metaKey) && e.key.toLowerCase()==='s'){ e.preventDefault(); save.click(); }
+        if(e.key==='Tab'){ e.preventDefault(); const s=ta.selectionStart; ta.setRangeText('  ', s, ta.selectionEnd, 'end'); ta.dispatchEvent(new Event('input')); }
+      });
+      save.onclick = async ()=>{
+        try{ const w = await x.handle.createWritable(); await w.write(ta.value); await w.close();
+          viewerState.dirty=false; st.textContent='SAVED'; st.classList.remove('dirty'); toast('SAVED  ·  '+x.name); load(); }
+        catch(e){ toast('SAVE FAILED'); }
+      };
+      setTimeout(()=>ta.focus(), 30);
+    } else {
+      const url = viewerState.url = URL.createObjectURL(file);
+      let node;
+      if(x.kind==='image') { node = document.createElement('img'); node.src = url; node.alt = x.name; }
+      else if(x.kind==='video'){ node = document.createElement('video'); node.src = url; node.controls = true; }
+      else if(x.kind==='audio'){ node = document.createElement('audio'); node.src = url; node.controls = true; }
+      else if(x.ext==='pdf'){ node = document.createElement('iframe'); node.src = url; node.title = x.name; }
+      else {
+        node = document.createElement('div'); node.className='lv-info';
+        const tools = toolsFor(x.ext);
+        node.innerHTML = `<b>.${escapeHtml((x.ext||'FILE').toUpperCase())}</b>${tools.length ? 'OPENS IN '+tools.map(t=>escapeHtml(t.name)).join(' / ') : 'NO HUB TOOL EDITS THIS FORMAT YET'}<br>STORED SAFELY IN THE LIBRARY · USE DOWNLOAD TO OPEN IT IN ITS OWN APP`;
+      }
+      body.appendChild(node);
+    }
+    modal('lib-viewer', true);
+  }
+
+  /* ── context menu ── */
+  const ctx = document.getElementById('lib-ctx');
+  function hideCtx(){ ctx.classList.remove('show'); }
+  document.addEventListener('click', e=>{ if(!ctx.contains(e.target)) hideCtx(); });
+  window.addEventListener('blur', hideCtx);
+  function showCtx(x, px, py){
+    if(!picked.has(x.name)){ picked.clear(); picked.add(x.name); anchor = x.name; }
+    sel = x.name; paintSel();
+    const items = [];
+    items.push(['open', x.dir ? 'OPEN FOLDER' : 'OPEN', x.dir ? '' : defaultLabel(x)]);
+    if(!x.dir){
+      const tools = toolsFor(x.ext);
+      if(tools.length){ items.push(['label','OPEN WITH']); tools.forEach(t=>items.push(['with:'+t.path, t.name, ''])); }
+      items.push(['view', TEXT_EDITABLE.has(x.ext) ? 'EDIT AS TEXT' : 'QUICK VIEW', '']);
+      items.push(['hr']);
+      items.push(['star', isStar(x.path,x.name) ? 'UNSTAR' : 'STAR', '']);
+      items.push(['download','DOWNLOAD','']);
+    } else items.push(['hr']);
+    items.push(['move', picked.size>1 && picked.has(x.name) ? `MOVE ${picked.size} TO…` : 'MOVE TO…', '']);
+    items.push(['rename','RENAME','F2']);
+    items.push(['delete', picked.size>1 && picked.has(x.name) ? `TRASH ${picked.size} ITEMS` : 'MOVE TO TRASH','DEL']);
+    ctx.innerHTML = items.map(([k,l,h])=> k==='hr' ? '<hr>' : k==='label' ? `<div class="cx-label">${l}</div>` : `<button data-k="${escapeAttr(k)}">${escapeHtml(l)}<small>${escapeHtml(h||'')}</small></button>`).join('');
+    ctx.querySelectorAll('[data-k]').forEach(b=>b.onclick = ()=>{
+      hideCtx(); const k=b.dataset.k;
+      if(k==='open') open(x);
+      else if(k.startsWith('with:')) open(x, k.slice(5));
+      else if(k==='view') open(x,'@view');
+      else if(k==='download') download(x);
+      else if(k==='star') toggleStar(x);
+      else if(k==='rename') rename(x);
+      else if(k==='move') moveDialog(x);
+      else if(k==='delete') remove(x);
+    });
+    ctx.classList.add('show');
+    const r = ctx.getBoundingClientRect();
+    ctx.style.left = Math.min(px, innerWidth-r.width-8)+'px';
+    ctx.style.top  = Math.min(py, innerHeight-r.height-8)+'px';
+  }
+
+  /* ── render ── */
+  function mount(panel){ el = panel; render(); bindPanelDrop(panel); }
+  function onShow(){ if(connected() && !loading) load(); else render(); }
+  function head(){
+    const cnt = entries.length, total = entries.reduce((a,x)=>a+(x.size||0),0);
+    const meta = connected()
+      ? `<b>${escapeHtml(root.name.toUpperCase())}</b>  ·  ${cnt} ITEM${cnt===1?'':'S'} HERE  ·  ${fmtSize(total)}`
+      : (root ? 'PERMISSION NEEDED FOR THIS SESSION' : 'DRAG FILES OF ANY FORMAT IN · OPEN THEM IN THE RIGHT TOOL');
+    const exp = state.lib.saveExports;
+    return `
+      <div id="lib-head">
+        <div>
+          <div class="eyebrow">RACINGBROS TOOLKIT · HUB ${HUB_VERSION}</div>
+          <h1>LIBRARY</h1>
+          <div id="lib-meta">${meta}</div>
+        </div>
+        <div id="lib-head-actions">
+          ${connected() ? `
+          <button class="lbtn primary" data-a="import"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square"><path d="M12 19V5M5 12l7-7 7 7"/></svg>ADD FILES</button>
+          <button class="lbtn" data-a="mkdir">NEW FOLDER</button>
+          <button class="lbtn toggle ${exp?'is-on':''}" data-a="exports" aria-pressed="${exp}" title="When on, files a tool exports are written into the library (next to the file you opened) instead of Downloads"><i></i>SAVE EXPORTS HERE</button>
+          <button class="lbtn" data-a="trash" title="Deleted files — restore or empty">TRASH${trashCount?` <span class="cnt">${trashCount}</span>`:''}</button>
+          <button class="lbtn icon" data-a="refresh" title="REFRESH"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7"/></svg></button>
+          <button class="lbtn" data-a="connect" title="Point the library at a different folder">CHANGE FOLDER</button>` : ''}
+        </div>
+      </div>`;
+  }
+  function bar(){
+    const crumbs = [`<button data-crumb="-1">${escapeHtml((root?root.name:'LIBRARY').toUpperCase())}</button>`]
+      .concat(stack.map((s,i)=>`<span class="sep">/</span><button data-crumb="${i}">${escapeHtml(s.name.toUpperCase())}</button>`)).join('');
+    const counts = {}; entries.forEach(x=>{ counts[x.kind]=(counts[x.kind]||0)+1; });
+    const known = new Set(FILTERS.filter(f=>f[2]).flatMap(f=>f[2]));
+    const chips = FILTERS.filter(([k,,kinds])=> k==='all' || (kinds ? kinds.some(kk=>counts[kk]) : entries.some(x=>!x.dir && !known.has(x.kind))))
+      .map(([k,l])=>`<button data-f="${k}" class="${filter===k?'on':''}">${l}</button>`).join('');
+    return `
+      <div id="lib-bar">
+        <nav id="lib-crumbs">${stack.length?'<button data-crumb="up" title="UP ONE LEVEL">←</button>':''}${crumbs}</nav>
+        <div id="lib-filter">${chips}</div>
+        <input id="lib-search" type="search" placeholder="Search files" value="${escapeAttr(query)}" spellcheck="false">
+        <div class="lib-seg">
+          <button class="lbtn icon ${state.lib.view!=='grid'?'on':''}" data-a="view-list" title="LIST"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+          <button class="lbtn icon ${state.lib.view==='grid'?'on':''}" data-a="view-grid" title="GRID"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z"/></svg></button>
+        </div>
+      </div>`;
+  }
+  function iconHTML(x, big){
+    if(x.dir) return big ? `<div class="gthumb k-folder">${ICON_FOLDER}</div>` : `<span class="ficon k-folder">${ICON_FOLDER}</span>`;
+    const t = thumbFor(x);
+    const label = escapeHtml((x.ext||'?').slice(0,4).toUpperCase());
+    if(big) return `<div class="gthumb k-${x.kind}">${t?`<img loading="lazy" src="${t}" alt="">`:label}</div>`;
+    return `<span class="ficon k-${x.kind}">${t?`<img loading="lazy" src="${t}" alt="">`:label}</span>`;
+  }
+  function listHTML(list){
+    const s = state.lib.sort||'name', cls = k=>`${s===k?'sorted':''} ${s===k&&state.lib.asc?'asc':''}`;
+    return `<table id="lib-table"><thead><tr>
+      <th class="${cls('name')}" data-sort="name">NAME</th>
+      <th class="${cls('type')}" data-sort="type">TYPE</th>
+      <th class="c-tool">OPENS IN</th>
+      <th class="${cls('size')}" data-sort="size" style="text-align:right">SIZE</th>
+      <th class="c-date ${cls('date')}" data-sort="date" style="text-align:right">MODIFIED</th>
+      <th></th></tr></thead><tbody>${list.map(x=>`
+      <tr class="row ${isPicked(x.name)?'sel':''}" data-n="${escapeAttr(x.name)}" tabindex="-1" draggable="true">
+        <td class="c-name"><span class="nm">${iconHTML(x)}<span>${escapeHtml(x.name)}</span>${!x.dir && isStar(x.path,x.name)?'<i class="st-on" title="Starred">★</i>':''}</span></td>
+        <td>${x.dir?'<span class="ftag">DIR</span>':`<span class="ftag">${escapeHtml(x.ext||'—')}</span>`}</td>
+        <td class="c-tool">${x.dir?'':`<b>${escapeHtml(defaultLabel(x))}</b>`}</td>
+        <td class="num">${x.dir?'':fmtSize(x.size)}</td>
+        <td class="num c-date">${x.dir?'':fmtDate(x.mtime)}</td>
+        <td class="c-act"><span class="acts">
+          ${x.dir?'':`<button class="lbtn icon star ${isStar(x.path,x.name)?'on':''}" data-r="star" title="STAR">${isStar(x.path,x.name)?'★':'☆'}</button>`}
+          <button class="lbtn" data-r="open">OPEN</button>
+          <button class="lbtn icon" data-r="more" title="MORE">⋯</button>
+        </span></td>
+      </tr>`).join('')}</tbody></table>`;
+  }
+  function gridHTML(list){
+    return `<div id="lib-grid">${list.map(x=>`
+      <button class="gcard ${isPicked(x.name)?'sel':''}" data-n="${escapeAttr(x.name)}" draggable="true">
+        ${!x.dir && x.preview && ['table','list'].includes(x.preview.kind) ? `<div class="gthumb">${previewBox(x)}</div>` : iconHTML(x,true)}
+        ${!x.dir && isStar(x.path,x.name)?'<i class="gstar">★</i>':''}
+        <span class="gmeta"><span class="gname">${escapeHtml(x.name)}</span>
+        <span class="gsub"><span>${x.dir?'FOLDER':escapeHtml((x.ext||'—').toUpperCase())}</span><span>${x.dir?'':fmtSize(x.size)}</span></span></span>
+      </button>`).join('')}</div>`;
+  }
+  function emptyHTML(){
+    if(!supported) return `<div id="lib-empty">${ICON_FOLDER.replace('<svg','<svg class="big"')}<h2>LIBRARY NEEDS CHROME OR EDGE</h2><p>The library reads and writes a real folder on your computer. Firefox and Safari can't do that from a local file. Open <code>index.html</code> in Chrome or Edge.</p></div>`;
+    if(!root) return `<div id="lib-empty">${ICON_FOLDER.replace('<svg','<svg class="big"')}<h2>CONNECT YOUR LIBRARY</h2><p>Choose the <code>LIBRARY</code> folder that sits next to <code>index.html</code> in HUB_2P0. Files of any format can live there. Double-click one to open it in the right tool, and what the tool exports is saved back beside it.</p><div class="row-btns"><button class="lbtn primary" data-a="connect">CHOOSE LIBRARY FOLDER</button></div></div>`;
+    if(perm!=='granted') return `<div id="lib-empty">${ICON_FOLDER.replace('<svg','<svg class="big"')}<h2>RECONNECT ${escapeHtml(root.name.toUpperCase())}</h2><p>The browser asks once per session before the hub may read and write this folder.</p><div class="row-btns"><button class="lbtn primary" data-a="reconnect">ALLOW ACCESS</button><button class="lbtn" data-a="connect">CHOOSE ANOTHER FOLDER</button></div></div>`;
+    if(!entries.length) return `<div id="lib-empty">${ICON_FOLDER.replace('<svg','<svg class="big"')}<h2>${stack.length?'THIS FOLDER IS EMPTY':'LIBRARY IS EMPTY'}</h2><p>Drag files or whole folders anywhere on this page, or drop them on the LIBRARY tab from any tool.</p><div class="row-btns"><button class="lbtn primary" data-a="import">ADD FILES</button></div></div>`;
+    return `<div id="lib-empty"><h2>NO MATCHES</h2><p>Nothing here matches the current search or filter.</p><div class="row-btns"><button class="lbtn" data-a="clear">CLEAR FILTERS</button></div></div>`;
+  }
+  function render(){
+    if(!el) return;
+    const ready = connected();
+    const list = ready ? visible() : [];
+    const focusSearch = document.activeElement && document.activeElement.id==='lib-search';
+    const caret = focusSearch ? document.activeElement.selectionStart : null;
+    const scroll = el.querySelector('#lib-body')?.scrollTop || 0;
+    el.innerHTML = head() + (ready ? bar() : '') + `
+      <div id="lib-body" tabindex="0">${ready && !stack.length && !query && filter==='all' ? quickHTML(false) : ''}
+        <div id="lib-selbar" hidden></div>
+        <div id="lib-split"><div id="lib-main">${ready && list.length ? (state.lib.view==='grid' ? gridHTML(list) : listHTML(list)) : emptyHTML()}</div>
+        ${ready && list.length ? '<aside id="lib-details"></aside>' : ''}</div>
+        <div id="lib-drop"><div>DROP TO ADD TO LIBRARY<small>${escapeHtml(((stack.length?stack[stack.length-1].name:root?root.name:'LIBRARY')).toUpperCase())}</small></div></div>
+      </div>
+      <div id="lib-foot"><span><span class="dot ${ready?'ok':root?'warn':''}"></span>${escapeHtml(statusLine())}${ready&&state.lib.saveExports?'  ·  EXPORTS SAVE HERE':''}</span><span>DOUBLE-CLICK TO OPEN  ·  RIGHT-CLICK FOR MORE</span></div>`;
+    const body = el.querySelector('#lib-body'); body.scrollTop = scroll;
+    if(focusSearch){ const s = el.querySelector('#lib-search'); s.focus(); try{ s.setSelectionRange(caret,caret); }catch(e){} }
+    wire(list);
+    bindQuick(el);
+    paintDetails();
+  }
+  function isPicked(n){ return picked.size ? picked.has(n) : n===sel; }
+  function paintSel(){
+    if(!el) return;
+    el.querySelectorAll('[data-n]').forEach(r=>r.classList.toggle('sel', isPicked(r.dataset.n)));
+    const sb = el.querySelector('#lib-selbar');
+    if(sb){
+      const n = picked.size;
+      sb.hidden = n < 2;
+      sb.innerHTML = n<2 ? '' : `<span class="sb-n">${n} SELECTED</span>
+        <button class="lbtn sm" data-a="sel-move">MOVE TO…</button><button class="lbtn sm" data-a="sel-dl">DOWNLOAD</button>
+        <button class="lbtn sm" data-a="sel-del">MOVE TO TRASH</button><button class="lbtn sm ghost" data-a="sel-clear">CLEAR</button>
+        <span class="sb-hint">DRAG ONTO A FOLDER OR THE PATH ABOVE TO MOVE  ·  SHIFT / CTRL-CLICK TO ADJUST</span>`;
+      sb.querySelectorAll('[data-a]').forEach(b=>b.onclick = ()=>{
+        const a=b.dataset.a; if(a==='sel-move') moveDialog(null); else if(a==='sel-dl') downloadMany(null); else if(a==='sel-del') remove(null); else { picked.clear(); paintSel(); }
+      });
+    }
+    paintDetails();
+  }
+  function wire(list){
+    el.querySelectorAll('[data-a]').forEach(b=>b.onclick = ()=>{
+      const a = b.dataset.a;
+      if(a==='connect') connect();
+      else if(a==='reconnect') reconnect();
+      else if(a==='refresh') load();
+      else if(a==='import') document.getElementById('lib-import-input').click();
+      else if(a==='mkdir') newFolder();
+      else if(a==='exports'){ state.lib.saveExports = !state.lib.saveExports; saveState(); refreshChrome(); toast(state.lib.saveExports?'TOOL EXPORTS → LIBRARY':'TOOL EXPORTS → DOWNLOADS'); }
+      else if(a==='view-list'||a==='view-grid'){ state.lib.view = a==='view-grid'?'grid':'list'; saveState(); render(); }
+      else if(a==='clear'){ query=''; filter='all'; render(); }
+      else if(a==='trash') trashDialog();
+      else if(a==='sel-move') moveDialog(null);
+      else if(a==='sel-dl') downloadMany(null);
+      else if(a==='sel-del') remove(null);
+      else if(a==='sel-clear'){ picked.clear(); paintSel(); }
+    });
+    el.querySelectorAll('[data-crumb]').forEach(b=>{
+      b.onclick = ()=>{
+        const c = b.dataset.crumb;
+        if(c==='up') stack.pop(); else stack = stack.slice(0, parseInt(c,10)+1);
+        sel=null; picked.clear(); load();
+      };
+      const c = b.dataset.crumb;
+      const i = c==='up' ? stack.length-2 : parseInt(c,10);
+      bindMoveTarget(b, async ()=>({ dest: i<0 ? root : stack[i].handle, path: stack.slice(0, i+1).map(s=>s.name) }));
+    });
+    el.querySelectorAll('[data-f]').forEach(b=>b.onclick = ()=>{ filter = b.dataset.f; render(); });
+    el.querySelectorAll('[data-sort]').forEach(th=>th.onclick = ()=>{
+      const k = th.dataset.sort;
+      if(state.lib.sort===k) state.lib.asc = !state.lib.asc; else { state.lib.sort=k; state.lib.asc = k==='name'||k==='type'; }
+      saveState(); render();
+    });
+    const s = el.querySelector('#lib-search');
+    if(s) s.oninput = ()=>{ query = s.value; render(); };
+    const byName = n => entries.find(x=>x.name===n);
+    el.querySelectorAll('[data-n]').forEach(r=>{
+      const x = byName(r.dataset.n);
+      r.onclick = e=>{
+        const act = e.target.closest('[data-r]');
+        if(act){ e.stopPropagation(); if(act.dataset.r==='open') open(x); else if(act.dataset.r==='star') toggleStar(x); else { const bb=act.getBoundingClientRect(); showCtx(x, bb.left, bb.bottom+4); } return; }
+        if(e.shiftKey && anchor){
+          const vis = visible(), a = vis.findIndex(v=>v.name===anchor), b = vis.findIndex(v=>v.name===x.name);
+          if(a>=0 && b>=0){ picked.clear(); vis.slice(Math.min(a,b), Math.max(a,b)+1).forEach(v=>picked.add(v.name)); }
+        } else if(e.ctrlKey || e.metaKey){
+          if(!picked.size && sel) picked.add(sel);
+          picked.has(x.name) ? picked.delete(x.name) : picked.add(x.name); anchor = x.name;
+        } else { picked.clear(); picked.add(x.name); anchor = x.name; }
+        sel = x.name; paintSel();
+      };
+      r.ondragstart = e=>{
+        if(!picked.has(x.name)){ picked.clear(); picked.add(x.name); sel = x.name; anchor = x.name; paintSel(); }
+        e.dataTransfer.setData(DRAG_T, JSON.stringify([...picked]));
+        e.dataTransfer.effectAllowed = 'move';
+        el.classList.add('dragging-items');
+      };
+      r.ondragend = ()=>{ el.classList.remove('dragging-items'); el.querySelectorAll('.drop-target').forEach(t=>t.classList.remove('drop-target')); };
+      if(x.dir) bindMoveTarget(r, async ()=>({ dest: x.handle, path:[...(x.path||[]), x.name] }));
+      r.ondblclick = e=>{ if(!e.target.closest('[data-r]')) open(x); };
+      r.oncontextmenu = e=>{ e.preventDefault(); showCtx(x, e.clientX, e.clientY); };
+    });
+    const body = el.querySelector('#lib-body');
+    body.onkeydown = e=>{
+      if(e.target.id==='lib-search') return;
+      const vis = visible(); const i = vis.findIndex(x=>x.name===sel);
+      if((e.ctrlKey||e.metaKey) && e.key.toLowerCase()==='a'){ e.preventDefault(); picked.clear(); vis.forEach(v=>picked.add(v.name)); paintSel(); return; }
+      if(e.key==='Delete' && picked.size>1){ remove(null); return; }
+      if(e.key==='ArrowDown'||e.key==='ArrowUp'){ e.preventDefault(); const n = vis[Math.max(0,Math.min(vis.length-1, i+(e.key==='ArrowDown'?1:-1)))]; if(n){ sel=n.name; paintSel(); el.querySelector(`[data-n="${cssEsc(sel)}"]`)?.scrollIntoView({block:'nearest'}); } }
+      else if(e.key==='Enter' && i>=0) open(vis[i]);
+      else if(e.key==='Delete' && i>=0) remove(vis[i]);
+      else if(e.key==='F2' && i>=0) rename(vis[i]);
+      else if(e.key==='Backspace' && stack.length){ stack.pop(); sel=null; picked.clear(); load(); }
+    };
+  }
+  function bindMoveTarget(node, where){
+    node.addEventListener('dragover', e=>{ if(![...(e.dataTransfer.types||[])].includes(DRAG_T)) return; e.preventDefault(); e.dataTransfer.dropEffect='move'; node.classList.add('drop-target'); });
+    node.addEventListener('dragleave', ()=>node.classList.remove('drop-target'));
+    node.addEventListener('drop', async e=>{
+      if(![...(e.dataTransfer.types||[])].includes(DRAG_T)) return;
+      e.preventDefault(); e.stopPropagation(); node.classList.remove('drop-target');
+      let names = []; try{ names = JSON.parse(e.dataTransfer.getData(DRAG_T)); }catch(err){}
+      const items = entries.filter(x=>names.includes(x.name));
+      const w = await where(); if(!w || !w.dest) return;
+      const n = await moveItems(items, w.dest, w.path); picked.clear();
+      toast(n ? `MOVED ${n} TO ${(w.path.length?w.path[w.path.length-1]:root.name).toUpperCase()}` : 'NOTHING WAS MOVED');
+      await load();
+    });
+  }
+  document.getElementById('lib-import-input').onchange = async e=>{
+    const n = await importFiles([...e.target.files]); e.target.value='';
+    await load(); if(n) toast(`ADDED ${n} FILE${n===1?'':'S'} TO LIBRARY`);
+  };
+
+  /* ── drag & drop ── */
+  function hasFiles(e){ return e.dataTransfer && [...(e.dataTransfer.types||[])].includes('Files'); }
+  function bindPanelDrop(panel){
+    panel.addEventListener('dragenter', e=>{ if(!hasFiles(e)) return; e.preventDefault(); dragDepth++; panel.querySelector('#lib-drop')?.classList.add('show'); });
+    panel.addEventListener('dragover', e=>{ if(!hasFiles(e)) return; e.preventDefault(); e.dataTransfer.dropEffect='copy'; });
+    panel.addEventListener('dragleave', ()=>{ dragDepth=Math.max(0,dragDepth-1); if(!dragDepth) panel.querySelector('#lib-drop')?.classList.remove('show'); });
+    panel.addEventListener('drop', e=>{
+      if(!hasFiles(e)) return; e.preventDefault(); dragDepth=0;
+      panel.querySelector('#lib-drop')?.classList.remove('show');
+      const target = e.target.closest && e.target.closest('[data-n]');
+      const tx = target && entries.find(x=>x.name===target.dataset.n && x.dir);
+      importDataTransfer(e.dataTransfer, tx ? tx.handle : null);
+    });
+  }
+  function bindTabDrop(tab){
+    let d=0;
+    tab.addEventListener('dragenter', e=>{ if(!hasFiles(e)) return; e.preventDefault(); d++; tab.classList.add('lib-drop'); });
+    tab.addEventListener('dragover', e=>{ if(!hasFiles(e)) return; e.preventDefault(); e.dataTransfer.dropEffect='copy'; });
+    tab.addEventListener('dragleave', ()=>{ d=Math.max(0,d-1); if(!d) tab.classList.remove('lib-drop'); });
+    tab.addEventListener('drop', async e=>{
+      if(!hasFiles(e)) return; e.preventDefault(); d=0; tab.classList.remove('lib-drop');
+      const dt = e.dataTransfer;
+      await importDataTransfer(dt, root);
+      setActive('library');
+    });
+  }
+  /* keep the browser from navigating away when a file misses a drop zone */
+  window.addEventListener('dragover', e=>{ if(hasFiles(e)) e.preventDefault(); });
+  window.addEventListener('drop', e=>{ if(hasFiles(e)) e.preventDefault(); });
+
+  function closeTop(){
+    const m = [...document.querySelectorAll('.lmodal.show')].pop();
+    if(m){ closeModal(m.id); return true; }
+    if(ctx.classList.contains('show')){ hideCtx(); return true; }
+    return false;
+  }
+  return { init, mount, onShow, statusLine, connected, saveExport, bindTabDrop, open, closeTop,
+           refreshFilebar, decorateTabs, saveFailed, menuStrip, bindQuick, refreshMenu,
+           openKey, trashDialog, connect, reconnect, isConnected: connected, rootName: ()=>root ? root.name : null,
+           index: ()=>indexAll(), keyOf, reveal,
+           toggleExports: ()=>{ state.lib.saveExports = !state.lib.saveExports; saveState(); refreshChrome(); toast(state.lib.saveExports?'TOOL EXPORTS → LIBRARY':'TOOL EXPORTS → DOWNLOADS'); },
+           addFiles: ()=>{ if(!connected()){ setActive('library'); toast('CONNECT THE LIBRARY FOLDER FIRST'); return; } document.getElementById('lib-import-input').click(); } };
+})();
+
+
+/* ════════════════════════════════════════
+   COMMAND PALETTE — Ctrl+K / ⌘K (also from inside a tool, via the bridge)
+   tools · LIBRARY files in every folder · hub actions
+   ════════════════════════════════════════ */
+const Palette = (()=>{
+  let box = null, input = null, list = null, items = [], cur = 0, files = null, seq = 0;
+  const isOpen = ()=> !!box && box.classList.contains('show');
+  function build(){
+    box = document.createElement('div'); box.id = 'cmdk'; box.setAttribute('role','dialog'); box.setAttribute('aria-label','Command palette');
+    box.innerHTML = `<div class="ck-box">
+        <div class="ck-in"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="square"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21"/></svg>
+          <input id="ck-q" type="text" autocomplete="off" spellcheck="false" placeholder="Jump to a tool, find a file, run a command…"><kbd>ESC</kbd></div>
+        <div class="ck-list" id="ck-list" role="listbox"></div>
+        <div class="ck-foot"><span><kbd>↑</kbd><kbd>↓</kbd> MOVE</span><span><kbd>ENTER</kbd> RUN</span><span><kbd>SHIFT</kbd>+<kbd>ENTER</kbd> SHOW IN LIBRARY</span><span class="ck-ver">HUB ${escapeHtml(HUB_VERSION)}</span></div>
+      </div>`;
+    document.body.appendChild(box);
+    input = box.querySelector('#ck-q'); list = box.querySelector('#ck-list');
+    box.addEventListener('mousedown', e=>{ if(e.target===box) close(); });
+    input.addEventListener('input', ()=>{ cur = 0; refresh(); });
+    input.addEventListener('keydown', e=>{
+      if(e.key==='ArrowDown'||e.key==='ArrowUp'){ e.preventDefault(); move(e.key==='ArrowDown'?1:-1); }
+      else if(e.key==='PageDown'||e.key==='PageUp'){ e.preventDefault(); move(e.key==='PageDown'?8:-8); }
+      else if(e.key==='Enter'){ e.preventDefault(); run(items[cur], e.shiftKey); }
+      else if(e.key==='Escape'){ e.preventDefault(); e.stopPropagation(); close(); }
+      else if(e.key==='Tab'){ e.preventDefault(); move(e.shiftKey?-1:1); }
+    });
+    list.addEventListener('mousemove', e=>{ const r = e.target.closest('[data-i]'); if(r && +r.dataset.i!==cur){ cur = +r.dataset.i; paint(); } });
+    list.addEventListener('click', e=>{ const r = e.target.closest('[data-i]'); if(r) run(items[+r.dataset.i], e.shiftKey); });
+  }
+  function open(q){
+    if(!box) build();
+    if(isOpen()){ input.select(); return; }
+    box.classList.add('show'); input.value = q||''; cur = 0; files = null;
+    refresh();
+    setTimeout(()=>input.focus(), 0);
+    const my = ++seq;
+    Library.index().then(f=>{ if(my!==seq) return; files = f; if(isOpen()) refresh(); }).catch(()=>{ files = []; });
+  }
+  function close(){ if(box){ box.classList.remove('show'); seq++; } }
+  function toggle(){ isOpen() ? close() : open(); }
+  function move(d){ if(!items.length) return; cur = Math.max(0, Math.min(items.length-1, cur+d)); paint(); }
+
+  /* scoring: substring beats subsequence; word starts and short names rank higher */
+  function score(q, s, fuzzy){
+    if(!q) return 1;
+    s = String(s||'').toLowerCase();
+    const i = s.indexOf(q);
+    if(i >= 0) return 1000 - i*4 - s.length*.5 + (i===0 || /[\s_\-./]/.test(s[i-1]) ? 300 : 0);
+    if(!fuzzy) return -1;
+    let k = 0, gaps = 0, last = -1;
+    for(let j=0; j<s.length && k<q.length; j++) if(s[j]===q[k]){ if(last>=0) gaps += j-last-1; last = j; k++; }
+    return k===q.length && gaps <= q.length*2 ? 400 - gaps*6 - s.length*.5 : -1;
+  }
+  function best(q, ...fields){ let b = -1; fields.forEach((f,i)=>{ const v = score(q, f, i===0); if(v>=0) b = Math.max(b, v - i*120); }); return b; }
+
+  function toolItems(){
+    const out = [
+      { g:'GO TO', icon:'<span class="ck-num">⌂</span>', t:'MENU', s:'All tools', k:'home start', run:()=>setActive('menu') },
+      { g:'GO TO', icon:`<span class="ck-num">${ICON_FOLDER}</span>`, t:'LIBRARY', s: Library.rootName() ? 'Browse files in '+Library.rootName() : 'Not connected yet', k:'files folder', run:()=>setActive('library') },
+    ];
+    state.tools.forEach((t,i)=>{
+      const info = TOOL_INFO[t.path] || {};
+      out.push({ g:'GO TO', icon:`<span class="ck-num">${String(i+1).padStart(2,'0')}</span>`, t:t.name, s: info.desc || t.path || '', k:[t.path, (info.formats||[]).join(' ')].join(' '),
+        hint: state.activeTab===t.id ? 'OPEN' : '', run:()=>setActive(t.id) });
+    });
+    return out;
+  }
+  function actionItems(){
+    const A = (t, s, k, run, ok=true)=> ok ? { g:'COMMANDS', icon:'<span class="ck-num">›</span>', t, s, k, run } : null;
+    const fb = sel => { const b = document.querySelector('#filebar:not([hidden]) [data-fb="'+sel+'"]'); return b && !b.disabled ? b : null; };
+    const conn = Library.isConnected(), hasRoot = !!Library.rootName();
+    const lo = document.querySelector('#filebar:not([hidden]) .fb-path b');
+    const fname = lo ? lo.textContent : '';
+    return [
+      A('SAVE', 'Write '+fname+' back to the LIBRARY', 'save file write', ()=>fb('over').click(), !!fb('over')),
+      A('SAVE COPY', 'Save '+fname+' as a new file', 'save as copy duplicate', ()=>fb('copy').click(), !!fb('copy')),
+      A('REOPEN FILE', 'Reload '+fname+' into the tool', 'reload revert', ()=>fb('reopen').click(), !!fb('reopen')),
+      A('SHOW FILE IN LIBRARY', fname, 'reveal locate', ()=>fb('show').click(), !!fb('show')),
+      ...Object.entries(SCHEMES).filter(([key])=>key!==state.scheme).map(([key,sc])=>
+        A('COLOR SCHEME · '+sc.name, (sc.theme==='light'?'Light':'Dark')+' — hub and every tool', 'theme scheme mode appearance colour color '+sc.theme, ()=>setScheme(key))),
+      A('ADD FILES TO LIBRARY', 'Import from your computer', 'import upload add', ()=>Library.addFiles(), conn),
+      A((state.lib.saveExports?'STOP SAVING':'SAVE')+' TOOL EXPORTS TO LIBRARY', state.lib.saveExports?'Exports go to Downloads again':'Exports land in the current LIBRARY folder', 'exports downloads toggle', ()=>Library.toggleExports(), conn),
+      A('OPEN TRASH', 'Restore or empty deleted files', 'trash bin deleted restore recycle', ()=>{ setActive('library'); Library.trashDialog(); }, conn),
+      A('ALLOW LIBRARY ACCESS', 'Grant permission again', 'reconnect permission', ()=>{ setActive('library'); Library.reconnect(); }, hasRoot && !conn),
+      A(hasRoot?'CHANGE LIBRARY FOLDER':'CONNECT LIBRARY FOLDER', 'Pick the LIBRARY folder next to index.html', 'connect choose folder', ()=>{ setActive('library'); Library.connect(); }),
+      A('SETTINGS', 'Theme, colours, type, tools', 'developer panel settings preferences font', ()=>openDevp()),
+    ].filter(Boolean);
+  }
+  function fileItem(f, g){
+    const key = Library.keyOf(f.path, f.name);
+    const ext = (f.ext||'?').slice(0,4).toUpperCase();
+    return { g, icon:`<span class="ficon k-${f.kind||kindOf(f.name)}">${escapeHtml(ext)}</span>`, t:f.name, s:[Library.rootName()||'LIBRARY', ...f.path].join(' / '),
+      hint: f.tool ? (toolByPath(f.tool)?.name || '') : '', file:true, key, tool:f.tool, mono:true,
+      run:(show)=> show ? showFile(f) : Library.openKey(key, f.tool) };
+  }
+  function showFile(f){
+    Library.reveal(f.path, f.name);
+  }
+  function refresh(){
+    const q = input.value.trim().toLowerCase();
+    const recents = (state.lib.recent||[]).map(r=>({ path:r.path||[], name:r.name, ext:r.ext, kind:kindOf(r.name), tool:r.tool }));
+    let out = [];
+    if(!q){
+      if(Library.isConnected()) out = recents.slice(0,5).map(r=>fileItem(r,'RECENT'));
+      out = out.concat(toolItems(), actionItems());
+    } else {
+      const scored = [];
+      toolItems().forEach(it=>{ const v = best(q, it.t, it.k, it.s); if(v>=0) scored.push([v+60, it]); });
+      actionItems().forEach(it=>{ const v = best(q, it.t, it.k); if(v>=0) scored.push([v, it]); });
+      const seen = new Set();
+      const stars = new Set(state.lib.stars||[]);
+      const pool = (files||[]).concat(recents);
+      pool.forEach(f=>{
+        const k = Library.keyOf(f.path, f.name); if(seen.has(k)) return; seen.add(k);
+        const v = best(q, f.name, f.path.join('/')+'/'+f.name);
+        if(v>=0) scored.push([v + (stars.has(k)?80:0) + (recents.some(r=>Library.keyOf(r.path,r.name)===k)?40:0), fileItem(f, 'FILES')]);
+      });
+      scored.sort((a,b)=>b[0]-a[0]);
+      const groups = { 'GO TO':[], 'FILES':[], 'COMMANDS':[] };
+      scored.forEach(([,it])=>{ const g = groups[it.g]; if(g && g.length < (it.g==='FILES'?40:12)) g.push(it); });
+      /* group order follows the best hit */
+      const order = [...new Set(scored.map(([,it])=>it.g))];
+      order.forEach(g=>{ out = out.concat(groups[g]||[]); });
+    }
+    items = out;
+    if(cur >= items.length) cur = Math.max(0, items.length-1);
+    paint(q);
+  }
+  function hl(text, q){
+    const t = String(text||''); if(!q) return escapeHtml(t);
+    const i = t.toLowerCase().indexOf(q);
+    if(i>=0) return escapeHtml(t.slice(0,i))+'<mark>'+escapeHtml(t.slice(i,i+q.length))+'</mark>'+escapeHtml(t.slice(i+q.length));
+    let k = 0, o = '';
+    for(const ch of t){ if(k<q.length && ch.toLowerCase()===q[k]){ o += '<mark>'+escapeHtml(ch)+'</mark>'; k++; } else o += escapeHtml(ch); }
+    return o;
+  }
+  function paint(q){
+    if(q===undefined) q = input.value.trim().toLowerCase();
+    if(!items.length){
+      list.innerHTML = `<div class="ck-empty">${files===null && q ? 'SEARCHING THE LIBRARY…' : 'NO MATCHES'}${!Library.isConnected() && q ? '<small>CONNECT THE LIBRARY TO SEARCH FILES</small>' : ''}</div>`;
+      return;
+    }
+    let g = null, h = '';
+    items.forEach((it,i)=>{
+      if(it.g!==g){ g = it.g; h += `<div class="ck-g">${g}${g==='FILES' && files===null ? ' <small>INDEXING…</small>' : ''}</div>`; }
+      h += `<div class="ck-row${i===cur?' on':''}" data-i="${i}" role="option" aria-selected="${i===cur}">${it.icon}
+        <span class="ck-t"><b class="${it.mono?'nc':''}">${hl(it.t, q)}</b><small>${escapeHtml(it.s||'')}</small></span>
+        ${it.hint?`<span class="ck-hint">${escapeHtml(it.hint)}</span>`:''}<span class="ck-go">↵</span></div>`;
+    });
+    list.innerHTML = h;
+    list.querySelector('.ck-row.on')?.scrollIntoView({ block:'nearest' });
+  }
+  function run(it, shift){
+    if(!it) return;
+    close();
+    try{ it.run(shift && it.file); }catch(e){ toast('COMMAND FAILED'); }
+  }
+  document.addEventListener('keydown', e=>{
+    if((e.ctrlKey||e.metaKey) && !e.altKey && !e.shiftKey && e.key.toLowerCase()==='k'){ e.preventDefault(); toggle(); }
+    else if(e.key==='Escape' && isOpen()){ e.preventDefault(); e.stopImmediatePropagation(); close(); }
+  }, true);
+  if(/Mac|iPhone|iPad/.test(navigator.platform||'')){ const k = document.querySelector('#cmdk-btn kbd'); if(k) k.textContent = '⌘ K'; }
+  return { open, close, toggle, isOpen };
+})();/*HUB2:LIBRARY:END*/
+
+/* ════════════════════════════════════════
+   INIT
+   ════════════════════════════════════════ */
+loadState();
+saveState();   // persist the reconciled tool list + seededDefaults right away
+applyAllTheme();
+renderTabsAndPanels();
+Library.init();
+
+/* Logo → first tab (MENU). Acts as the global home button from any tool. */
+const logoEl = document.getElementById('logo');
+if(logoEl) logoEl.addEventListener('click', e=>{ e.preventDefault(); setActive('menu'); });
+
+renderToolsList();
+renderSchemePresets();
+renderColorPickers();
+renderFontSelect();
+fsSlider.value = state.fontSize;
+trSlider.value = state.tracking;
+fsVal.textContent = state.fontSize + 'PX';
+trVal.textContent = (state.tracking/100).toFixed(2);
+</script>
+</body>
+</html>

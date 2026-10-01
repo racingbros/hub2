@@ -1,0 +1,98 @@
+:root,[data-theme="dark"],[data-theme="light"]{
+  --bg:var(--h2-bg); --fg:var(--h2-fg); --border:var(--h2-line);
+  --panel:var(--h2-surface); --muted:var(--h2-fg-dim); --select:var(--h2-accent);
+  --accent:var(--h2-accent); --accent-fg:var(--h2-accent-fg);
+}
+body{font-family:var(--h2-font)}
+/* step bar */
+.strip{border-bottom-color:var(--h2-line)}
+.strip > .cell{border-right-color:var(--h2-line);letter-spacing:.12em;text-transform:uppercase}
+.strip.strip0{height:56px;background:var(--h2-bg)}
+.strip0 > .cell{position:relative;align-items:flex-start;padding:0 18px;gap:4px;transition:background .15s,color .15s}
+.strip0 > .cell small{font-size:10px;font-weight:700;letter-spacing:.22em;opacity:1;color:var(--h2-fg-mute)}
+.strip0 > .cell strong{font-size:16px;font-weight:700;letter-spacing:.14em}
+.strip0 > .cell:hover{background:var(--h2-surface)}
+.strip0 > .cell.active{background:var(--h2-surface);color:var(--h2-fg)}
+.strip0 > .cell.active::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:3px;background:var(--h2-accent)}
+.strip0 > .cell.active small{color:var(--h2-accent)}
+.strip.strip1{height:44px}
+.strip1 > .cell{background:var(--h2-surface);font-size:13px;font-weight:700;letter-spacing:.18em}
+.strip1 > .cell:hover{background:var(--h2-surface-2)}
+.strip1 > .cell.primary,.strip1 > .cell.active{background:var(--h2-accent);color:var(--h2-accent-fg)}
+.strip.strip2{background:var(--h2-surface)}
+.strip2 > .ctrl{border-right-color:var(--h2-line)}
+.strip2 > .txt-edit{font-size:16px}
+.strip2 > .label-edit{font-size:11px;letter-spacing:.2em;text-transform:uppercase}
+.strip2 > .val-edit,.strip2 > .size-edit{font-family:var(--h2-mono);font-size:14px}
+.strip2 > .range-edit::-webkit-slider-runnable-track{height:2px;background:var(--h2-line-strong)}
+.strip2 > .range-edit::-webkit-slider-thumb{width:12px;height:20px;margin-top:-9px;border:0}
+.strip2 > .range-edit::-moz-range-thumb{width:12px;height:20px;border:0}
+.menu-btn{margin:0 8px}
+.menu-panel{top:56px;border-color:var(--h2-line-strong);border-top:3px solid var(--h2-accent);box-shadow:var(--h2-shadow)!important}
+.menu-row{border-bottom-color:var(--h2-line)}
+.menu-label{font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--h2-fg-dim)}
+.toggle-group button{font-size:12px;letter-spacing:.16em;padding:8px 12px;border-color:var(--h2-line-strong)}
+.toggle-group button:last-child{border-right-color:var(--h2-line-strong)}
+.menu-row .full-btn{font-size:12px;letter-spacing:.18em;text-transform:uppercase;padding:12px;border-color:var(--h2-line-strong)}
+.menu-row .full-btn:hover{background:var(--h2-surface-2)}
+.lib-thumb,.thumb{border-color:var(--h2-line-strong)}
+/* stage */
+.stage{background:var(--h2-surface);
+  background-image:linear-gradient(var(--h2-line) 1px,transparent 1px),linear-gradient(90deg,var(--h2-line) 1px,transparent 1px);
+  background-size:40px 40px;background-position:center center}
+.empty{font-size:15px;letter-spacing:.22em;text-transform:uppercase;color:var(--h2-fg);animation:none;opacity:1}
+.empty::after{height:84px;border:1px dashed var(--h2-accent);animation:none;opacity:1}
+.thumbs{background:var(--h2-bg);border-top-color:var(--h2-line)}
+/* modals */
+.modal{background:var(--h2-backdrop)}
+.modal-box{border-color:var(--h2-line-strong);border-top:3px solid var(--h2-accent)}
+.modal-head{font-size:14px;letter-spacing:.2em;text-transform:uppercase}
+.field label{font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--h2-fg-dim)}
+.field textarea,.field input[type="text"]{font-size:16px;background:var(--h2-surface);border-color:var(--h2-line-strong)}
+.field textarea:focus,.field input[type="text"]:focus{border-color:var(--h2-accent);outline:0}
+.modal-foot button{font-size:12px;letter-spacing:.18em;text-transform:uppercase;padding:10px 18px;border-color:var(--h2-line-strong)}
+.modal-foot button.primary{border-color:var(--h2-accent)}
+.toast{background:var(--h2-fg);color:var(--h2-bg);border:0;font-size:11px;letter-spacing:.16em;text-transform:uppercase;padding:10px 16px}
+.enc-overlay{background:var(--h2-backdrop);color:var(--h2-fg)}
+.enc-overlay .spinner{border-radius:0;border-color:var(--h2-line-strong);border-top-color:var(--h2-accent)}
+.enc-overlay .label{font-size:12px;letter-spacing:.22em;text-transform:uppercase}
+.enc-overlay .bar{height:2px;background:var(--h2-line-strong)}
+@media (max-width:640px){
+  .strip0 > .cell{padding:0 8px;align-items:center}
+  .strip0 > .cell strong{font-size:14px;letter-spacing:.08em}
+  .strip1 > .cell{font-size:12px;letter-spacing:.1em}
+}
+/* ── desktop density (mouse + wide screen): compact toolbars, phone layout untouched ── */
+@media (min-width:900px) and (pointer:fine){
+  body{font-size:14px}
+  .strip.strip0{height:48px}
+  .strip0 > .cell{flex:0 0 auto;min-width:156px;padding:0 20px}
+  .strip0 > .cell strong{font-size:14px}
+  .strip0 > .cell small{font-size:9.5px}
+  .strip0 .menu-btn{margin-left:auto}
+  .menu-panel{top:48px;width:320px}
+  .strip.strip1{height:40px;background:var(--h2-surface)}
+  .strip1 > .cell{flex:0 0 auto;min-width:120px;padding:0 20px;font-size:11.5px}
+  .strip1 > .cell:last-child{border-right:1px solid var(--h2-line)}
+  .strip.strip2{height:40px}
+  .strip2 > .txt-edit{font-size:14px}
+  .strip2 > .color-edit{flex-basis:42px;width:42px}
+  .strip2 > .val-edit,.strip2 > .size-edit{font-size:12.5px}
+  .strip2 > .range-edit{max-width:520px}
+  .menu-row{padding:12px 14px}
+  .menu-label{font-size:10.5px}
+  .toggle-group button{font-size:11px;min-width:56px;padding:7px 12px}
+  .menu-row .full-btn{font-size:11px;padding:10px}
+  .empty{font-size:13px}
+  .empty::after{height:72px;max-width:360px}
+  .thumbs{height:64px}
+  .thumb{height:52px;width:52px}
+  .modal-box{max-width:420px}
+  .modal-head{font-size:12px;padding:14px 16px}
+  .modal-body{gap:12px}
+  .field label{font-size:10px}
+  .field textarea,.field input[type="text"]{font-size:14px;padding:9px 10px}
+  .field input[type="color"]{height:36px}
+  .modal-foot button{font-size:11px;padding:9px 16px}
+  .toast{font-size:10.5px;bottom:24px}
+}

@@ -1,0 +1,40 @@
+:root,body.dark{
+  --bg:var(--h2-bg); --bg-2:var(--h2-surface);
+  --srf:var(--h2-surface); --srf-80:color-mix(in srgb,var(--h2-surface) 92%,transparent); --srf-55:color-mix(in srgb,var(--h2-surface) 62%,transparent);
+  --fg:var(--h2-fg); --line:var(--h2-line-strong); --line-2:var(--h2-line);
+  --slot:color-mix(in srgb,var(--h2-fg) 5%,transparent);
+}
+body{background:radial-gradient(120% 120% at 50% 36%,var(--h2-surface) 0%,var(--h2-bg) 72%);font-family:var(--h2-font)}
+button{font-family:var(--h2-font)}
+#drop .box{background:var(--h2-surface);border-color:var(--h2-line-strong);box-shadow:var(--h2-shadow);position:relative}
+#drop .box::before{content:"";position:absolute;left:-1px;right:-1px;top:-1px;height:3px;background:var(--h2-accent)}
+#drop .box:hover{border-color:var(--h2-fg-dim)}
+body.dragover #drop .box{border-color:var(--h2-accent)}
+#drop .mark{border-color:var(--h2-accent)}
+#drop .mark::before,#drop .mark::after{background:var(--h2-accent)}
+#drop .mark::after{box-shadow:7px 0 0 var(--h2-accent)}
+#drop p{font-size:12px;font-weight:700;letter-spacing:.22em;opacity:1}
+#drop p small{font-weight:500;color:var(--h2-fg-dim);opacity:1}
+.nav{border-color:var(--h2-line);font-family:var(--h2-font)}
+.nav:hover{border-color:var(--h2-accent);color:var(--h2-accent)}
+#pageInd{font-family:var(--h2-mono);letter-spacing:.08em}
+#chip{font-weight:700;letter-spacing:.16em;border-color:var(--h2-line-strong)}
+#filmstrip{border-top-color:var(--h2-line)}
+.thumb.cur{border-color:var(--h2-accent);outline-color:var(--h2-accent)}
+.thumb .th-no{font-family:var(--h2-mono)}
+.drop-line{background:var(--h2-accent)}
+.drop-line::before{border-top-color:var(--h2-accent)}
+.drop-line::after{border-bottom-color:var(--h2-accent)}
+.backdrop{background:var(--h2-backdrop)}
+#layoutPop{border-top:3px solid var(--h2-accent)}
+#layoutPop .cap,#panel h4{font-weight:700;letter-spacing:.22em;opacity:1;color:var(--h2-fg-dim)}
+#layoutPop button,.seg button{font-weight:700;letter-spacing:.14em}
+#layoutPop button.on,.seg button.on{background:var(--h2-fg);color:var(--h2-bg)}
+#panel{border-left-color:var(--h2-line-strong);box-shadow:var(--h2-shadow)}
+#panel h4{font-size:10.5px;background:var(--h2-mark) 0 50%/3px 11px no-repeat;padding-left:12px}
+.cell.book.cur,.cell.book:hover,.cell.add:hover{border-color:var(--h2-accent)}
+.cell.book.cur{outline-color:var(--h2-accent)}
+#ctxMenu button{font-weight:600}
+#ctxMenu button:hover{background:var(--h2-accent);color:var(--h2-accent-fg)}
+#ctxMenu .danger:hover{background:var(--h2-accent)}
+.toast{font-weight:700;letter-spacing:.16em}

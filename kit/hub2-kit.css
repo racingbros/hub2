@@ -1,0 +1,120 @@
+/* ══════════════════════════════════════════════════════════════
+   HUB 2.0 KIT — shared design tokens + base chrome
+   Source of truth: kit/hub2-kit.css  →  injected by tools/sync-kit.js
+   Language: racing red · zero radius · condensed caps · hairline rules
+   ══════════════════════════════════════════════════════════════ */
+:root{
+  /* surfaces (dark default — RACING) */
+  --h2-bg:#0b0b0c;
+  --h2-surface:#131315;
+  --h2-surface-2:#1a1a1d;
+  --h2-surface-3:#232327;
+  --h2-line:#27272b;
+  --h2-line-strong:#3b3b41;
+  /* ink */
+  --h2-fg:#f2f2f3;
+  --h2-fg-dim:#9b9ba2;
+  --h2-fg-mute:#5d5d65;
+  /* signal */
+  --h2-accent:#d7282f;
+  --h2-accent-hover:#ea3a41;
+  --h2-accent-fg:#ffffff;
+  --h2-accent-soft:rgba(215,40,47,.14);
+  --h2-ok:#2fb86e;
+  --h2-warn:#e9a23b;
+  --h2-info:#3d8bfd;
+  --h2-shadow:0 18px 50px rgba(0,0,0,.45);
+  --h2-backdrop:rgba(0,0,0,.62);
+  /* type */
+  --h2-font:'Bahnschrift','Bahnschrift SemiCondensed','DIN Alternate','Roboto Condensed','Barlow Condensed','Arial Narrow','Microsoft JhengHei','PingFang TC','Noto Sans TC',sans-serif;
+  --h2-mono:'Cascadia Mono','JetBrains Mono','Roboto Mono',Consolas,'Microsoft JhengHei',monospace;
+  --h2-track:.08em;
+  --h2-track-label:.16em;
+  --h2-fs:13px;
+  --h2-fs-sm:11px;
+  --h2-fs-xs:10px;
+  /* metrics */
+  --h2-ctl:30px;
+  --h2-ctl-sm:24px;
+  --h2-bar:48px;
+  --h2-gap:12px;
+  --h2-ease:cubic-bezier(.2,.7,.2,1);
+  /* section-label marker: background:var(--h2-mark) 12px 50%/3px 11px no-repeat */
+  --h2-mark:linear-gradient(var(--h2-accent),var(--h2-accent));
+  color-scheme:dark;
+}
+:root[data-h2-theme="light"]{
+  --h2-bg:#ffffff;
+  --h2-surface:#f6f6f7;
+  --h2-surface-2:#ededef;
+  --h2-surface-3:#e3e3e6;
+  --h2-line:#dadade;
+  --h2-line-strong:#b3b3ba;
+  --h2-fg:#0b0b0c;
+  --h2-fg-dim:#5e5e67;
+  --h2-fg-mute:#9b9ba4;
+  --h2-accent-soft:rgba(215,40,47,.10);
+  --h2-shadow:0 18px 50px rgba(0,0,0,.16);
+  --h2-backdrop:rgba(10,10,12,.38);
+  color-scheme:light;
+}
+
+/* ── base chrome (low-specificity, safe for tool content) ── */
+:where(html){-webkit-text-size-adjust:100%}
+::selection{background:var(--h2-accent);color:var(--h2-accent-fg)}
+:where(*){scrollbar-width:thin;scrollbar-color:var(--h2-line-strong) transparent}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--h2-line-strong);border:3px solid transparent;background-clip:padding-box}
+::-webkit-scrollbar-thumb:hover{background:var(--h2-fg-mute);background-clip:padding-box;border:3px solid transparent}
+::-webkit-scrollbar-corner{background:transparent}
+:where(button,[role="button"],a,input,select,textarea,summary):focus-visible{outline:1px solid var(--h2-accent);outline-offset:1px}
+:where(input[type="checkbox"],input[type="radio"]){accent-color:var(--h2-accent)}
+
+/* range — thin rail, square accent thumb */
+:where(input[type="range"]){-webkit-appearance:none;appearance:none;background:transparent;height:18px;cursor:pointer;accent-color:var(--h2-accent)}
+:where(input[type="range"])::-webkit-slider-runnable-track{height:2px;background:var(--h2-line-strong)}
+:where(input[type="range"])::-moz-range-track{height:2px;background:var(--h2-line-strong)}
+:where(input[type="range"])::-webkit-slider-thumb{-webkit-appearance:none;width:10px;height:14px;margin-top:-6px;background:var(--h2-accent);border:0;border-radius:0}
+:where(input[type="range"])::-moz-range-thumb{width:10px;height:14px;background:var(--h2-accent);border:0;border-radius:0}
+:where(input[type="range"]):hover::-webkit-slider-thumb{background:var(--h2-accent-hover)}
+
+/* ── reusable components (opt-in classes) ── */
+.h2-btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  height:var(--h2-ctl);padding:0 12px;
+  font:600 var(--h2-fs-sm)/1 var(--h2-font);letter-spacing:var(--h2-track);text-transform:uppercase;
+  color:var(--h2-fg);background:transparent;border:1px solid var(--h2-line-strong);border-radius:0;
+  cursor:pointer;white-space:nowrap;transition:background .15s,border-color .15s,color .15s;
+}
+.h2-btn:hover{border-color:var(--h2-fg-dim);background:var(--h2-surface-2)}
+.h2-btn:disabled{opacity:.38;cursor:not-allowed}
+.h2-btn--primary{background:var(--h2-accent);border-color:var(--h2-accent);color:var(--h2-accent-fg)}
+.h2-btn--primary:hover{background:var(--h2-accent-hover);border-color:var(--h2-accent-hover)}
+.h2-btn--ghost{border-color:transparent;color:var(--h2-fg-dim)}
+.h2-btn--ghost:hover{color:var(--h2-fg);background:var(--h2-surface-2);border-color:transparent}
+.h2-btn--sm{height:var(--h2-ctl-sm);padding:0 9px;font-size:var(--h2-fs-xs)}
+.h2-label{font:600 var(--h2-fs-xs)/1.2 var(--h2-font);letter-spacing:var(--h2-track-label);text-transform:uppercase;color:var(--h2-fg-dim)}
+.h2-field{height:var(--h2-ctl);padding:0 10px;font:var(--h2-fs)/1 var(--h2-font);color:var(--h2-fg);background:var(--h2-surface-2);border:1px solid var(--h2-line);border-radius:0}
+.h2-field:focus{border-color:var(--h2-accent);outline:none}
+
+/* toast shared by bridge */
+#h2-toast{position:fixed;left:50%;bottom:22px;transform:translate(-50%,16px);z-index:2147483000;
+  padding:10px 16px;background:var(--h2-fg);color:var(--h2-bg);font:600 11px/1 var(--h2-font);letter-spacing:.14em;text-transform:uppercase;
+  opacity:0;pointer-events:none;transition:opacity .2s,transform .25s var(--h2-ease);box-shadow:var(--h2-shadow)}
+#h2-toast.show{opacity:1;transform:translate(-50%,0)}
+@media (prefers-reduced-motion:reduce){*{transition-duration:0s!important;animation-duration:0s!important}}
+
+/* ── tool hamburgers — drawn exactly like the hub's (40 px square, 18 px three-bar icon, accent on hover) ── */
+:is(.menu-btn,.hamburger-inline,#menuBtn,.trm-burger-btn,.tool-trm .trm-hamburger){
+  width:40px!important;height:40px!important;min-width:40px!important;flex:0 0 40px!important;padding:0!important;gap:0!important;
+  display:inline-flex!important;align-items:center!important;justify-content:center!important;
+  border:1px solid var(--h2-line-strong)!important;border-radius:0!important;background:transparent!important;color:var(--h2-fg)!important;
+  cursor:pointer;transition:background .12s,border-color .12s,color .12s!important}
+#menuBtn{background:var(--h2-bg)!important}
+:is(.menu-btn,.hamburger-inline,#menuBtn,.trm-burger-btn,.tool-trm .trm-hamburger) > span{display:none!important}
+:is(.menu-btn,.hamburger-inline,#menuBtn,.trm-burger-btn,.tool-trm .trm-hamburger)::before{content:"";width:18px;height:18px;flex:0 0 18px;background:currentColor;
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.4' stroke-linecap='square'%3E%3Cpath d='M3 6.5h18M3 12h18M3 17.5h18'/%3E%3C/svg%3E") center/18px 18px no-repeat;
+          mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.4' stroke-linecap='square'%3E%3Cpath d='M3 6.5h18M3 12h18M3 17.5h18'/%3E%3C/svg%3E") center/18px 18px no-repeat}
+:is(.menu-btn,.hamburger-inline,#menuBtn,.trm-burger-btn,.tool-trm .trm-hamburger):is(:hover,.active,.open,[aria-expanded="true"]){
+  background:var(--h2-accent)!important;border-color:var(--h2-accent)!important;color:var(--h2-accent-fg)!important}

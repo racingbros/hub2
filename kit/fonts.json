@@ -1,0 +1,132 @@
+{
+ "fonts": {
+  "POST_CREATOR.html": {
+   "Barlow Condensed": [
+    300,
+    400,
+    500,
+    600,
+    700,
+    800
+   ],
+   "Barlow": [
+    400,
+    500,
+    600,
+    700
+   ]
+  },
+  "PUBSYS.html": {
+   "Barlow Condensed": [
+    300,
+    500,
+    700
+   ],
+   "Montserrat": [
+    300,
+    400,
+    500,
+    600,
+    700
+   ],
+   "Roboto Condensed": [
+    300,
+    700
+   ]
+  },
+  "MANUAL_CREATOR.html": {
+   "Barlow Condensed": [
+    300,
+    500
+   ],
+   "Montserrat": [
+    300,
+    400,
+    500,
+    600,
+    700,
+    800
+   ],
+   "Roboto Condensed": [
+    300,
+    700
+   ]
+  },
+  "DISTRIBUTORS_TAIWAN.html": {
+   "Roboto Mono": [
+    400,
+    500,
+    700
+   ],
+   "Oswald": [
+    400,
+    500,
+    600,
+    700
+   ],
+   "Inter": [
+    400,
+    500,
+    600,
+    700,
+    800
+   ],
+   "Montserrat": [
+    700,
+    800,
+    900
+   ],
+   "Saira Condensed": [
+    700,
+    800,
+    900
+   ]
+  },
+  "DISTRIBUTORS_GLOBAL.html": {
+   "Roboto Mono": [
+    400,
+    500,
+    700
+   ],
+   "Oswald": [
+    400,
+    500,
+    600,
+    700
+   ],
+   "Inter": [
+    400,
+    500,
+    600,
+    700,
+    800
+   ],
+   "Montserrat": [
+    700,
+    800,
+    900
+   ],
+   "Saira Condensed": [
+    700,
+    800,
+    900
+   ]
+  }
+ },
+ "files": {
+  "Barlow Condensed": "barlow-condensed",
+  "Barlow": "barlow",
+  "Montserrat": "montserrat",
+  "Roboto Condensed": "roboto-condensed",
+  "Roboto Mono": "roboto-mono",
+  "Oswald": "oswald",
+  "Inter": "inter",
+  "Saira Condensed": "saira-condensed"
+ },
+ "vendor": {
+  "PUBSYS.html": [
+   "jszip.min.js",
+   "html2canvas.min.js"
+  ]
+ }
+}

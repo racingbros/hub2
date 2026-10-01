@@ -1,0 +1,95 @@
+/* chrome → HUB 2.0 tokens */
+:root{
+  --paper:var(--h2-bg); --panel:var(--h2-surface-2); --panel-2:var(--h2-surface-3); --panel-3:var(--h2-surface-3);
+  --ink:var(--h2-fg); --ink-soft:var(--h2-fg); --ink-mid:var(--h2-fg-dim); --ink-faint:var(--h2-fg-mute); --ink-disabled:var(--h2-fg-mute);
+  --rule:var(--h2-line-strong); --rule-thin:var(--h2-line-strong); --rule-faint:var(--h2-line);
+  --accent-red:var(--h2-accent); --accent-red-d:var(--h2-accent-hover);
+  --btn-bg:var(--h2-surface); --btn-bg-hover:var(--h2-surface-2); --btn-active:var(--h2-accent);
+  --mono:var(--h2-font); --din:var(--h2-font);
+}
+body{background:var(--h2-bg);font-family:var(--h2-font)}
+::-webkit-scrollbar-track,::-webkit-scrollbar-corner{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--h2-line-strong);border-color:var(--h2-bg)}
+*{scrollbar-color:var(--h2-line-strong) transparent}
+.gt-main{padding:16px 20px 28px}
+.tool-trm{color:var(--h2-fg)}
+/* panels */
+.tool-trm .brand-bar,.tool-trm .product-config,.tool-trm .panel,.tool-trm .preview-title-bar,.tool-trm .preview-block{border-color:var(--h2-line);background:var(--h2-surface)}
+.tool-trm .brand-bar{padding:10px 12px;position:relative}
+.tool-trm .brand-bar::before{content:"";position:absolute;left:-1px;top:-1px;bottom:-1px;width:4px;background:var(--h2-accent)}
+.tool-trm .panel>h2,.tool-trm .product-config>h2{font-family:var(--h2-font)!important;font-size:11px;letter-spacing:.2em;border-bottom-color:var(--h2-line)}
+.tool-trm .panel-caret,.tool-trm .block-toggle .caret{color:var(--h2-accent)}
+.tool-trm .preview-block-head{background:var(--h2-surface-2);border-bottom-color:var(--h2-line)}
+.tool-trm .block-toggle{font-family:var(--h2-font);font-size:11px;letter-spacing:.2em}
+.tool-trm .preview-brand-name{color:var(--h2-fg)}
+/* tabs & buttons */
+.tool-trm .brand-tab,.tool-trm .brand-del-btn,.tool-trm .brand-dup-btn{border-color:var(--h2-line-strong);background:transparent;height:30px}
+.tool-trm .brand-tab{font-family:var(--h2-font);font-size:11.5px;letter-spacing:.18em;padding:0 14px}
+.tool-trm .brand-tab:hover{background:var(--h2-surface-2);border-color:var(--h2-fg-mute)}
+.tool-trm .brand-tab.active,.tool-trm .brand-tab-wrap.active .brand-tab{background:var(--h2-accent);border-color:var(--h2-accent);color:var(--h2-accent-fg)}
+.tool-trm .brand-add-btn{height:30px;font-family:var(--h2-font);font-size:10.5px;letter-spacing:.18em;border-color:var(--h2-line-strong)}
+.tool-trm button{font-family:var(--h2-font)}
+.tool-trm .btn-primary,.tool-trm .btn-secondary,.tool-trm .btn-ghost,.tool-trm .btn-warn{font-weight:700;letter-spacing:.16em;min-height:26px}
+.tool-trm .btn-primary{color:var(--h2-accent-fg)}
+.tool-trm .btn-secondary,.tool-trm .btn-ghost{background:transparent;border-color:var(--h2-line-strong)}
+/* hover states that painted white text on --ink */
+.tool-trm .brand-dup-btn:hover,.tool-trm .brand-add-btn:hover,.tool-trm .brand-rename-btn:hover,
+.tool-trm .btn-secondary:hover,.tool-trm .btn-ghost:hover,.tool-trm .add-store:hover{background:var(--h2-fg);color:var(--h2-bg);border-color:var(--h2-fg)}
+.tool-trm .brand-del-btn:hover,.tool-trm .btn-warn:hover{color:var(--h2-accent-fg)}
+/* editor */
+.tool-trm .product-item{background:var(--h2-surface-2);border-color:var(--h2-line)}
+.tool-trm .product-item input[type="text"]{color:var(--h2-fg)}
+.tool-trm .city-card{border-color:var(--h2-line);background:var(--h2-surface)}
+.tool-trm .city-header{background:var(--h2-surface-2)}
+.tool-trm .city-name,.tool-trm .store-name{color:var(--h2-fg)}
+.tool-trm .city-name:focus,.tool-trm .store-name:focus,.tool-trm .store-row-link input:focus{background:var(--h2-bg);color:var(--h2-fg)}
+.tool-trm .store-name:hover{background:var(--h2-surface-2)}
+.tool-trm .city-side,.tool-trm .store-row-link input,.tool-trm select{background:var(--h2-bg);color:var(--h2-fg);border-color:var(--h2-line-strong);font-family:var(--h2-mono)}
+.tool-trm .store-row-link input::placeholder{color:var(--h2-fg-mute);font-style:normal}
+.tool-trm .toggle-btn{background:transparent;color:var(--h2-fg-mute);border-color:var(--h2-line-strong)}
+.tool-trm .add-store{border-color:var(--h2-line-strong);color:var(--h2-fg-dim);height:30px}
+.tool-trm .map-svg-panel .map-svg-frame{background:var(--h2-bg);border-color:var(--h2-line)}
+/* the map thumbnail is a white-land SVG: keep it on a dark tray in light schemes too */
+[data-h2-theme="light"] .tool-trm .map-svg-panel .map-svg-frame{background:#3f3f43;border-color:#3f3f43}
+.tool-trm .map-svg-panel .map-svg-badge{background:var(--h2-surface-3);color:var(--h2-fg-dim);font-family:var(--h2-mono)}
+.tool-trm .map-svg-panel .map-svg-hint{color:var(--h2-fg-mute);font-family:var(--h2-font);letter-spacing:.06em}
+.tool-trm .map-zoom-ctrl{border-color:var(--h2-line-strong);background:var(--h2-bg)}
+.tool-trm .map-zoom-label{color:var(--h2-fg-dim);letter-spacing:.16em}
+.tool-trm .map-zoom-value{font-family:var(--h2-mono);color:var(--h2-fg)}
+.tool-trm input[type="range"]{accent-color:var(--h2-accent)}
+.tool-trm .map-svg-resize-handle,.tool-trm .col-splitter,.tool-trm .resize-handle{background:var(--h2-surface-2)!important;
+  background-image:linear-gradient(var(--h2-line-strong),var(--h2-line-strong))!important;background-repeat:no-repeat!important;background-position:center!important}
+.tool-trm .map-svg-resize-handle,.tool-trm .resize-handle{background-size:40px 2px!important}
+.tool-trm .col-splitter{background-size:2px 40px!important}
+.tool-trm .map-svg-resize-handle:hover,.tool-trm .col-splitter:hover,.tool-trm .resize-handle:hover{background-color:var(--h2-accent)!important;background-image:none!important}
+.tool-trm .hint-inline,.tool-trm .drag-hint{border-color:var(--h2-line);color:var(--h2-fg-mute);font-family:var(--h2-font);letter-spacing:.12em}
+.tool-trm .trm-devpanel{background:var(--h2-bg);border-left-color:var(--h2-line-strong);box-shadow:var(--h2-shadow)}
+.tool-trm .trm-devpanel-head{border-bottom-color:var(--h2-line)}
+.tool-trm .trm-devpanel-section{border-bottom-color:var(--h2-line)}
+.tool-trm .trm-devpanel-section h4{color:var(--h2-fg-dim);letter-spacing:.2em}
+.tool-trm .trm-ctrl select,.tool-trm .trm-ctrl input{background:var(--h2-surface-2);color:var(--h2-fg);border-color:var(--h2-line-strong)}
+.tool-trm .trm-devpanel-reset:hover{background:var(--h2-fg);color:var(--h2-bg)}
+/* output canvases keep their print palette (what EXPORT produces) */
+.tool-trm .preview-block-body{
+  --paper:#dcdce0; --panel:#c8c8cc; --panel-2:#b8b8bc; --panel-3:#d4d4d8;
+  --ink:#0a0a0a; --ink-soft:#2a2a2c; --ink-mid:#4a4a4e; --ink-faint:#6a6a6e;
+  --rule:#0a0a0a; --rule-thin:#888890; --rule-faint:#a8a8ac;
+  --accent-red:#c4102d; --btn-bg:#ffffff; --btn-bg-hover:#f0f0f4;
+  --mono:"Roboto Mono","JetBrains Mono","Consolas","Noto Sans TC","Microsoft JhengHei",monospace;
+  --din:"Oswald","DIN Alternate","DIN Pro Condensed","Bebas Neue","Arial Narrow",sans-serif;
+  background:#fff;color:#0a0a0a;
+}
+.tool-trm #mapBlock .preview-block-body{outline-color:var(--h2-line-strong)}
+/* modals */
+.tool-trm .modal-overlay,.gt-modal-overlay{background:var(--h2-backdrop)}
+.tool-trm .modal,.gt-modal{background:var(--h2-bg);color:var(--h2-fg);border-top:3px solid var(--h2-accent)}
+/* rules that painted white text on --ink (now theme-dependent) */
+.gt-modal-head,.gt-btn:hover,.gt-tab.active,.gt-tab-rename:hover{background:var(--h2-fg);color:var(--h2-bg)}
+.tool-trm .trm-devpanel-head .num{background:var(--h2-accent);color:var(--h2-accent-fg)}
+.tool-trm .trm-devpanel-close{background:transparent;border-color:var(--h2-line-strong);color:var(--h2-fg)}
+.tool-trm .trm-devpanel-close:hover{color:var(--h2-accent-fg)}
+.gt-modal{border:1px solid var(--h2-line-strong);box-shadow:var(--h2-shadow)}
+.gt-prompt-modal input{background:var(--h2-surface);color:var(--h2-fg);border-color:var(--h2-line-strong)}
+.gt-btn{background:transparent;color:var(--h2-fg);border-color:var(--h2-line-strong)}
+.gt-btn-primary{background:var(--h2-accent);border-color:var(--h2-accent);color:var(--h2-accent-fg)}
+.gt-btn-primary:hover{background:var(--h2-accent-hover);color:var(--h2-accent-fg)}

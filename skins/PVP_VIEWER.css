@@ -1,0 +1,52 @@
+/* chrome + on-screen plot follow HUB 2.0 (dark plot in dark mode); PNG/SVG/HTML exports always render on white paper */
+:root{--font:var(--h2-font);--ink:var(--h2-fg);--soft:var(--h2-fg-dim);--hair:var(--h2-line);--paper:var(--h2-bg);--wash:var(--h2-surface-2)}
+body{background:var(--h2-bg);color:var(--h2-fg)}
+button,input,select{color:var(--h2-fg)}
+.bar{background:var(--h2-bg);border-bottom-color:var(--h2-line);padding:0 12px;min-height:48px}
+.brand{font-size:14px;letter-spacing:.16em;padding:0 16px 0 12px;border-left:4px solid var(--h2-accent);margin-right:6px;line-height:22px}
+.stat{font-family:var(--h2-font);color:var(--h2-fg-mute);letter-spacing:.16em}
+.btn{border:1px solid var(--h2-line-strong);background:transparent;color:var(--h2-fg);height:30px;padding:0 13px;font-size:11px;letter-spacing:.16em}
+.btn:hover{background:var(--h2-surface-2);color:var(--h2-fg);border-color:var(--h2-fg-dim)}
+.btn:disabled,.btn:disabled:hover{background:transparent;border-color:var(--h2-line);color:var(--h2-fg-mute)}
+.tool{height:30px;padding:0 11px;background:transparent;color:var(--h2-fg-dim);font-weight:700;letter-spacing:.14em;font-size:11px}
+.tool:hover{background:var(--h2-surface-2);color:var(--h2-fg)}
+.tool.on{background:var(--h2-fg);color:var(--h2-bg)}
+.sep{background:var(--h2-line);margin:8px 6px}
+.menupanel{background:var(--h2-bg);border:1px solid var(--h2-line-strong);border-top:3px solid var(--h2-accent);box-shadow:var(--h2-shadow)}
+.menupanel button{color:var(--h2-fg);letter-spacing:.16em;font-size:11px}
+.menupanel button:hover{background:var(--h2-accent);color:var(--h2-accent-fg)}
+.tabs{background:var(--h2-surface);padding:0 12px;min-height:44px}
+.tab{background:transparent;border-bottom-color:transparent;padding:0 14px;height:44px;position:relative}
+.tab:hover{background:var(--h2-surface-2)}
+.tab.active{background:var(--h2-bg);border:1px solid var(--h2-line);border-bottom-color:var(--h2-bg)}
+.tab.active::before{content:"";position:absolute;left:-1px;right:-1px;top:-1px;height:2px;background:var(--h2-accent)}
+.tab b{letter-spacing:.14em}
+.tab i:hover{color:var(--h2-accent)}
+.tabadd{color:var(--h2-fg-dim)}
+.tabadd:hover{background:var(--h2-surface-2);color:var(--h2-fg)}
+.axgrp label{color:var(--h2-fg-dim);letter-spacing:.16em}
+.axgrp input,select,input[type=number]{background:var(--h2-surface-2);border-color:var(--h2-line);color:var(--h2-fg);height:30px;font-family:var(--h2-mono);font-size:11.5px}
+.axgrp input:focus,select:focus,input:focus{border-color:var(--h2-accent)}
+.axgrp input::placeholder{color:var(--h2-fg-mute)}
+aside{background:var(--h2-surface);border-right-color:var(--h2-line)}
+aside section{border-bottom-color:var(--h2-line);padding:16px}
+aside h2{font-size:10.5px;color:var(--h2-fg-dim);letter-spacing:.2em;background:var(--h2-mark) 0 50%/3px 11px no-repeat;padding-left:12px}
+.fld span{color:var(--h2-fg-mute);letter-spacing:.16em}
+.runrow{border-bottom-color:var(--h2-line)}
+.runrow:hover{background:var(--h2-surface-2)}
+.runrow .t em{color:var(--h2-fg-dim)}
+.rctl input.rlw,.rctl select.rdash{height:26px}
+.chk{color:var(--h2-fg);letter-spacing:.12em;font-weight:600}
+main{background:var(--h2-bg)}
+#chartwrap{background:var(--h2-bg)}
+#readout{background:var(--h2-surface);color:var(--h2-fg);border-color:var(--h2-line-strong);font-family:var(--h2-mono);letter-spacing:.02em}
+#foot{background:var(--h2-surface);border-top-color:var(--h2-line);color:var(--h2-fg-mute);letter-spacing:.14em;padding:0 16px;min-height:34px;align-items:center}
+#foot b{color:var(--h2-fg);font-family:var(--h2-mono);font-weight:600;letter-spacing:.02em}
+#drop{background:var(--h2-bg)}
+#drop .inner{border:1px dashed var(--h2-line-strong);background:var(--h2-surface);position:relative}
+#drop .inner::before{content:"";position:absolute;left:-1px;right:-1px;top:-1px;height:3px;background:var(--h2-accent)}
+#drop.over .inner{border-color:var(--h2-accent);background:var(--h2-accent-soft)}
+#drop p{color:var(--h2-fg-dim);letter-spacing:.14em}
+.err{background:var(--h2-accent-soft);border-color:var(--h2-accent);color:var(--h2-fg)}
+table.props td{border-bottom-color:var(--h2-line);font-family:var(--h2-mono)}
+details summary{color:var(--h2-fg-dim)}

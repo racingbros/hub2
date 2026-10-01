@@ -1,0 +1,1957 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!--HUB2:KIT:BEGIN-->
+<style id="hub2-kit">
+/* ══════════════════════════════════════════════════════════════
+   HUB 2.0 KIT — shared design tokens + base chrome
+   Source of truth: kit/hub2-kit.css  →  injected by tools/sync-kit.js
+   Language: racing red · zero radius · condensed caps · hairline rules
+   ══════════════════════════════════════════════════════════════ */
+:root{
+  /* surfaces (dark default — RACING) */
+  --h2-bg:#0b0b0c;
+  --h2-surface:#131315;
+  --h2-surface-2:#1a1a1d;
+  --h2-surface-3:#232327;
+  --h2-line:#27272b;
+  --h2-line-strong:#3b3b41;
+  /* ink */
+  --h2-fg:#f2f2f3;
+  --h2-fg-dim:#9b9ba2;
+  --h2-fg-mute:#5d5d65;
+  /* signal */
+  --h2-accent:#d7282f;
+  --h2-accent-hover:#ea3a41;
+  --h2-accent-fg:#ffffff;
+  --h2-accent-soft:rgba(215,40,47,.14);
+  --h2-ok:#2fb86e;
+  --h2-warn:#e9a23b;
+  --h2-info:#3d8bfd;
+  --h2-shadow:0 18px 50px rgba(0,0,0,.45);
+  --h2-backdrop:rgba(0,0,0,.62);
+  /* type */
+  --h2-font:'Bahnschrift','Bahnschrift SemiCondensed','DIN Alternate','Roboto Condensed','Barlow Condensed','Arial Narrow','Microsoft JhengHei','PingFang TC','Noto Sans TC',sans-serif;
+  --h2-mono:'Cascadia Mono','JetBrains Mono','Roboto Mono',Consolas,'Microsoft JhengHei',monospace;
+  --h2-track:.08em;
+  --h2-track-label:.16em;
+  --h2-fs:13px;
+  --h2-fs-sm:11px;
+  --h2-fs-xs:10px;
+  /* metrics */
+  --h2-ctl:30px;
+  --h2-ctl-sm:24px;
+  --h2-bar:48px;
+  --h2-gap:12px;
+  --h2-ease:cubic-bezier(.2,.7,.2,1);
+  /* section-label marker: background:var(--h2-mark) 12px 50%/3px 11px no-repeat */
+  --h2-mark:linear-gradient(var(--h2-accent),var(--h2-accent));
+  color-scheme:dark;
+}
+:root[data-h2-theme="light"]{
+  --h2-bg:#ffffff;
+  --h2-surface:#f6f6f7;
+  --h2-surface-2:#ededef;
+  --h2-surface-3:#e3e3e6;
+  --h2-line:#dadade;
+  --h2-line-strong:#b3b3ba;
+  --h2-fg:#0b0b0c;
+  --h2-fg-dim:#5e5e67;
+  --h2-fg-mute:#9b9ba4;
+  --h2-accent-soft:rgba(215,40,47,.10);
+  --h2-shadow:0 18px 50px rgba(0,0,0,.16);
+  --h2-backdrop:rgba(10,10,12,.38);
+  color-scheme:light;
+}
+
+/* ── base chrome (low-specificity, safe for tool content) ── */
+:where(html){-webkit-text-size-adjust:100%}
+::selection{background:var(--h2-accent);color:var(--h2-accent-fg)}
+:where(*){scrollbar-width:thin;scrollbar-color:var(--h2-line-strong) transparent}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--h2-line-strong);border:3px solid transparent;background-clip:padding-box}
+::-webkit-scrollbar-thumb:hover{background:var(--h2-fg-mute);background-clip:padding-box;border:3px solid transparent}
+::-webkit-scrollbar-corner{background:transparent}
+:where(button,[role="button"],a,input,select,textarea,summary):focus-visible{outline:1px solid var(--h2-accent);outline-offset:1px}
+:where(input[type="checkbox"],input[type="radio"]){accent-color:var(--h2-accent)}
+
+/* range — thin rail, square accent thumb */
+:where(input[type="range"]){-webkit-appearance:none;appearance:none;background:transparent;height:18px;cursor:pointer;accent-color:var(--h2-accent)}
+:where(input[type="range"])::-webkit-slider-runnable-track{height:2px;background:var(--h2-line-strong)}
+:where(input[type="range"])::-moz-range-track{height:2px;background:var(--h2-line-strong)}
+:where(input[type="range"])::-webkit-slider-thumb{-webkit-appearance:none;width:10px;height:14px;margin-top:-6px;background:var(--h2-accent);border:0;border-radius:0}
+:where(input[type="range"])::-moz-range-thumb{width:10px;height:14px;background:var(--h2-accent);border:0;border-radius:0}
+:where(input[type="range"]):hover::-webkit-slider-thumb{background:var(--h2-accent-hover)}
+
+/* ── reusable components (opt-in classes) ── */
+.h2-btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  height:var(--h2-ctl);padding:0 12px;
+  font:600 var(--h2-fs-sm)/1 var(--h2-font);letter-spacing:var(--h2-track);text-transform:uppercase;
+  color:var(--h2-fg);background:transparent;border:1px solid var(--h2-line-strong);border-radius:0;
+  cursor:pointer;white-space:nowrap;transition:background .15s,border-color .15s,color .15s;
+}
+.h2-btn:hover{border-color:var(--h2-fg-dim);background:var(--h2-surface-2)}
+.h2-btn:disabled{opacity:.38;cursor:not-allowed}
+.h2-btn--primary{background:var(--h2-accent);border-color:var(--h2-accent);color:var(--h2-accent-fg)}
+.h2-btn--primary:hover{background:var(--h2-accent-hover);border-color:var(--h2-accent-hover)}
+.h2-btn--ghost{border-color:transparent;color:var(--h2-fg-dim)}
+.h2-btn--ghost:hover{color:var(--h2-fg);background:var(--h2-surface-2);border-color:transparent}
+.h2-btn--sm{height:var(--h2-ctl-sm);padding:0 9px;font-size:var(--h2-fs-xs)}
+.h2-label{font:600 var(--h2-fs-xs)/1.2 var(--h2-font);letter-spacing:var(--h2-track-label);text-transform:uppercase;color:var(--h2-fg-dim)}
+.h2-field{height:var(--h2-ctl);padding:0 10px;font:var(--h2-fs)/1 var(--h2-font);color:var(--h2-fg);background:var(--h2-surface-2);border:1px solid var(--h2-line);border-radius:0}
+.h2-field:focus{border-color:var(--h2-accent);outline:none}
+
+/* toast shared by bridge */
+#h2-toast{position:fixed;left:50%;bottom:22px;transform:translate(-50%,16px);z-index:2147483000;
+  padding:10px 16px;background:var(--h2-fg);color:var(--h2-bg);font:600 11px/1 var(--h2-font);letter-spacing:.14em;text-transform:uppercase;
+  opacity:0;pointer-events:none;transition:opacity .2s,transform .25s var(--h2-ease);box-shadow:var(--h2-shadow)}
+#h2-toast.show{opacity:1;transform:translate(-50%,0)}
+@media (prefers-reduced-motion:reduce){*{transition-duration:0s!important;animation-duration:0s!important}}
+
+/* ── tool hamburgers — drawn exactly like the hub's (40 px square, 18 px three-bar icon, accent on hover) ── */
+:is(.menu-btn,.hamburger-inline,#menuBtn,.trm-burger-btn,.tool-trm .trm-hamburger){
+  width:40px!important;height:40px!important;min-width:40px!important;flex:0 0 40px!important;padding:0!important;gap:0!important;
+  display:inline-flex!important;align-items:center!important;justify-content:center!important;
+  border:1px solid var(--h2-line-strong)!important;border-radius:0!important;background:transparent!important;color:var(--h2-fg)!important;
+  cursor:pointer;transition:background .12s,border-color .12s,color .12s!important}
+#menuBtn{background:var(--h2-bg)!important}
+:is(.menu-btn,.hamburger-inline,#menuBtn,.trm-burger-btn,.tool-trm .trm-hamburger) > span{display:none!important}
+:is(.menu-btn,.hamburger-inline,#menuBtn,.trm-burger-btn,.tool-trm .trm-hamburger)::before{content:"";width:18px;height:18px;flex:0 0 18px;background:currentColor;
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.4' stroke-linecap='square'%3E%3Cpath d='M3 6.5h18M3 12h18M3 17.5h18'/%3E%3C/svg%3E") center/18px 18px no-repeat;
+          mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.4' stroke-linecap='square'%3E%3Cpath d='M3 6.5h18M3 12h18M3 17.5h18'/%3E%3C/svg%3E") center/18px 18px no-repeat}
+:is(.menu-btn,.hamburger-inline,#menuBtn,.trm-burger-btn,.tool-trm .trm-hamburger):is(:hover,.active,.open,[aria-expanded="true"]){
+  background:var(--h2-accent)!important;border-color:var(--h2-accent)!important;color:var(--h2-accent-fg)!important}
+</style>
+<script id="hub2-bridge">
+/* ══════════════════════════════════════════════════════════════
+   HUB 2.0 BRIDGE — runs inside every tool
+   · theme sync     hub → tool  (postMessage 'hub2:theme' + localStorage)
+   · open file      hub → tool  ('hub2:open'  → tool's own <input type=file>)
+   · save exports   tool → hub  ('hub2:save'  ← any <a download> click)
+   Source of truth: kit/hub2-bridge.js → injected by tools/sync-kit.js
+   ══════════════════════════════════════════════════════════════ */
+(function(){
+  if (window.__HUB2_BRIDGE__) return;
+  var H = window.__HUB2_BRIDGE__ = { lib:{connected:false, saveExports:false}, inHub:false };
+  H.version = '2.0.4';
+  var root = document.documentElement;
+  var TOOL = (location.pathname.split('/').pop() || '').replace(/\.html?$/i,'');
+  var THEME_KEY = 'hub2_theme_v1';
+  try { H.inHub = window.parent && window.parent !== window; } catch(e){ H.inHub = true; }
+  if (H.inHub) root.setAttribute('data-h2-embedded','');
+
+  /* ── THEME ─────────────────────────────────────────── */
+  var VAR_MAP = { bg:'bg', surface:'surface', 'surface-2':'surface-2', hover:'surface-3', border:'line',
+    'border-strong':'line-strong', text:'fg', 'text-dim':'fg-dim', 'text-mute':'fg-mute', accent:'accent', 'accent-text':'accent-fg' };
+  function applyTheme(t){
+    if (!t) return;
+    root.setAttribute('data-h2-theme', t.theme === 'light' ? 'light' : 'dark');
+    var v = t.vars || {};
+    Object.keys(VAR_MAP).forEach(function(k){
+      if (v[k]) root.style.setProperty('--h2-' + VAR_MAP[k], v[k]);
+      else root.style.removeProperty('--h2-' + VAR_MAP[k]);
+    });
+    if (v.accent){
+      root.style.setProperty('--h2-accent-hover', 'color-mix(in srgb, ' + v.accent + ' 82%, #fff)');
+      root.style.setProperty('--h2-accent-soft', 'color-mix(in srgb, ' + v.accent + ' 14%, transparent)');
+    } else { root.style.removeProperty('--h2-accent-hover'); root.style.removeProperty('--h2-accent-soft'); }
+    if (t.font) root.style.setProperty('--h2-font', t.font); else root.style.removeProperty('--h2-font');
+    try { window.dispatchEvent(new CustomEvent('hub2:theme', { detail: t })); } catch(e){}
+  }
+  try { var saved = JSON.parse(localStorage.getItem(THEME_KEY) || 'null'); if (saved) applyTheme(saved); } catch(e){}
+  if (!root.hasAttribute('data-h2-theme')) root.setAttribute('data-h2-theme','dark');
+
+  /* ── TOAST ─────────────────────────────────────────── */
+  function toast(msg){
+    var el = document.getElementById('h2-toast');
+    if (!el){ el = document.createElement('div'); el.id = 'h2-toast'; el.setAttribute('role','status'); (document.body||root).appendChild(el); }
+    el.textContent = msg; el.classList.add('show');
+    clearTimeout(toast._t); toast._t = setTimeout(function(){ el.classList.remove('show'); }, 2400);
+  }
+  H.toast = toast;
+
+  /* ── OPEN FILE ─────────────────────────────────────── */
+  function extOf(n){ var m = /\.([a-z0-9]+)$/i.exec(n||''); return m ? m[1].toLowerCase() : ''; }
+  function accepts(input, file){
+    var acc = (input.getAttribute('accept') || '').toLowerCase().split(',').map(function(s){ return s.trim(); }).filter(Boolean);
+    if (!acc.length) return true;
+    var ext = '.' + extOf(file.name), type = (file.type || '').toLowerCase();
+    return acc.some(function(a){
+      if (a[0] === '.') return a === ext;
+      if (/\/\*$/.test(a)) return type.indexOf(a.slice(0,-1)) === 0;
+      return a === type;
+    });
+  }
+  function pickInput(file){
+    var all = [].slice.call(document.querySelectorAll('input[type="file"]'));
+    var ext = extOf(file.name);
+    /* explicit routing: data-hub2-open="csv svg" */
+    var tagged = all.filter(function(i){ var t = (i.getAttribute('data-hub2-open')||'').toLowerCase().split(/\s+/); return t.indexOf(ext) >= 0; });
+    if (tagged.length) return tagged[0];
+    var ok = all.filter(function(i){ return !i.hasAttribute('data-hub2-skip') && !i.hasAttribute('capture') && accepts(i, file); });
+    /* prefer an input that lives in the part of the tool currently on screen (e.g. the active document tab) */
+    function shown(i){ var p = i.parentElement; return !!(p && p.getClientRects && p.getClientRects().length); }
+    var vis = ok.filter(shown);
+    return vis[0] || ok[0] || null;
+  }
+  H.openFile = function(file){
+    if (typeof window.HUB2_OPEN === 'function'){ var r = window.HUB2_OPEN(file); if (r !== false) return true; }
+    var input = pickInput(file);
+    if (!input) return false;
+    var dt = new DataTransfer(); dt.items.add(file);
+    input.files = dt.files;
+    input.dispatchEvent(new Event('input', { bubbles:true }));
+    input.dispatchEvent(new Event('change', { bubbles:true }));
+    return true;
+  };
+
+  /* ── SAVE EXPORTS → LIBRARY ────────────────────────── */
+  var blobs = new Map();
+  if (typeof URL.createObjectURL === 'function'){
+    var _create = URL.createObjectURL.bind(URL);
+    URL.createObjectURL = function(obj){
+      var u = _create(obj);
+      if (obj instanceof Blob){ blobs.set(u, obj); setTimeout(function(){ blobs.delete(u); }, 120000); }
+      return u;
+    };
+  }
+  function dataUrlToBlob(u){
+    var m = /^data:([^;,]*)(;base64)?,(.*)$/s.exec(u); if (!m) return null;
+    var raw = m[2] ? atob(m[3]) : decodeURIComponent(m[3]);
+    var a = new Uint8Array(raw.length); for (var i=0;i<raw.length;i++) a[i] = raw.charCodeAt(i) & 255;
+    return new Blob([a], { type: m[1] || 'application/octet-stream' });
+  }
+  function captureDownload(a){
+    var forced = H.force && Date.now() - H.force < 60000;   /* hub asked for SAVE / SAVE COPY */
+    if (!H.inHub || !H.lib.connected || !(H.lib.saveExports || forced)) return false;
+    var name = a.getAttribute('download'); if (name == null) return false;
+    var href = a.href || '';
+    var blob = blobs.get(href) || (href.indexOf('data:') === 0 ? dataUrlToBlob(href) : null);
+    if (!blob) return false;
+    if (!name) name = 'export';
+    window.parent.postMessage({ type:'hub2:save', tool:TOOL, name:name, blob:blob }, '*');
+    H.force = 0;
+    return true;
+  }
+  var _click = HTMLAnchorElement.prototype.click;
+  HTMLAnchorElement.prototype.click = function(){ if (captureDownload(this)) return; return _click.apply(this, arguments); };
+  document.addEventListener('click', function(e){
+    var a = e.target && e.target.closest ? e.target.closest('a[download]') : null;
+    if (a && captureDownload(a)) e.preventDefault();
+  }, true);
+
+  /* ── MESSAGES ──────────────────────────────────────── */
+  window.addEventListener('message', function(e){
+    var d = e.data; if (!d || typeof d.type !== 'string' || d.type.indexOf('hub2:') !== 0) return;
+    if (d.type === 'hub2:theme') applyTheme(d.theme);
+    else if (d.type === 'hub2:lib') H.lib = { connected: !!d.connected, saveExports: !!d.saveExports };
+    else if (d.type === 'hub2:open' && d.file){
+      var ok = false; try { ok = H.openFile(d.file); } catch(err){ ok = false; }
+      if (ok) toast('OPENED  ·  ' + d.file.name);
+      if (e.source) e.source.postMessage({ type: ok ? 'hub2:opened' : 'hub2:open-failed', tool:TOOL, name:d.file.name, id:d.id }, '*');
+    }
+    else if (d.type === 'hub2:saved') toast('SAVED TO LIBRARY  ·  ' + d.name);
+    else if (d.type === 'hub2:save-request'){
+      var ok2 = false;
+      H.force = Date.now();
+      try { ok2 = typeof window.HUB2_SAVE === 'function' && window.HUB2_SAVE(d.ext) !== false; } catch(err){ ok2 = false; }
+      if (!ok2) H.force = 0;
+      if (e.source) e.source.postMessage({ type: ok2 ? 'hub2:save-started' : 'hub2:save-unsupported', tool:TOOL, ext:d.ext }, '*');
+    }
+  });
+  /* Ctrl+K / ⌘K inside a tool opens the hub's command palette */
+  if (H.inHub) window.addEventListener('keydown', function(e){
+    if ((e.ctrlKey || e.metaKey) && !e.altKey && !e.shiftKey && (e.key||'').toLowerCase() === 'k'){
+      e.preventDefault(); e.stopPropagation();
+      window.parent.postMessage({ type:'hub2:palette', tool:TOOL }, '*');
+    }
+  }, true);
+  function ready(){ if (H.inHub) window.parent.postMessage({ type:'hub2:ready', tool:TOOL, saves: (window.HUB2_SAVES || []).slice() }, '*'); }
+  if (document.readyState === 'complete') setTimeout(ready, 0); else window.addEventListener('load', function(){ setTimeout(ready, 30); });
+})();
+</script>
+<!--HUB2:KIT:END-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#000000">
+<title>PROJECT-PE</title>
+<style>
+  :root{
+    --bg:#ffffff; --fg:#000000; --border:#000000;
+    --panel:#f4f4f4; --muted:#555555; --select:#d40000;
+    --accent:#d7282f; --accent-fg:#ffffff;
+  }
+  [data-theme="dark"]{
+    --bg:#000000; --fg:#ffffff; --border:#3a3a3a;
+    --panel:#0a0a0a; --muted:#888888; --select:#d7282f;
+    --accent:#d7282f; --accent-fg:#ffffff;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;border-radius:0;}
+  *,*::before,*::after{box-shadow:none!important;}
+  html,body{
+    height:100%;width:100%;overflow:hidden;
+    overscroll-behavior:none;
+    -webkit-text-size-adjust:100%;
+    -webkit-tap-highlight-color:transparent;
+  }
+  body{
+    background:var(--bg);color:var(--fg);
+    font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue","Segoe UI","PingFang TC","Microsoft JhengHei",Arial,sans-serif;
+    font-size:18px;line-height:1.3;
+    display:flex;flex-direction:column;height:100dvh;
+    -webkit-font-smoothing:antialiased;
+  }
+  button,input,textarea,select,label{font:inherit;color:inherit;}
+  button{cursor:pointer;}
+
+  /* TOPBAR */
+  .topbar{flex:0 0 auto;position:relative;background:var(--bg);}
+  .strip{display:flex;border-bottom:1px solid var(--border);align-items:stretch;}
+  .strip.strip0{height:54px;align-items:center;padding-right:4px;}
+  .strip.strip1{height:42px;}
+  .strip > .cell{
+    flex:1 1 0;min-width:0;
+    border:none;border-right:1px solid var(--border);
+    background:var(--bg);color:var(--fg);
+    font-size:18px;font-weight:700;letter-spacing:.4px;
+    display:flex;align-items:center;justify-content:center;text-align:center;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    cursor:pointer;font-family:inherit;
+    user-select:none;-webkit-user-select:none;
+    padding:0 6px;height:100%;
+  }
+  /* Strip 0 cells: 2-line "STEP N / NAME" layout */
+  .strip0 > .cell{
+    flex-direction:column;
+    line-height:1;
+    padding:4px 4px;
+    gap:2px;
+  }
+  .strip0 > .cell small{
+    font-size:11px;font-weight:500;letter-spacing:1.2px;opacity:.65;
+  }
+  .strip0 > .cell strong{
+    font-size:17px;font-weight:800;letter-spacing:.3px;
+  }
+  .strip0 > .cell.active{background:var(--accent);color:var(--accent-fg);}
+  .strip0 > .cell.active small{opacity:1;}
+  .strip1 > .cell{background:var(--panel);font-weight:600;}
+  .strip1 > .cell.primary,
+  .strip1 > .cell.active{background:var(--accent);color:var(--accent-fg);}
+  /* STRIP 2 — inline text editor */
+  .strip.strip2{height:46px;background:var(--panel);}
+  .strip.strip2.hidden{display:none;}
+  .strip2 > .ctrl{
+    flex:0 0 auto;border:none;border-right:1px solid var(--border);
+    background:transparent;color:var(--fg);
+    padding:0 6px;font-family:inherit;
+    display:flex;align-items:center;justify-content:center;
+    height:100%;cursor:pointer;
+  }
+  .strip2 > .ctrl:last-child{border-right:none;}
+  .strip2 > .txt-edit{
+    flex:1 1 0;min-width:0;
+    padding:0 12px;font-size:20px;font-weight:600;
+    text-align:left;cursor:text;outline:none;
+  }
+  .strip2 > .color-edit{
+    flex:0 0 50px;width:50px;padding:6px;
+  }
+  .strip2 > .size-edit{
+    flex:0 0 44px;font-size:20px;font-weight:800;letter-spacing:.5px;
+  }
+  .strip2 > .label-edit{
+    flex:0 0 auto;padding:0 12px;font-size:15px;font-weight:700;
+    letter-spacing:.5px;color:var(--muted);
+  }
+  .strip2 > .val-edit{
+    flex:0 0 56px;padding:0 8px;font-size:17px;font-weight:700;
+    color:var(--fg);justify-content:flex-end;
+  }
+  .strip2 > .range-edit{
+    flex:1 1 0;padding:0 12px;height:100%;
+    -webkit-appearance:none;appearance:none;background:transparent;
+  }
+  .strip2 > .range-edit::-webkit-slider-runnable-track{
+    height:3px;background:var(--border);
+  }
+  .strip2 > .range-edit::-moz-range-track{
+    height:3px;background:var(--border);
+  }
+  .strip2 > .range-edit::-webkit-slider-thumb{
+    -webkit-appearance:none;appearance:none;
+    width:24px;height:24px;margin-top:-11px;
+    background:var(--accent);border:1px solid var(--border);cursor:pointer;
+  }
+  .strip2 > .range-edit::-moz-range-thumb{
+    width:24px;height:24px;
+    background:var(--accent);border:1px solid var(--border);cursor:pointer;
+  }
+  .strip2 > .ctrl:disabled{opacity:.4;}
+  .strip > .cell:disabled,
+  .strip > .cell.is-disabled{opacity:.35;pointer-events:none;}
+  .strip > .cell:last-child{border-right:none;}
+  /* HAMBURGER — small 1:1 square, separated from others */
+  .menu-btn{
+    flex:0 0 34px;width:34px;height:34px;
+    align-self:center;
+    border:1px solid var(--border);
+    background:var(--bg);color:var(--fg);
+    display:flex;flex-direction:column;justify-content:center;align-items:center;gap:4px;
+    padding:0;cursor:pointer;
+    margin-left:8px;
+  }
+  .menu-btn span{display:block;width:18px;height:2px;background:var(--fg);}
+  .menu-panel{
+    position:absolute;top:54px;right:0;
+    width:300px;max-width:92vw;
+    background:var(--bg);border:1px solid var(--border);border-top:none;
+    z-index:60;display:none;max-height:80dvh;overflow-y:auto;
+  }
+  .menu-panel.open{display:block;}
+  .menu-row{
+    padding:14px;border-bottom:1px solid var(--border);
+    display:flex;align-items:center;justify-content:space-between;gap:8px;
+  }
+  .menu-row:last-child{border-bottom:none;}
+  .menu-label{font-size:20px;font-weight:600;}
+  .toggle-group{display:flex;}
+  .toggle-group button{
+    border:1px solid var(--border);background:var(--bg);color:var(--fg);
+    padding:10px 16px;font-size:18px;border-right:none;min-width:60px;font-weight:700;
+  }
+  .toggle-group button:last-child{border-right:1px solid var(--border);}
+  .toggle-group button.active{background:var(--accent);color:var(--accent-fg);}
+  .menu-row .full-btn{
+    display:block;width:100%;
+    border:1px solid var(--border);background:var(--bg);color:var(--fg);
+    padding:14px;font-size:20px;text-align:center;font-weight:700;
+    cursor:pointer;box-sizing:border-box;
+  }
+  .menu-row.stack{flex-direction:column;align-items:stretch;}
+  .lib-list{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;}
+  .lib-thumb{
+    width:54px;height:54px;border:1px solid var(--border);background:var(--panel);
+    background-size:contain;background-position:center;background-repeat:no-repeat;position:relative;
+  }
+  .lib-thumb .x{
+    position:absolute;top:0;right:0;width:20px;height:20px;
+    background:var(--bg);color:var(--fg);border:1px solid var(--border);
+    font-size:15px;line-height:18px;text-align:center;padding:0;
+  }
+  .lib-empty{font-size:16px;color:var(--muted);padding:6px 0 0;}
+
+  .hidden-input{
+    position:absolute;left:-99999px;top:0;
+    width:1px;height:1px;opacity:0;pointer-events:none;
+  }
+
+  /* STAGE */
+  .stage{flex:1 1 auto;position:relative;overflow:hidden;background:var(--panel);min-height:0;}
+  .canvas{
+    position:absolute;top:50%;left:50%;
+    transform:translate(-50%,-50%);
+    background:#ffffff;overflow:hidden;touch-action:none;
+  }
+  .canvas img.bg{width:100%;height:100%;object-fit:contain;display:block;pointer-events:none;}
+  .item{position:absolute;border:1px dashed transparent;touch-action:none;user-select:none;-webkit-user-select:none;
+    transition:opacity .45s ease-in-out;
+  }
+  .item.step1-hidden{opacity:0;pointer-events:none;}
+  .item.selected{border-color:var(--select);}
+  .item img{width:100%;height:100%;display:block;pointer-events:none;}
+  .item img.cover{object-fit:cover;}
+  .item .text-content{
+    width:100%;height:100%;
+    display:flex;align-items:center;justify-content:center;
+    text-align:center;word-break:break-word;overflow:hidden;
+    padding:2px;pointer-events:none;line-height:1.1;
+  }
+  .item .handle{
+    position:absolute;width:20px;height:20px;
+    background:var(--bg);border:2px solid var(--select);display:none;
+  }
+  .item.selected .handle{display:block;}
+  .item .h-br{bottom:-10px;right:-10px;cursor:nwse-resize;}
+  .item .h-del{
+    top:-10px;right:-10px;background:var(--select);border-color:var(--select);color:#fff;
+    font-size:15px;line-height:16px;text-align:center;font-weight:700;
+  }
+
+  /* EMPTY STATE — tappable label + animated hint */
+  .empty{
+    position:absolute;inset:0;
+    display:flex;align-items:center;justify-content:center;text-align:center;
+    padding:24px;color:var(--fg);
+    font-size:24px;font-weight:700;letter-spacing:.5px;
+    cursor:pointer;
+    animation:tap-hint 1.8s ease-in-out infinite;
+  }
+  .empty::after{
+    content:"";position:absolute;
+    top:50%;left:50%;transform:translate(-50%,-50%);
+    width:85%;max-width:391px;height:90px;
+    border:2px dashed var(--accent);
+    pointer-events:none;
+    animation:tap-hint-frame 1.8s ease-in-out infinite;
+  }
+  @keyframes tap-hint{
+    0%,100%{opacity:.65;}
+    50%{opacity:1;}
+  }
+  @keyframes tap-hint-frame{
+    0%,100%{transform:translate(-50%,-50%) scale(1);opacity:.55;}
+    50%    {transform:translate(-50%,-50%) scale(1.04);opacity:1;}
+  }
+
+  /* THUMBS */
+  .thumbs{
+    flex:0 0 auto;height:56px;border-top:1px solid var(--border);
+    display:flex;overflow-x:auto;padding:5px;gap:5px;background:var(--bg);
+  }
+  .thumbs.hidden{display:none;}
+  .thumb{
+    height:46px;width:46px;border:1px solid var(--border);
+    object-fit:cover;flex:0 0 auto;background:var(--panel);
+  }
+  .thumb.active{outline:2px solid var(--accent);outline-offset:-2px;}
+
+  /* MODAL */
+  .modal{
+    position:fixed;inset:0;background:rgba(0,0,0,.55);
+    display:none;align-items:center;justify-content:center;
+    z-index:200;padding:14px;
+  }
+  .modal.open{display:flex;}
+  .modal-box{
+    background:var(--bg);color:var(--fg);border:1px solid var(--border);
+    width:100%;max-width:400px;max-height:90dvh;overflow-y:auto;
+  }
+  .modal-head{padding:16px;border-bottom:1px solid var(--border);font-size:20px;font-weight:700;letter-spacing:1px;}
+  .modal-body{padding:16px;display:flex;flex-direction:column;gap:14px;}
+  .field label{display:block;font-size:18px;font-weight:600;margin-bottom:6px;}
+  .field textarea,.field input[type="text"]{
+    width:100%;border:1px solid var(--border);background:var(--bg);color:var(--fg);
+    padding:12px;font-size:20px;
+  }
+  .field textarea{min-height:72px;resize:vertical;}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .field input[type="color"]{width:100%;height:44px;border:1px solid var(--border);background:var(--bg);padding:2px;}
+  .field input[type="range"]{width:100%;}
+  .modal-foot{padding:16px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:flex-end;}
+  .modal-foot button{
+    border:1px solid var(--border);background:var(--bg);color:var(--fg);
+    padding:12px 20px;font-weight:700;font-size:19px;letter-spacing:.5px;
+  }
+  .modal-foot button.primary{background:var(--accent);color:var(--accent-fg);}
+
+  .pick-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+  .pick-grid button{
+    aspect-ratio:1/1;border:1px solid var(--border);background:var(--panel);
+    background-size:contain;background-position:center;background-repeat:no-repeat;padding:0;
+  }
+
+  .toast{
+    position:fixed;left:50%;bottom:60px;transform:translateX(-50%);
+    background:var(--accent);color:var(--accent-fg);padding:12px 18px;font-size:18px;
+    border:1px solid var(--border);z-index:300;opacity:0;transition:opacity .2s;pointer-events:none;
+    font-weight:700;letter-spacing:.5px;
+  }
+  .toast.show{opacity:1;}
+
+  /* VIDEO THUMB BADGE */
+  .thumb-wrap{position:relative;flex:0 0 auto;}
+  .thumb-wrap .vbadge{
+    position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+    width:18px;height:18px;border-radius:50%;
+    background:rgba(0,0,0,.55);
+    display:flex;align-items:center;justify-content:center;
+    pointer-events:none;
+  }
+  .thumb-wrap .vbadge::after{
+    content:"";width:0;height:0;
+    border-left:7px solid #fff;
+    border-top:5px solid transparent;border-bottom:5px solid transparent;
+    margin-left:2px;
+  }
+
+  /* ENCODING OVERLAY (during video export) */
+  .enc-overlay{
+    position:fixed;inset:0;background:rgba(0,0,0,.75);
+    display:none;align-items:center;justify-content:center;flex-direction:column;
+    z-index:400;color:#fff;gap:18px;
+  }
+  .enc-overlay.show{display:flex;}
+  .enc-overlay .spinner{
+    width:42px;height:42px;border:3px solid rgba(255,255,255,.25);
+    border-top-color:var(--accent);border-radius:50%;
+    animation:enc-spin 0.9s linear infinite;
+  }
+  .enc-overlay .label{
+    font-size:18px;font-weight:700;letter-spacing:.6px;
+  }
+  .enc-overlay .bar{
+    width:220px;height:6px;background:rgba(255,255,255,.2);overflow:hidden;
+  }
+  .enc-overlay .bar > i{
+    display:block;height:100%;width:0%;background:var(--accent);transition:width .15s linear;
+  }
+  @keyframes enc-spin{to{transform:rotate(360deg);}}
+</style>
+<style id="hub2-skin">
+/*HUB2:SKIN — tool chrome mapped onto HUB 2.0 tokens. Source: skins/PE.css*/
+:root,[data-theme="dark"],[data-theme="light"]{
+  --bg:var(--h2-bg); --fg:var(--h2-fg); --border:var(--h2-line);
+  --panel:var(--h2-surface); --muted:var(--h2-fg-dim); --select:var(--h2-accent);
+  --accent:var(--h2-accent); --accent-fg:var(--h2-accent-fg);
+}
+body{font-family:var(--h2-font)}
+/* step bar */
+.strip{border-bottom-color:var(--h2-line)}
+.strip > .cell{border-right-color:var(--h2-line);letter-spacing:.12em;text-transform:uppercase}
+.strip.strip0{height:56px;background:var(--h2-bg)}
+.strip0 > .cell{position:relative;align-items:flex-start;padding:0 18px;gap:4px;transition:background .15s,color .15s}
+.strip0 > .cell small{font-size:10px;font-weight:700;letter-spacing:.22em;opacity:1;color:var(--h2-fg-mute)}
+.strip0 > .cell strong{font-size:16px;font-weight:700;letter-spacing:.14em}
+.strip0 > .cell:hover{background:var(--h2-surface)}
+.strip0 > .cell.active{background:var(--h2-surface);color:var(--h2-fg)}
+.strip0 > .cell.active::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:3px;background:var(--h2-accent)}
+.strip0 > .cell.active small{color:var(--h2-accent)}
+.strip.strip1{height:44px}
+.strip1 > .cell{background:var(--h2-surface);font-size:13px;font-weight:700;letter-spacing:.18em}
+.strip1 > .cell:hover{background:var(--h2-surface-2)}
+.strip1 > .cell.primary,.strip1 > .cell.active{background:var(--h2-accent);color:var(--h2-accent-fg)}
+.strip.strip2{background:var(--h2-surface)}
+.strip2 > .ctrl{border-right-color:var(--h2-line)}
+.strip2 > .txt-edit{font-size:16px}
+.strip2 > .label-edit{font-size:11px;letter-spacing:.2em;text-transform:uppercase}
+.strip2 > .val-edit,.strip2 > .size-edit{font-family:var(--h2-mono);font-size:14px}
+.strip2 > .range-edit::-webkit-slider-runnable-track{height:2px;background:var(--h2-line-strong)}
+.strip2 > .range-edit::-webkit-slider-thumb{width:12px;height:20px;margin-top:-9px;border:0}
+.strip2 > .range-edit::-moz-range-thumb{width:12px;height:20px;border:0}
+.menu-btn{margin:0 8px}
+.menu-panel{top:56px;border-color:var(--h2-line-strong);border-top:3px solid var(--h2-accent);box-shadow:var(--h2-shadow)!important}
+.menu-row{border-bottom-color:var(--h2-line)}
+.menu-label{font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--h2-fg-dim)}
+.toggle-group button{font-size:12px;letter-spacing:.16em;padding:8px 12px;border-color:var(--h2-line-strong)}
+.toggle-group button:last-child{border-right-color:var(--h2-line-strong)}
+.menu-row .full-btn{font-size:12px;letter-spacing:.18em;text-transform:uppercase;padding:12px;border-color:var(--h2-line-strong)}
+.menu-row .full-btn:hover{background:var(--h2-surface-2)}
+.lib-thumb,.thumb{border-color:var(--h2-line-strong)}
+/* stage */
+.stage{background:var(--h2-surface);
+  background-image:linear-gradient(var(--h2-line) 1px,transparent 1px),linear-gradient(90deg,var(--h2-line) 1px,transparent 1px);
+  background-size:40px 40px;background-position:center center}
+.empty{font-size:15px;letter-spacing:.22em;text-transform:uppercase;color:var(--h2-fg);animation:none;opacity:1}
+.empty::after{height:84px;border:1px dashed var(--h2-accent);animation:none;opacity:1}
+.thumbs{background:var(--h2-bg);border-top-color:var(--h2-line)}
+/* modals */
+.modal{background:var(--h2-backdrop)}
+.modal-box{border-color:var(--h2-line-strong);border-top:3px solid var(--h2-accent)}
+.modal-head{font-size:14px;letter-spacing:.2em;text-transform:uppercase}
+.field label{font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--h2-fg-dim)}
+.field textarea,.field input[type="text"]{font-size:16px;background:var(--h2-surface);border-color:var(--h2-line-strong)}
+.field textarea:focus,.field input[type="text"]:focus{border-color:var(--h2-accent);outline:0}
+.modal-foot button{font-size:12px;letter-spacing:.18em;text-transform:uppercase;padding:10px 18px;border-color:var(--h2-line-strong)}
+.modal-foot button.primary{border-color:var(--h2-accent)}
+.toast{background:var(--h2-fg);color:var(--h2-bg);border:0;font-size:11px;letter-spacing:.16em;text-transform:uppercase;padding:10px 16px}
+.enc-overlay{background:var(--h2-backdrop);color:var(--h2-fg)}
+.enc-overlay .spinner{border-radius:0;border-color:var(--h2-line-strong);border-top-color:var(--h2-accent)}
+.enc-overlay .label{font-size:12px;letter-spacing:.22em;text-transform:uppercase}
+.enc-overlay .bar{height:2px;background:var(--h2-line-strong)}
+@media (max-width:640px){
+  .strip0 > .cell{padding:0 8px;align-items:center}
+  .strip0 > .cell strong{font-size:14px;letter-spacing:.08em}
+  .strip1 > .cell{font-size:12px;letter-spacing:.1em}
+}
+/* ── desktop density (mouse + wide screen): compact toolbars, phone layout untouched ── */
+@media (min-width:900px) and (pointer:fine){
+  body{font-size:14px}
+  .strip.strip0{height:48px}
+  .strip0 > .cell{flex:0 0 auto;min-width:156px;padding:0 20px}
+  .strip0 > .cell strong{font-size:14px}
+  .strip0 > .cell small{font-size:9.5px}
+  .strip0 .menu-btn{margin-left:auto}
+  .menu-panel{top:48px;width:320px}
+  .strip.strip1{height:40px;background:var(--h2-surface)}
+  .strip1 > .cell{flex:0 0 auto;min-width:120px;padding:0 20px;font-size:11.5px}
+  .strip1 > .cell:last-child{border-right:1px solid var(--h2-line)}
+  .strip.strip2{height:40px}
+  .strip2 > .txt-edit{font-size:14px}
+  .strip2 > .color-edit{flex-basis:42px;width:42px}
+  .strip2 > .val-edit,.strip2 > .size-edit{font-size:12.5px}
+  .strip2 > .range-edit{max-width:520px}
+  .menu-row{padding:12px 14px}
+  .menu-label{font-size:10.5px}
+  .toggle-group button{font-size:11px;min-width:56px;padding:7px 12px}
+  .menu-row .full-btn{font-size:11px;padding:10px}
+  .empty{font-size:13px}
+  .empty::after{height:72px;max-width:360px}
+  .thumbs{height:64px}
+  .thumb{height:52px;width:52px}
+  .modal-box{max-width:420px}
+  .modal-head{font-size:12px;padding:14px 16px}
+  .modal-body{gap:12px}
+  .field label{font-size:10px}
+  .field textarea,.field input[type="text"]{font-size:14px;padding:9px 10px}
+  .field input[type="color"]{height:36px}
+  .modal-foot button{font-size:11px;padding:9px 16px}
+  .toast{font-size:10.5px;bottom:24px}
+}
+</style>
+</head>
+<body>
+  <div class="topbar" id="topbar">
+    <div class="strip strip0" id="strip0">
+      <button class="cell active" data-mode="photo" type="button" data-i18n="modePhoto">PHOTO</button>
+      <button class="cell"        data-mode="mark"  type="button" data-i18n="modeMark">MARK</button>
+      <button class="cell"        data-mode="text"  type="button" data-i18n="modeText">TEXT</button>
+      <button class="cell"        data-mode="share" type="button" data-i18n="modeShare">SHARE</button>
+      <button class="menu-btn" id="menuBtn" type="button" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="menu-panel" id="menuPanel">
+        <div class="menu-row">
+          <span class="menu-label" data-i18n="language">Language</span>
+          <div class="toggle-group" id="langToggle">
+            <button data-lang="en" class="active">ENGLISH</button>
+            <button data-lang="zh">繁</button>
+          </div>
+        </div>
+        <div class="menu-row">
+          <span class="menu-label" data-i18n="theme">Theme</span>
+          <div class="toggle-group" id="themeToggle">
+            <button data-theme="light" data-i18n="light">LIGHT</button>
+            <button data-theme="dark" class="active" data-i18n="dark">DARK</button>
+          </div>
+        </div>
+        <div class="menu-row stack">
+          <label class="full-btn" for="fileWm" data-i18n="uploadWatermarks">UPLOAD WATERMARKS</label>
+          <div class="lib-list" id="wmList"></div>
+        </div>
+      </div>
+    </div>
+    <div class="strip strip1" id="strip1"></div>
+    <div class="strip strip2 hidden" id="strip2"></div>
+  </div>
+
+  <div class="stage" id="stage">
+    <div class="canvas" id="canvas" style="display:none;">
+      <img class="bg" id="bgImg" alt="">
+      <video class="bg" id="bgVideo" style="display:none;width:100%;height:100%;object-fit:contain;pointer-events:none;" playsinline muted loop></video>
+    </div>
+    <label class="empty" id="emptyState" for="fileAlbum" data-i18n="emptyHint">Tap to select a photo or video</label>
+  </div>
+
+  <div class="thumbs hidden" id="thumbs"></div>
+
+  <input type="file" id="fileAlbum"  accept="image/*,video/*" multiple class="hidden-input">
+  <input type="file" id="fileFolder" accept="image/*,video/*" multiple webkitdirectory class="hidden-input">
+  <input type="file" id="fileCamera" accept="image/*" capture="environment" class="hidden-input">
+  <input type="file" id="fileVideo"  accept="video/*" capture="environment" class="hidden-input">
+  <input type="file" id="fileWm"     accept="image/*" class="hidden-input">
+
+  <!-- text modal removed: text editing now lives inline on strip2 -->
+
+  <div class="modal" id="pickWmModal">
+    <div class="modal-box">
+      <div class="modal-head" data-i18n="pickWatermark">PICK A WATERMARK</div>
+      <div class="modal-body">
+        <div class="pick-grid" id="pickWmList"></div>
+      </div>
+      <div class="modal-foot">
+        <button id="pickWmCancel" data-i18n="cancel">CANCEL</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <div class="enc-overlay" id="encOverlay">
+    <div class="spinner"></div>
+    <div class="label" id="encLabel" data-i18n="encodingVideo">Encoding video…</div>
+    <div class="bar"><i id="encBar"></i></div>
+  </div>
+
+<script>
+const DEFAULT_WATERMARKS=[
+  {id:"RACINGBROS_VIS_LOGO_X1",ar:5.9542,src:"data:image/svg+xml;base64,PHN2ZyBpZD0iREVTSUdOIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMSIgdmlld0JveD0iMCAwIDQwOS4zNSA2OC43NSIgd2lkdGg9IjQwOS4zNSIgaGVpZ2h0PSI2OC43NSI+CiAgPGRlZnM+CiAgICA8c3R5bGU+CiAgICAgIC5zdDAgewogICAgICAgIGZpbGw6ICNmZmY7CiAgICAgIH0KCiAgICAgIC5zdDEgewogICAgICAgIGZpbGw6ICNkNzI4MmY7CiAgICAgIH0KICAgIDwvc3R5bGU+CiAgPC9kZWZzPgogIDxnPgogICAgPHBhdGggY2xhc3M9InN0MCIgZD0iTTEyNC44MywyMy45N2MuNzEsMCwxLjA2LjMxLDEuMDYuOTQsMCwuMjktLjEuNi0uMjguOTRsLTIuMiwzLjc3Yy0uMjkuNTMtLjcyLjk3LTEuMzEsMS4zMy0uNTguMzYtMS4xMy41NC0xLjYzLjU0aC05LjQzYy0uNzMsMC0xLjEtLjMxLTEuMS0uOTQsMC0uMjkuMDktLjYuMjctLjkzbDEuMS0xLjg5Yy4xOC0uMzQuMjctLjY1LjI3LS45MywwLS42My0uMzUtLjk0LTEuMDYtLjk0LS41MywwLTEuMDguMTgtMS42NS41NS0uNTcuMzYtMS4wMi44MS0xLjMzLDEuMzJsLTguNzQsMTUuMDZjLS4yOS41NC0uNzIuOTktMS4zMSwxLjM1LS41OC4zNy0xLjEzLjU2LTEuNjIuNTZoLTkuNDJjLS43MywwLTEuMS0uMzEtMS4xLS45NCwwLS4yOC4wOS0uNTkuMjgtLjk0bDkuODEtMTYuOTZjLjI5LS41Mi43My0uOTYsMS4zMi0xLjMzLjU4LS4zNywxLjE0LS41NSwxLjY3LS41NWgyNi40WiIvPgogICAgPHBhdGggY2xhc3M9InN0MCIgZD0iTTE1OC4wOSwyMy45N2MuNzEsMCwxLjA2LjMxLDEuMDYuOTQsMCwuMjktLjEuNi0uMjguOTRsLTkuODEsMTYuOTZjLS4yOS41My0uNzMuOTctMS4zMSwxLjMzcy0xLjEzLjU1LTEuNjIuNTVoLTI2LjRjLS43MywwLTEuMS0uMzEtMS4xLS45NCwwLS4yOC4wOS0uNTkuMjgtLjk0bDQuMzYtNy41NWMuMzEtLjUyLjc2LS45NiwxLjMzLTEuMzIuNTgtLjM3LDEuMTMtLjU1LDEuNjUtLjU1aDEzLjJjLjUzLDAsMS4wOC0uMTgsMS42NS0uNTQuNTctLjM3LDEuMDMtLjgxLDEuMzQtMS4zM2wyLjE3LTMuNzVjLjE3LS4zNC4yNS0uNjYuMjUtLjk1LDAtLjYzLS4zNS0uOTUtMS4wNi0uOTUtLjUyLDAtMS4wNi4xOC0xLjYzLjU1LS41Ny4zNy0xLjAyLjgzLTEuMzIsMS4zNGwtMS4xLDEuODljLS4yOS41Mi0uNzMuOTYtMS4zMSwxLjMyLS41OS4zNy0xLjE0LjU0LTEuNjMuNTRoLTkuNDVjLS43NCwwLTEuMS0uMzEtMS4xLS45NCwwLS4yOS4xLS42LjI4LS45M2wyLjItMy43N2MuMjktLjUyLjczLS45NiwxLjMxLTEuMzNzMS4xNC0uNTUsMS42Ny0uNTVoMjYuMzlsLS4wMi0uMDJaTTEzOS4xNCwzNy4xN2MuMTgtLjM0LjI4LS42NS4yOC0uOTQsMC0uNjItLjM2LS45NC0xLjEtLjk0LS41MywwLTEuMDcuMTktMS42NC41NXMtMSwuODEtMS4yOSwxLjMzbC0yLjIxLDMuNzdjLS4xOC4zNS0uMjcuNjYtLjI3Ljk0LDAsLjYzLjM1Ljk0LDEuMDYuOTQuNTMsMCwxLjA4LS4xOCwxLjY3LS41NC41OS0uMzcsMS4wMy0uODEsMS4zMS0xLjM0bDIuMTktMy43N2gwWiIvPgogICAgPHBhdGggY2xhc3M9InN0MCIgZD0iTTE3Ny4zNSwzMS41Yy0uNzMsMC0xLjEtLjMxLTEuMS0uOTQsMC0uMjkuMS0uNi4yOC0uOTNsMS4xLTEuODljLjE4LS4zNC4yNy0uNjUuMjctLjkzLDAtLjYzLS4zNi0uOTQtMS4wNi0uOTQtLjUyLDAtMS4wNy4xOC0xLjY0LjU1LS41Ny4zNi0xLjAyLjgxLTEuMzMsMS4zM2wtNy42MiwxMy4xOWMtLjE4LjM0LS4yOC42NS0uMjguOTMsMCwuNjMuMzUuOTQsMS4wNi45NC41MywwLDEuMDktLjE4LDEuNjctLjU0LjU4LS4zNywxLjAyLS44MSwxLjMyLTEuMzRsMy4yNi01LjY1Yy4zMi0uNTMuNzYtLjk3LDEuMzMtMS4zMy41Ny0uMzcsMS4xMy0uNTUsMS42NC0uNTVoOS40M2MuNzQsMCwxLjEuMzEsMS4xLjk0LDAsLjI5LS4xMS42MS0uMzEuOTNsLTQuMzYsNy41NWMtLjI4LjUzLS43Mi45Ny0xLjMxLDEuMzNzLTEuMTMuNTUtMS42My41NWgtMjYuMzljLS43NCwwLTEuMS0uMzEtMS4xLS45NCwwLS4yOC4xLS41OS4yNy0uOTRsOS44Mi0xNi45NmMuMjgtLjUyLjcyLS45NiwxLjMxLTEuMzMuNTgtLjM3LDEuMTQtLjU1LDEuNjctLjU1aDI2LjM5Yy43LDAsMS4wNi4zMSwxLjA2Ljk0LDAsLjI5LS4xLjYtLjI4Ljk0bC0yLjIxLDMuNzdjLS4yOC41My0uNzIuOTctMS4zMSwxLjMzcy0xLjEzLjU0LTEuNjMuNTRoLTkuNDMuMDFaIi8+CiAgICA8cGF0aCBjbGFzcz0ic3QwIiBkPSJNMTg2LjAyLDQ0LjdjLS43NCwwLTEuMS0uMzEtMS4xLS45NCwwLS4yOC4xLS41OS4yNy0uOTRsOS44Mi0xNi45NmMuMjgtLjUyLjczLS45NiwxLjMxLTEuMzNzMS4xNS0uNTUsMS42Ny0uNTVoOS40M2MuNywwLDEuMDUuMzEsMS4wNS45NCwwLC4yOS0uMS42LS4yNy45NGwtOS44MSwxNi45NmMtLjI4LjUzLS43My45Ny0xLjMxLDEuMzMtLjU5LjM2LTEuMTQuNTUtMS42My41NWgtOS40M1oiLz4KICAgIDxwYXRoIGNsYXNzPSJzdDAiIGQ9Ik0yNDAuNjcsMjMuOTdjLjcxLDAsMS4wNy4zMSwxLjA3Ljk0LDAsLjI5LS4wOS42LS4yNy45NGwtOS44MiwxNi45NmMtLjI4LjUzLS43My45Ny0xLjMxLDEuMzMtLjU5LjM2LTEuMTQuNTUtMS42My41NWgtOS40M2MtLjczLDAtMS4xLS4zMS0xLjEtLjk0LDAtLjI4LjA5LS41OS4yNy0uOTRsOC43Mi0xNS4wOGMuMTgtLjM0LjI3LS42NS4yNy0uOTMsMC0uNjMtLjM1LS45NC0xLjA1LS45NC0uNTMsMC0xLjA4LjE4LTEuNjUuNTUtLjU3LjM2LTEuMDIuODEtMS4zMywxLjMzbC04LjcyLDE1LjA3Yy0uMjguNTMtLjcyLjk3LTEuMzEsMS4zM3MtMS4xMy41NS0xLjYzLjU1aC05LjQzYy0uNzQsMC0xLjEtLjMxLTEuMS0uOTQsMC0uMjguMDktLjU5LjI3LS45NGw5LjgxLTE2Ljk2Yy4yOC0uNTIuNzItLjk2LDEuMzEtMS4zM3MxLjE1LS41NSwxLjY3LS41NWgyNi40LDBaIi8+CiAgICA8cGF0aCBjbGFzcz0ic3QwIiBkPSJNMjQ5LjI2LDQ5LjIyYy0uMTYtLjI4LS4yNC0uNjUtLjI0LTEuMSwwLS42NS4xNi0xLjI1LjQ4LTEuNzcuMTMtLjI2LjE5LS41MS4xOS0uNzQsMC0uNi0uMzgtLjktMS4xNC0uOWgtMTMuMTljLS43MywwLTEuMTEtLjMxLTEuMTEtLjk0LDAtLjI4LjEtLjU5LjI3LS45NGw5LjgyLTE2Ljk2Yy4yOC0uNTIuNzMtLjk2LDEuMzEtMS4zM3MxLjE1LS41NSwxLjY3LS41NWgyNi4zOGMuNzEsMCwxLjA3LjMxLDEuMDcuOTQsMCwuMjktLjEuNi0uMjguOTRsLTIuMjEsMy43N2MtLjI4LjUzLS43My45Ny0xLjMxLDEuMzMtLjYuMzctMS4xMy41NC0xLjYyLjU0aC05LjQzYy0uNzMsMC0xLjEtLjMxLTEuMS0uOTQsMC0uMjkuMDktLjYuMjgtLjkzbDEuMDktMS44OWMuMTktLjMzLjI4LS42NS4yOC0uOTMsMC0uNjMtLjM0LS45NC0xLjA2LS45NC0uNTIsMC0xLjA3LjE4LTEuNjQuNTUtLjU3LjM2LTEuMDIuODEtMS4zMywxLjMybC03LjYyLDEzLjJjLS4xOC4zNS0uMjcuNjYtLjI3Ljk0LDAsLjYzLjM1Ljk0LDEuMDYuOTQuNTMsMCwxLjA4LS4xOCwxLjY3LS41NC41OC0uMzcsMS4wMi0uODIsMS4zMS0xLjM0bDMuMjYtNS42NmMuMzItLjUyLjc2LS45NiwxLjM0LTEuMzIuNTctLjM3LDEuMTMtLjU1LDEuNjQtLjU1aDkuNDNjLjczLDAsMS4xMS4zMSwxLjExLjk0LDAsLjI5LS4xMS42MS0uMzIuOTNsLTEyLjc1LDIyLjE1Yy0uMzkuNjgtLjgxLDEuMDItMS4yNiwxLjAyLS4yMiwwLS40Mi0uMTQtLjU0LS4zOWwtNS4yMi04Ljg0aC0uMDJaIi8+CiAgICA8cGF0aCBjbGFzcz0ic3QwIiBkPSJNMzA3LjM2LDIzLjk3Yy43MSwwLDEuMDcuMzEsMS4wNy45NCwwLC4yOS0uMDkuNi0uMjcuOTRsLTkuODIsMTYuOTZjLS4yOC41My0uNzMuOTctMS4zMSwxLjMzcy0xLjEzLjU1LTEuNjMuNTVoLTI2LjM5Yy0uNzQsMC0xLjEtLjMxLTEuMS0uOTQsMC0uMjguMS0uNTkuMjgtLjk0bDE4LjI1LTMxLjU3Yy40LS42OC44LTEuMDIsMS4yMy0xLjAyLjI0LDAsLjQzLjEyLjU4LjM1bDUuMjIsOC44N2MuMTYuMjYuMjMuNjIuMjMsMS4wNywwLC42NS0uMTYsMS4yNS0uNDgsMS44MS0uMTcuMjYtLjIzLjUxLS4yMy43NSwwLC42LjM5Ljg5LDEuMTguODloMTMuMi0uMDFaTTI5My44NiwyNy43NGMuMTgtLjMzLjI4LS42NS4yOC0uOTMsMC0uNjMtLjM2LS45NC0xLjA3LS45NC0uNTEsMC0xLjA3LjE4LTEuNjQuNTUtLjU3LjM2LTEuMDIuODEtMS4zMywxLjMzbC03LjYyLDEzLjE5Yy0uMTguMzQtLjI4LjY1LS4yOC45MywwLC42My4zNi45NCwxLjA2Ljk0LjUzLDAsMS4wOS0uMTgsMS42Ny0uNTQuNTktLjM3LDEuMDMtLjgxLDEuMzEtMS4zNGw3LjYyLTEzLjJoMFoiLz4KICAgIDxwYXRoIGNsYXNzPSJzdDAiIGQ9Ik0zNDEuNDEsMjMuOTdjLjcxLDAsMS4wNS4zMSwxLjA1Ljk0LDAsLjI5LS4xLjYtLjI3Ljk0bC0yLjIsMy43N2MtLjI5LjUzLS43Mi45Ny0xLjMxLDEuMzNzLTEuMTQuNTQtMS42NC41NGgtOS40MmMtLjc0LDAtMS4xMS0uMzEtMS4xMS0uOTQsMC0uMjkuMS0uNi4yOC0uOTNsMS4xLTEuODljLjE4LS4zNC4yNy0uNjUuMjctLjkzLDAtLjYzLS4zNS0uOTQtMS4wNi0uOTQtLjUzLDAtMS4wNy4xOC0xLjY1LjU1LS41OC4zNi0xLjAyLjgxLTEuMzMsMS4zMmwtOC43NCwxNS4wNmMtLjI5LjU0LS43Mi45OS0xLjMyLDEuMzUtLjU4LjM3LTEuMTMuNTYtMS42Mi41NmgtOS40MWMtLjczLDAtMS4wOS0uMzEtMS4wOS0uOTQsMC0uMjguMDktLjU5LjI3LS45NGw5LjgyLTE2Ljk2Yy4yOC0uNTIuNzItLjk2LDEuMzEtMS4zM3MxLjE1LS41NSwxLjY3LS41NWgyNi40WiIvPgogICAgPHBhdGggY2xhc3M9InN0MCIgZD0iTTM3NC4yNywyMy45N2MuNywwLDEuMDUuMzEsMS4wNS45NCwwLC4yOS0uMS42LS4yNy45NGwtOS44MSwxNi45NmMtLjI5LjUzLS43NC45Ny0xLjMxLDEuMzMtLjU5LjM2LTEuMTQuNTUtMS42My41NWgtMjYuMzljLS43NCwwLTEuMS0uMzEtMS4xLS45NCwwLS4yOC4wOS0uNTkuMjctLjk0bDkuODEtMTYuOTZjLjI5LS41Mi43My0uOTYsMS4zMS0xLjMzLjU5LS4zNywxLjE1LS41NSwxLjY3LS41NWgyNi40Wk0zNjAuNzYsMjcuNzRjLjE4LS4zMy4yNy0uNjUuMjctLjkzLDAtLjYzLS4zNi0uOTQtMS4wNi0uOTQtLjUzLDAtMS4wNy4xOC0xLjY0LjU1LS41OC4zNi0xLjAyLjgxLTEuMzQsMS4zM2wtNy42MiwxMy4xOWMtLjE4LjM0LS4yOC42NS0uMjguOTMsMCwuNjMuMzYuOTQsMS4wNi45NC41MywwLDEuMDgtLjE4LDEuNjctLjU0LjU5LS4zNywxLjAzLS44MSwxLjMxLTEuMzRsNy42Mi0xMy4yaC4wMVoiLz4KICAgIDxwYXRoIGNsYXNzPSJzdDAiIGQ9Ik0zOTQuNTIsMzEuNWMtLjczLDAtMS4xLS4zMS0xLjEtLjk0LDAtLjI5LjA4LS42LjI4LS45M2wxLjA5LTEuODljLjE4LS4zNC4yNy0uNjUuMjctLjkzLDAtLjYzLS4zNi0uOTQtMS4wNi0uOTQtLjUzLDAtMS4wOC4xOC0xLjY1LjU1LS41Ny4zNi0xLjAyLjgxLTEuMzMsMS4zMmwtMi4xOSwzLjc1Yy0uMTguMzUtLjI4LjY3LS4yOC45NSwwLC42My4zNy45NCwxLjEuOTRoMTMuMmMuNzMsMCwxLjExLjMxLDEuMTEuOTQsMCwuMjktLjEyLjYxLS4zMi45M2wtNC4zNiw3LjU1Yy0uMjguNTMtLjcyLjk3LTEuMzEsMS4zMy0uNTguMzYtMS4xNC41NS0xLjYzLjU1aC0yNi4zOWMtLjczLDAtMS4xMS0uMzEtMS4xMS0uOTQsMC0uMjguMS0uNTkuMjgtLjk0bDIuMi0zLjc2Yy4yOS0uNTMuNzMtLjk2LDEuMzEtMS4zNC41OS0uMzYsMS4xNS0uNTUsMS42Ny0uNTVoOS40M2MuNzEsMCwxLjA2LjMyLDEuMDYuOTQsMCwuMjktLjA5LjYtLjI4Ljk0bC0xLjEsMS44OWMtLjE4LjM1LS4yNy42NS0uMjcuOTQsMCwuNjMuMzYuOTQsMS4wNy45NC41MywwLDEuMDctLjE4LDEuNjUtLjU0LjYtLjM3LDEuMDQtLjgxLDEuMzItMS4zNGwyLjIxLTMuNzZjLjE4LS4zNC4yNi0uNjYuMjYtLjk0LDAtLjYzLS4zNi0uOTUtMS4xLS45NWgtMTMuMTljLS43MSwwLTEuMDctLjMtMS4wNy0uOTMsMC0uMjguMS0uNTkuMjgtLjk0bDQuMzYtNy41NGMuMjgtLjUyLjczLS45NiwxLjMxLTEuMzMuNTktLjM3LDEuMTQtLjU1LDEuNjctLjU1aDI2LjM5Yy43LDAsMS4wNS4zMSwxLjA1Ljk0LDAsLjI5LS4xLjYtLjI3Ljk0bC0yLjIsMy43N2MtLjI5LjUzLS43My45Ny0xLjMyLDEuMzNzLTEuMTQuNTQtMS42Mi41NGgtOS40My4wMi0uMDFaIi8+CiAgPC9nPgogIDxnPgogICAgPHJlY3QgY2xhc3M9InN0MSIgd2lkdGg9IjY4Ljc1IiBoZWlnaHQ9IjY4Ljc1IiByeD0iNi4yNyIgcnk9IjYuMjciLz4KICAgIDxwYXRoIGNsYXNzPSJzdDAiIGQ9Ik02My43OCwzMi4zM2gtMTcuMzFjLS4yNSwwLS40Ni0uMDMtLjY0LS4wOC0uNTYtLjE2LS44NS0uNTMtLjg1LTEuMTEsMC0uMy4wOS0uNjQuMjYtLjk3LjQxLS43My42Mi0xLjUxLjYyLTIuMzcsMC0uNTgtLjEtMS4wNS0uMy0xLjM5bC00Ljc2LTguMWg4Ljg1Yy42NywwLDEuNDEtLjI0LDIuMTktLjczLjc4LS40NywxLjM1LTEuMDUsMS43My0xLjc0bDIuODQtNC45N2MuMjctLjQzLjQyLS44NC40Mi0xLjI0LDAtLjgxLS40Ny0xLjIzLTEuNDQtMS4yM0gyMC43OGMtLjY5LDAtMS40Mi4yNC0yLjE3LjczLS43Ni40Ny0xLjMzLDEuMDYtMS43NiwxLjczTDMuOTcsMzMuMTRjLS4yNS40NS0uMzcuODctLjM3LDEuMjQsMCwuODMuNDYsMS4yNSwxLjM5LDEuMjVoMTIuMzVjLjY5LDAsMS40Mi0uMjQsMi4yLS43Mi43OC0uNDksMS4zNS0xLjA2LDEuNzItMS43NmwxMS41LTE5Ljc3Yy4zOC0uNjguOTUtMS4yNiwxLjcyLTEuNzUuNzctLjQ4LDEuNDgtLjcyLDIuMTItLjcyLjk3LDAsMS40Ni40MSwxLjQ2LDEuMjQsMCwuMzgtLjEyLjc5LS4zOCwxLjI0bC0xLjIzLDIuMWMtLjAzLjA2LS4wOC4xMy0uMTIuMTlMMTIuMzUsNTcuMDZjLS4yNC40NS0uMzcuODYtLjM3LDEuMjQsMCwuODMuNDYsMS4yNCwxLjM4LDEuMjRoMzQuNjJjLjY5LDAsMS40Mi0uMjMsMi4yMi0uNzEuNzYtLjQ4LDEuMzMtMS4wNywxLjctMS43NmwxMi44OS0yMi4yNGMuMjgtLjQ1LjQyLS44OC40Mi0xLjI0LDAtLjg0LS40Ni0xLjI1LTEuNDQtMS4yNWgwWk00Ni4xLDM3LjI4bC0xMC4wNCwxNy4zYy0uNDMuNjgtLjk5LDEuMjgtMS43NiwxLjc1LS43NC40OC0xLjQ5LjcyLTIuMTUuNzItLjk3LDAtMS40Ny0uNDItMS40Ny0xLjIzLDAtLjM4LjE3LS44LjQ1LTEuMjRsMTAuMDQtMTcuM2MuMzgtLjcuOTYtMS4yOCwxLjczLTEuNzcuNzYtLjQ3LDEuNDgtLjcxLDIuMTMtLjcxLjk1LDAsMS40NC40MSwxLjQ0LDEuMjQsMCwuMzctLjEyLjc5LS4zNiwxLjI0aDBaIi8+CiAgPC9nPgo8L3N2Zz4="},
+  {id:"RACINGBROS_VIS_LOGO_X2",ar:5.9542,src:"data:image/svg+xml;base64,PHN2ZyBpZD0iREVTSUdOIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMSIgdmlld0JveD0iMCAwIDQwOS4zNSA2OC43NSIgd2lkdGg9IjQwOS4zNSIgaGVpZ2h0PSI2OC43NSI+CiAgPGRlZnM+CiAgICA8c3R5bGU+CiAgICAgIC5zdDAgewogICAgICAgIGZpbGw6ICNmZmY7CiAgICAgIH0KCiAgICAgIC5zdDEgewogICAgICAgIGZpbGw6ICNkNzI4MmY7CiAgICAgIH0KICAgIDwvc3R5bGU+CiAgPC9kZWZzPgogIDxnPgogICAgPHBhdGggZD0iTTEyNC44MywyMy45N2MuNzEsMCwxLjA2LjMxLDEuMDYuOTQsMCwuMjktLjEuNi0uMjguOTRsLTIuMiwzLjc3Yy0uMjkuNTMtLjcyLjk3LTEuMzEsMS4zMy0uNTguMzYtMS4xMy41NC0xLjYzLjU0aC05LjQzYy0uNzMsMC0xLjEtLjMxLTEuMS0uOTQsMC0uMjkuMDktLjYuMjctLjkzbDEuMS0xLjg5Yy4xOC0uMzQuMjctLjY1LjI3LS45MywwLS42My0uMzUtLjk0LTEuMDYtLjk0LS41MywwLTEuMDguMTgtMS42NS41NS0uNTcuMzYtMS4wMi44MS0xLjMzLDEuMzJsLTguNzQsMTUuMDZjLS4yOS41NC0uNzIuOTktMS4zMSwxLjM1LS41OC4zNy0xLjEzLjU2LTEuNjIuNTZoLTkuNDJjLS43MywwLTEuMS0uMzEtMS4xLS45NCwwLS4yOC4wOS0uNTkuMjgtLjk0bDkuODEtMTYuOTZjLjI5LS41Mi43My0uOTYsMS4zMi0xLjMzLjU4LS4zNywxLjE0LS41NSwxLjY3LS41NWgyNi40WiIvPgogICAgPHBhdGggZD0iTTE1OC4wOSwyMy45N2MuNzEsMCwxLjA2LjMxLDEuMDYuOTQsMCwuMjktLjEuNi0uMjguOTRsLTkuODEsMTYuOTZjLS4yOS41My0uNzMuOTctMS4zMSwxLjMzcy0xLjEzLjU1LTEuNjIuNTVoLTI2LjRjLS43MywwLTEuMS0uMzEtMS4xLS45NCwwLS4yOC4wOS0uNTkuMjgtLjk0bDQuMzYtNy41NWMuMzEtLjUyLjc2LS45NiwxLjMzLTEuMzIuNTgtLjM3LDEuMTMtLjU1LDEuNjUtLjU1aDEzLjJjLjUzLDAsMS4wOC0uMTgsMS42NS0uNTQuNTctLjM3LDEuMDMtLjgxLDEuMzQtMS4zM2wyLjE3LTMuNzVjLjE3LS4zNC4yNS0uNjYuMjUtLjk1LDAtLjYzLS4zNS0uOTUtMS4wNi0uOTUtLjUyLDAtMS4wNi4xOC0xLjYzLjU1LS41Ny4zNy0xLjAyLjgzLTEuMzIsMS4zNGwtMS4xLDEuODljLS4yOS41Mi0uNzMuOTYtMS4zMSwxLjMyLS41OS4zNy0xLjE0LjU0LTEuNjMuNTRoLTkuNDVjLS43NCwwLTEuMS0uMzEtMS4xLS45NCwwLS4yOS4xLS42LjI4LS45M2wyLjItMy43N2MuMjktLjUyLjczLS45NiwxLjMxLTEuMzNzMS4xNC0uNTUsMS42Ny0uNTVoMjYuMzlsLS4wMi0uMDJaTTEzOS4xNCwzNy4xN2MuMTgtLjM0LjI4LS42NS4yOC0uOTQsMC0uNjItLjM2LS45NC0xLjEtLjk0LS41MywwLTEuMDcuMTktMS42NC41NXMtMSwuODEtMS4yOSwxLjMzbC0yLjIxLDMuNzdjLS4xOC4zNS0uMjcuNjYtLjI3Ljk0LDAsLjYzLjM1Ljk0LDEuMDYuOTQuNTMsMCwxLjA4LS4xOCwxLjY3LS41NC41OS0uMzcsMS4wMy0uODEsMS4zMS0xLjM0bDIuMTktMy43N2gwWiIvPgogICAgPHBhdGggZD0iTTE3Ny4zNSwzMS41Yy0uNzMsMC0xLjEtLjMxLTEuMS0uOTQsMC0uMjkuMS0uNi4yOC0uOTNsMS4xLTEuODljLjE4LS4zNC4yNy0uNjUuMjctLjkzLDAtLjYzLS4zNi0uOTQtMS4wNi0uOTQtLjUyLDAtMS4wNy4xOC0xLjY0LjU1LS41Ny4zNi0xLjAyLjgxLTEuMzMsMS4zM2wtNy42MiwxMy4xOWMtLjE4LjM0LS4yOC42NS0uMjguOTMsMCwuNjMuMzUuOTQsMS4wNi45NC41MywwLDEuMDktLjE4LDEuNjctLjU0LjU4LS4zNywxLjAyLS44MSwxLjMyLTEuMzRsMy4yNi01LjY1Yy4zMi0uNTMuNzYtLjk3LDEuMzMtMS4zMy41Ny0uMzcsMS4xMy0uNTUsMS42NC0uNTVoOS40M2MuNzQsMCwxLjEuMzEsMS4xLjk0LDAsLjI5LS4xMS42MS0uMzEuOTNsLTQuMzYsNy41NWMtLjI4LjUzLS43Mi45Ny0xLjMxLDEuMzNzLTEuMTMuNTUtMS42My41NWgtMjYuMzljLS43NCwwLTEuMS0uMzEtMS4xLS45NCwwLS4yOC4xLS41OS4yNy0uOTRsOS44Mi0xNi45NmMuMjgtLjUyLjcyLS45NiwxLjMxLTEuMzMuNTgtLjM3LDEuMTQtLjU1LDEuNjctLjU1aDI2LjM5Yy43LDAsMS4wNi4zMSwxLjA2Ljk0LDAsLjI5LS4xLjYtLjI4Ljk0bC0yLjIxLDMuNzdjLS4yOC41My0uNzIuOTctMS4zMSwxLjMzcy0xLjEzLjU0LTEuNjMuNTRoLTkuNDMuMDFaIi8+CiAgICA8cGF0aCBkPSJNMTg2LjAyLDQ0LjdjLS43NCwwLTEuMS0uMzEtMS4xLS45NCwwLS4yOC4xLS41OS4yNy0uOTRsOS44Mi0xNi45NmMuMjgtLjUyLjczLS45NiwxLjMxLTEuMzNzMS4xNS0uNTUsMS42Ny0uNTVoOS40M2MuNywwLDEuMDUuMzEsMS4wNS45NCwwLC4yOS0uMS42LS4yNy45NGwtOS44MSwxNi45NmMtLjI4LjUzLS43My45Ny0xLjMxLDEuMzMtLjU5LjM2LTEuMTQuNTUtMS42My41NWgtOS40M1oiLz4KICAgIDxwYXRoIGQ9Ik0yNDAuNjcsMjMuOTdjLjcxLDAsMS4wNy4zMSwxLjA3Ljk0LDAsLjI5LS4wOS42LS4yNy45NGwtOS44MiwxNi45NmMtLjI4LjUzLS43My45Ny0xLjMxLDEuMzMtLjU5LjM2LTEuMTQuNTUtMS42My41NWgtOS40M2MtLjczLDAtMS4xLS4zMS0xLjEtLjk0LDAtLjI4LjA5LS41OS4yNy0uOTRsOC43Mi0xNS4wOGMuMTgtLjM0LjI3LS42NS4yNy0uOTMsMC0uNjMtLjM1LS45NC0xLjA1LS45NC0uNTMsMC0xLjA4LjE4LTEuNjUuNTUtLjU3LjM2LTEuMDIuODEtMS4zMywxLjMzbC04LjcyLDE1LjA3Yy0uMjguNTMtLjcyLjk3LTEuMzEsMS4zM3MtMS4xMy41NS0xLjYzLjU1aC05LjQzYy0uNzQsMC0xLjEtLjMxLTEuMS0uOTQsMC0uMjguMDktLjU5LjI3LS45NGw5LjgxLTE2Ljk2Yy4yOC0uNTIuNzItLjk2LDEuMzEtMS4zM3MxLjE1LS41NSwxLjY3LS41NWgyNi40LDBaIi8+CiAgICA8cGF0aCBkPSJNMjQ5LjI2LDQ5LjIyYy0uMTYtLjI4LS4yNC0uNjUtLjI0LTEuMSwwLS42NS4xNi0xLjI1LjQ4LTEuNzcuMTMtLjI2LjE5LS41MS4xOS0uNzQsMC0uNi0uMzgtLjktMS4xNC0uOWgtMTMuMTljLS43MywwLTEuMTEtLjMxLTEuMTEtLjk0LDAtLjI4LjEtLjU5LjI3LS45NGw5LjgyLTE2Ljk2Yy4yOC0uNTIuNzMtLjk2LDEuMzEtMS4zM3MxLjE1LS41NSwxLjY3LS41NWgyNi4zOGMuNzEsMCwxLjA3LjMxLDEuMDcuOTQsMCwuMjktLjEuNi0uMjguOTRsLTIuMjEsMy43N2MtLjI4LjUzLS43My45Ny0xLjMxLDEuMzMtLjYuMzctMS4xMy41NC0xLjYyLjU0aC05LjQzYy0uNzMsMC0xLjEtLjMxLTEuMS0uOTQsMC0uMjkuMDktLjYuMjgtLjkzbDEuMDktMS44OWMuMTktLjMzLjI4LS42NS4yOC0uOTMsMC0uNjMtLjM0LS45NC0xLjA2LS45NC0uNTIsMC0xLjA3LjE4LTEuNjQuNTUtLjU3LjM2LTEuMDIuODEtMS4zMywxLjMybC03LjYyLDEzLjJjLS4xOC4zNS0uMjcuNjYtLjI3Ljk0LDAsLjYzLjM1Ljk0LDEuMDYuOTQuNTMsMCwxLjA4LS4xOCwxLjY3LS41NC41OC0uMzcsMS4wMi0uODIsMS4zMS0xLjM0bDMuMjYtNS42NmMuMzItLjUyLjc2LS45NiwxLjM0LTEuMzIuNTctLjM3LDEuMTMtLjU1LDEuNjQtLjU1aDkuNDNjLjczLDAsMS4xMS4zMSwxLjExLjk0LDAsLjI5LS4xMS42MS0uMzIuOTNsLTEyLjc1LDIyLjE1Yy0uMzkuNjgtLjgxLDEuMDItMS4yNiwxLjAyLS4yMiwwLS40Mi0uMTQtLjU0LS4zOWwtNS4yMi04Ljg0aC0uMDJaIi8+CiAgICA8cGF0aCBkPSJNMzA3LjM2LDIzLjk3Yy43MSwwLDEuMDcuMzEsMS4wNy45NCwwLC4yOS0uMDkuNi0uMjcuOTRsLTkuODIsMTYuOTZjLS4yOC41My0uNzMuOTctMS4zMSwxLjMzcy0xLjEzLjU1LTEuNjMuNTVoLTI2LjM5Yy0uNzQsMC0xLjEtLjMxLTEuMS0uOTQsMC0uMjguMS0uNTkuMjgtLjk0bDE4LjI1LTMxLjU3Yy40LS42OC44LTEuMDIsMS4yMy0xLjAyLjI0LDAsLjQzLjEyLjU4LjM1bDUuMjIsOC44N2MuMTYuMjYuMjMuNjIuMjMsMS4wNywwLC42NS0uMTYsMS4yNS0uNDgsMS44MS0uMTcuMjYtLjIzLjUxLS4yMy43NSwwLC42LjM5Ljg5LDEuMTguODloMTMuMi0uMDFaTTI5My44NiwyNy43NGMuMTgtLjMzLjI4LS42NS4yOC0uOTMsMC0uNjMtLjM2LS45NC0xLjA3LS45NC0uNTEsMC0xLjA3LjE4LTEuNjQuNTUtLjU3LjM2LTEuMDIuODEtMS4zMywxLjMzbC03LjYyLDEzLjE5Yy0uMTguMzQtLjI4LjY1LS4yOC45MywwLC42My4zNi45NCwxLjA2Ljk0LjUzLDAsMS4wOS0uMTgsMS42Ny0uNTQuNTktLjM3LDEuMDMtLjgxLDEuMzEtMS4zNGw3LjYyLTEzLjJoMFoiLz4KICAgIDxwYXRoIGQ9Ik0zNDEuNDEsMjMuOTdjLjcxLDAsMS4wNS4zMSwxLjA1Ljk0LDAsLjI5LS4xLjYtLjI3Ljk0bC0yLjIsMy43N2MtLjI5LjUzLS43Mi45Ny0xLjMxLDEuMzNzLTEuMTQuNTQtMS42NC41NGgtOS40MmMtLjc0LDAtMS4xMS0uMzEtMS4xMS0uOTQsMC0uMjkuMS0uNi4yOC0uOTNsMS4xLTEuODljLjE4LS4zNC4yNy0uNjUuMjctLjkzLDAtLjYzLS4zNS0uOTQtMS4wNi0uOTQtLjUzLDAtMS4wNy4xOC0xLjY1LjU1LS41OC4zNi0xLjAyLjgxLTEuMzMsMS4zMmwtOC43NCwxNS4wNmMtLjI5LjU0LS43Mi45OS0xLjMyLDEuMzUtLjU4LjM3LTEuMTMuNTYtMS42Mi41NmgtOS40MWMtLjczLDAtMS4wOS0uMzEtMS4wOS0uOTQsMC0uMjguMDktLjU5LjI3LS45NGw5LjgyLTE2Ljk2Yy4yOC0uNTIuNzItLjk2LDEuMzEtMS4zM3MxLjE1LS41NSwxLjY3LS41NWgyNi40WiIvPgogICAgPHBhdGggZD0iTTM3NC4yNywyMy45N2MuNywwLDEuMDUuMzEsMS4wNS45NCwwLC4yOS0uMS42LS4yNy45NGwtOS44MSwxNi45NmMtLjI5LjUzLS43NC45Ny0xLjMxLDEuMzMtLjU5LjM2LTEuMTQuNTUtMS42My41NWgtMjYuMzljLS43NCwwLTEuMS0uMzEtMS4xLS45NCwwLS4yOC4wOS0uNTkuMjctLjk0bDkuODEtMTYuOTZjLjI5LS41Mi43My0uOTYsMS4zMS0xLjMzLjU5LS4zNywxLjE1LS41NSwxLjY3LS41NWgyNi40Wk0zNjAuNzYsMjcuNzRjLjE4LS4zMy4yNy0uNjUuMjctLjkzLDAtLjYzLS4zNi0uOTQtMS4wNi0uOTQtLjUzLDAtMS4wNy4xOC0xLjY0LjU1LS41OC4zNi0xLjAyLjgxLTEuMzQsMS4zM2wtNy42MiwxMy4xOWMtLjE4LjM0LS4yOC42NS0uMjguOTMsMCwuNjMuMzYuOTQsMS4wNi45NC41MywwLDEuMDgtLjE4LDEuNjctLjU0LjU5LS4zNywxLjAzLS44MSwxLjMxLTEuMzRsNy42Mi0xMy4yaC4wMVoiLz4KICAgIDxwYXRoIGQ9Ik0zOTQuNTIsMzEuNWMtLjczLDAtMS4xLS4zMS0xLjEtLjk0LDAtLjI5LjA4LS42LjI4LS45M2wxLjA5LTEuODljLjE4LS4zNC4yNy0uNjUuMjctLjkzLDAtLjYzLS4zNi0uOTQtMS4wNi0uOTQtLjUzLDAtMS4wOC4xOC0xLjY1LjU1LS41Ny4zNi0xLjAyLjgxLTEuMzMsMS4zMmwtMi4xOSwzLjc1Yy0uMTguMzUtLjI4LjY3LS4yOC45NSwwLC42My4zNy45NCwxLjEuOTRoMTMuMmMuNzMsMCwxLjExLjMxLDEuMTEuOTQsMCwuMjktLjEyLjYxLS4zMi45M2wtNC4zNiw3LjU1Yy0uMjguNTMtLjcyLjk3LTEuMzEsMS4zMy0uNTguMzYtMS4xNC41NS0xLjYzLjU1aC0yNi4zOWMtLjczLDAtMS4xMS0uMzEtMS4xMS0uOTQsMC0uMjguMS0uNTkuMjgtLjk0bDIuMi0zLjc2Yy4yOS0uNTMuNzMtLjk2LDEuMzEtMS4zNC41OS0uMzYsMS4xNS0uNTUsMS42Ny0uNTVoOS40M2MuNzEsMCwxLjA2LjMyLDEuMDYuOTQsMCwuMjktLjA5LjYtLjI4Ljk0bC0xLjEsMS44OWMtLjE4LjM1LS4yNy42NS0uMjcuOTQsMCwuNjMuMzYuOTQsMS4wNy45NC41MywwLDEuMDctLjE4LDEuNjUtLjU0LjYtLjM3LDEuMDQtLjgxLDEuMzItMS4zNGwyLjIxLTMuNzZjLjE4LS4zNC4yNi0uNjYuMjYtLjk0LDAtLjYzLS4zNi0uOTUtMS4xLS45NWgtMTMuMTljLS43MSwwLTEuMDctLjMtMS4wNy0uOTMsMC0uMjguMS0uNTkuMjgtLjk0bDQuMzYtNy41NGMuMjgtLjUyLjczLS45NiwxLjMxLTEuMzMuNTktLjM3LDEuMTQtLjU1LDEuNjctLjU1aDI2LjM5Yy43LDAsMS4wNS4zMSwxLjA1Ljk0LDAsLjI5LS4xLjYtLjI3Ljk0bC0yLjIsMy43N2MtLjI5LjUzLS43My45Ny0xLjMyLDEuMzNzLTEuMTQuNTQtMS42Mi41NGgtOS40My4wMi0uMDFaIi8+CiAgPC9nPgogIDxnPgogICAgPHJlY3QgY2xhc3M9InN0MSIgd2lkdGg9IjY4Ljc1IiBoZWlnaHQ9IjY4Ljc1IiByeD0iNi4yNyIgcnk9IjYuMjciLz4KICAgIDxwYXRoIGNsYXNzPSJzdDAiIGQ9Ik02My43OCwzMi4zM2gtMTcuMzFjLS4yNSwwLS40Ni0uMDMtLjY0LS4wOC0uNTYtLjE2LS44NS0uNTMtLjg1LTEuMTEsMC0uMy4wOS0uNjQuMjYtLjk3LjQxLS43My42Mi0xLjUxLjYyLTIuMzcsMC0uNTgtLjEtMS4wNS0uMy0xLjM5bC00Ljc2LTguMWg4Ljg1Yy42NywwLDEuNDEtLjI0LDIuMTktLjczLjc4LS40NywxLjM1LTEuMDUsMS43My0xLjc0bDIuODQtNC45N2MuMjctLjQzLjQyLS44NC40Mi0xLjI0LDAtLjgxLS40Ny0xLjIzLTEuNDQtMS4yM0gyMC43OGMtLjY5LDAtMS40Mi4yNC0yLjE3LjczLS43Ni40Ny0xLjMzLDEuMDYtMS43NiwxLjczTDMuOTcsMzMuMTRjLS4yNS40NS0uMzcuODctLjM3LDEuMjQsMCwuODMuNDYsMS4yNSwxLjM5LDEuMjVoMTIuMzVjLjY5LDAsMS40Mi0uMjQsMi4yLS43Mi43OC0uNDksMS4zNS0xLjA2LDEuNzItMS43NmwxMS41LTE5Ljc3Yy4zOC0uNjguOTUtMS4yNiwxLjcyLTEuNzUuNzctLjQ4LDEuNDgtLjcyLDIuMTItLjcyLjk3LDAsMS40Ni40MSwxLjQ2LDEuMjQsMCwuMzgtLjEyLjc5LS4zOCwxLjI0bC0xLjIzLDIuMWMtLjAzLjA2LS4wOC4xMy0uMTIuMTlMMTIuMzUsNTcuMDZjLS4yNC40NS0uMzcuODYtLjM3LDEuMjQsMCwuODMuNDYsMS4yNCwxLjM4LDEuMjRoMzQuNjJjLjY5LDAsMS40Mi0uMjMsMi4yMi0uNzEuNzYtLjQ4LDEuMzMtMS4wNywxLjctMS43NmwxMi44OS0yMi4yNGMuMjgtLjQ1LjQyLS44OC40Mi0xLjI0LDAtLjg0LS40Ni0xLjI1LTEuNDQtMS4yNWgwWk00Ni4xLDM3LjI4bC0xMC4wNCwxNy4zYy0uNDMuNjgtLjk5LDEuMjgtMS43NiwxLjc1LS43NC40OC0xLjQ5LjcyLTIuMTUuNzItLjk3LDAtMS40Ny0uNDItMS40Ny0xLjIzLDAtLjM4LjE3LS44LjQ1LTEuMjRsMTAuMDQtMTcuM2MuMzgtLjcuOTYtMS4yOCwxLjczLTEuNzcuNzYtLjQ3LDEuNDgtLjcxLDIuMTMtLjcxLjk1LDAsMS40NC40MSwxLjQ0LDEuMjQsMCwuMzctLjEyLjc5LS4zNiwxLjI0aDBaIi8+CiAgPC9nPgo8L3N2Zz4="},
+  {id:"RACINGBROS_VIS_LOGO_X3",ar:5.9542,src:"data:image/svg+xml;base64,PHN2ZyBpZD0iREVTSUdOIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMSIgdmlld0JveD0iMCAwIDQwOS4zNSA2OC43NSIgd2lkdGg9IjQwOS4zNSIgaGVpZ2h0PSI2OC43NSI+CiAgPGRlZnM+CiAgICA8c3R5bGU+CiAgICAgIC5zdDAgewogICAgICAgIGZpbGw6ICNmZmY7CiAgICAgIH0KICAgIDwvc3R5bGU+CiAgPC9kZWZzPgogIDxnPgogICAgPHBhdGggY2xhc3M9InN0MCIgZD0iTTEyNC44MywyMy45N2MuNzEsMCwxLjA2LjMxLDEuMDYuOTQsMCwuMjktLjEuNi0uMjguOTRsLTIuMiwzLjc3Yy0uMjkuNTMtLjcyLjk3LTEuMzEsMS4zMy0uNTguMzYtMS4xMy41NC0xLjYzLjU0aC05LjQzYy0uNzMsMC0xLjEtLjMxLTEuMS0uOTQsMC0uMjkuMDktLjYuMjctLjkzbDEuMS0xLjg5Yy4xOC0uMzQuMjctLjY1LjI3LS45MywwLS42My0uMzUtLjk0LTEuMDYtLjk0LS41MywwLTEuMDguMTgtMS42NS41NS0uNTcuMzYtMS4wMi44MS0xLjMzLDEuMzJsLTguNzQsMTUuMDZjLS4yOS41NC0uNzIuOTktMS4zMSwxLjM1LS41OC4zNy0xLjEzLjU2LTEuNjIuNTZoLTkuNDJjLS43MywwLTEuMS0uMzEtMS4xLS45NCwwLS4yOC4wOS0uNTkuMjgtLjk0bDkuODEtMTYuOTZjLjI5LS41Mi43My0uOTYsMS4zMi0xLjMzLjU4LS4zNywxLjE0LS41NSwxLjY3LS41NWgyNi40WiIvPgogICAgPHBhdGggY2xhc3M9InN0MCIgZD0iTTE1OC4wOSwyMy45N2MuNzEsMCwxLjA2LjMxLDEuMDYuOTQsMCwuMjktLjEuNi0uMjguOTRsLTkuODEsMTYuOTZjLS4yOS41My0uNzMuOTctMS4zMSwxLjMzcy0xLjEzLjU1LTEuNjIuNTVoLTI2LjRjLS43MywwLTEuMS0uMzEtMS4xLS45NCwwLS4yOC4wOS0uNTkuMjgtLjk0bDQuMzYtNy41NWMuMzEtLjUyLjc2LS45NiwxLjMzLTEuMzIuNTgtLjM3LDEuMTMtLjU1LDEuNjUtLjU1aDEzLjJjLjUzLDAsMS4wOC0uMTgsMS42NS0uNTQuNTctLjM3LDEuMDMtLjgxLDEuMzQtMS4zM2wyLjE3LTMuNzVjLjE3LS4zNC4yNS0uNjYuMjUtLjk1LDAtLjYzLS4zNS0uOTUtMS4wNi0uOTUtLjUyLDAtMS4wNi4xOC0xLjYzLjU1LS41Ny4zNy0xLjAyLjgzLTEuMzIsMS4zNGwtMS4xLDEuODljLS4yOS41Mi0uNzMuOTYtMS4zMSwxLjMyLS41OS4zNy0xLjE0LjU0LTEuNjMuNTRoLTkuNDVjLS43NCwwLTEuMS0uMzEtMS4xLS45NCwwLS4yOS4xLS42LjI4LS45M2wyLjItMy43N2MuMjktLjUyLjczLS45NiwxLjMxLTEuMzNzMS4xNC0uNTUsMS42Ny0uNTVoMjYuMzlsLS4wMi0uMDJaTTEzOS4xNCwzNy4xN2MuMTgtLjM0LjI4LS42NS4yOC0uOTQsMC0uNjItLjM2LS45NC0xLjEtLjk0LS41MywwLTEuMDcuMTktMS42NC41NXMtMSwuODEtMS4yOSwxLjMzbC0yLjIxLDMuNzdjLS4xOC4zNS0uMjcuNjYtLjI3Ljk0LDAsLjYzLjM1Ljk0LDEuMDYuOTQuNTMsMCwxLjA4LS4xOCwxLjY3LS41NC41OS0uMzcsMS4wMy0uODEsMS4zMS0xLjM0bDIuMTktMy43N2gwWiIvPgogICAgPHBhdGggY2xhc3M9InN0MCIgZD0iTTE3Ny4zNSwzMS41Yy0uNzMsMC0xLjEtLjMxLTEuMS0uOTQsMC0uMjkuMS0uNi4yOC0uOTNsMS4xLTEuODljLjE4LS4zNC4yNy0uNjUuMjctLjkzLDAtLjYzLS4zNi0uOTQtMS4wNi0uOTQtLjUyLDAtMS4wNy4xOC0xLjY0LjU1LS41Ny4zNi0xLjAyLjgxLTEuMzMsMS4zM2wtNy42MiwxMy4xOWMtLjE4LjM0LS4yOC42NS0uMjguOTMsMCwuNjMuMzUuOTQsMS4wNi45NC41MywwLDEuMDktLjE4LDEuNjctLjU0LjU4LS4zNywxLjAyLS44MSwxLjMyLTEuMzRsMy4yNi01LjY1Yy4zMi0uNTMuNzYtLjk3LDEuMzMtMS4zMy41Ny0uMzcsMS4xMy0uNTUsMS42NC0uNTVoOS40M2MuNzQsMCwxLjEuMzEsMS4xLjk0LDAsLjI5LS4xMS42MS0uMzEuOTNsLTQuMzYsNy41NWMtLjI4LjUzLS43Mi45Ny0xLjMxLDEuMzNzLTEuMTMuNTUtMS42My41NWgtMjYuMzljLS43NCwwLTEuMS0uMzEtMS4xLS45NCwwLS4yOC4xLS41OS4yNy0uOTRsOS44Mi0xNi45NmMuMjgtLjUyLjcyLS45NiwxLjMxLTEuMzMuNTgtLjM3LDEuMTQtLjU1LDEuNjctLjU1aDI2LjM5Yy43LDAsMS4wNi4zMSwxLjA2Ljk0LDAsLjI5LS4xLjYtLjI4Ljk0bC0yLjIxLDMuNzdjLS4yOC41My0uNzIuOTctMS4zMSwxLjMzcy0xLjEzLjU0LTEuNjMuNTRoLTkuNDMuMDFaIi8+CiAgICA8cGF0aCBjbGFzcz0ic3QwIiBkPSJNMTg2LjAyLDQ0LjdjLS43NCwwLTEuMS0uMzEtMS4xLS45NCwwLS4yOC4xLS41OS4yNy0uOTRsOS44Mi0xNi45NmMuMjgtLjUyLjczLS45NiwxLjMxLTEuMzNzMS4xNS0uNTUsMS42Ny0uNTVoOS40M2MuNywwLDEuMDUuMzEsMS4wNS45NCwwLC4yOS0uMS42LS4yNy45NGwtOS44MSwxNi45NmMtLjI4LjUzLS43My45Ny0xLjMxLDEuMzMtLjU5LjM2LTEuMTQuNTUtMS42My41NWgtOS40M1oiLz4KICAgIDxwYXRoIGNsYXNzPSJzdDAiIGQ9Ik0yNDAuNjcsMjMuOTdjLjcxLDAsMS4wNy4zMSwxLjA3Ljk0LDAsLjI5LS4wOS42LS4yNy45NGwtOS44MiwxNi45NmMtLjI4LjUzLS43My45Ny0xLjMxLDEuMzMtLjU5LjM2LTEuMTQuNTUtMS42My41NWgtOS40M2MtLjczLDAtMS4xLS4zMS0xLjEtLjk0LDAtLjI4LjA5LS41OS4yNy0uOTRsOC43Mi0xNS4wOGMuMTgtLjM0LjI3LS42NS4yNy0uOTMsMC0uNjMtLjM1LS45NC0xLjA1LS45NC0uNTMsMC0xLjA4LjE4LTEuNjUuNTUtLjU3LjM2LTEuMDIuODEtMS4zMywxLjMzbC04LjcyLDE1LjA3Yy0uMjguNTMtLjcyLjk3LTEuMzEsMS4zM3MtMS4xMy41NS0xLjYzLjU1aC05LjQzYy0uNzQsMC0xLjEtLjMxLTEuMS0uOTQsMC0uMjguMDktLjU5LjI3LS45NGw5LjgxLTE2Ljk2Yy4yOC0uNTIuNzItLjk2LDEuMzEtMS4zM3MxLjE1LS41NSwxLjY3LS41NWgyNi40LDBaIi8+CiAgICA8cGF0aCBjbGFzcz0ic3QwIiBkPSJNMjQ5LjI2LDQ5LjIyYy0uMTYtLjI4LS4yNC0uNjUtLjI0LTEuMSwwLS42NS4xNi0xLjI1LjQ4LTEuNzcuMTMtLjI2LjE5LS41MS4xOS0uNzQsMC0uNi0uMzgtLjktMS4xNC0uOWgtMTMuMTljLS43MywwLTEuMTEtLjMxLTEuMTEtLjk0LDAtLjI4LjEtLjU5LjI3LS45NGw5LjgyLTE2Ljk2Yy4yOC0uNTIuNzMtLjk2LDEuMzEtMS4zM3MxLjE1LS41NSwxLjY3LS41NWgyNi4zOGMuNzEsMCwxLjA3LjMxLDEuMDcuOTQsMCwuMjktLjEuNi0uMjguOTRsLTIuMjEsMy43N2MtLjI4LjUzLS43My45Ny0xLjMxLDEuMzMtLjYuMzctMS4xMy41NC0xLjYyLjU0aC05LjQzYy0uNzMsMC0xLjEtLjMxLTEuMS0uOTQsMC0uMjkuMDktLjYuMjgtLjkzbDEuMDktMS44OWMuMTktLjMzLjI4LS42NS4yOC0uOTMsMC0uNjMtLjM0LS45NC0xLjA2LS45NC0uNTIsMC0xLjA3LjE4LTEuNjQuNTUtLjU3LjM2LTEuMDIuODEtMS4zMywxLjMybC03LjYyLDEzLjJjLS4xOC4zNS0uMjcuNjYtLjI3Ljk0LDAsLjYzLjM1Ljk0LDEuMDYuOTQuNTMsMCwxLjA4LS4xOCwxLjY3LS41NC41OC0uMzcsMS4wMi0uODIsMS4zMS0xLjM0bDMuMjYtNS42NmMuMzItLjUyLjc2LS45NiwxLjM0LTEuMzIuNTctLjM3LDEuMTMtLjU1LDEuNjQtLjU1aDkuNDNjLjczLDAsMS4xMS4zMSwxLjExLjk0LDAsLjI5LS4xMS42MS0uMzIuOTNsLTEyLjc1LDIyLjE1Yy0uMzkuNjgtLjgxLDEuMDItMS4yNiwxLjAyLS4yMiwwLS40Mi0uMTQtLjU0LS4zOWwtNS4yMi04Ljg0aC0uMDJaIi8+CiAgICA8cGF0aCBjbGFzcz0ic3QwIiBkPSJNMzA3LjM2LDIzLjk3Yy43MSwwLDEuMDcuMzEsMS4wNy45NCwwLC4yOS0uMDkuNi0uMjcuOTRsLTkuODIsMTYuOTZjLS4yOC41My0uNzMuOTctMS4zMSwxLjMzcy0xLjEzLjU1LTEuNjMuNTVoLTI2LjM5Yy0uNzQsMC0xLjEtLjMxLTEuMS0uOTQsMC0uMjguMS0uNTkuMjgtLjk0bDE4LjI1LTMxLjU3Yy40LS42OC44LTEuMDIsMS4yMy0xLjAyLjI0LDAsLjQzLjEyLjU4LjM1bDUuMjIsOC44N2MuMTYuMjYuMjMuNjIuMjMsMS4wNywwLC42NS0uMTYsMS4yNS0uNDgsMS44MS0uMTcuMjYtLjIzLjUxLS4yMy43NSwwLC42LjM5Ljg5LDEuMTguODloMTMuMi0uMDFaTTI5My44NiwyNy43NGMuMTgtLjMzLjI4LS42NS4yOC0uOTMsMC0uNjMtLjM2LS45NC0xLjA3LS45NC0uNTEsMC0xLjA3LjE4LTEuNjQuNTUtLjU3LjM2LTEuMDIuODEtMS4zMywxLjMzbC03LjYyLDEzLjE5Yy0uMTguMzQtLjI4LjY1LS4yOC45MywwLC42My4zNi45NCwxLjA2Ljk0LjUzLDAsMS4wOS0uMTgsMS42Ny0uNTQuNTktLjM3LDEuMDMtLjgxLDEuMzEtMS4zNGw3LjYyLTEzLjJoMFoiLz4KICAgIDxwYXRoIGNsYXNzPSJzdDAiIGQ9Ik0zNDEuNDEsMjMuOTdjLjcxLDAsMS4wNS4zMSwxLjA1Ljk0LDAsLjI5LS4xLjYtLjI3Ljk0bC0yLjIsMy43N2MtLjI5LjUzLS43Mi45Ny0xLjMxLDEuMzNzLTEuMTQuNTQtMS42NC41NGgtOS40MmMtLjc0LDAtMS4xMS0uMzEtMS4xMS0uOTQsMC0uMjkuMS0uNi4yOC0uOTNsMS4xLTEuODljLjE4LS4zNC4yNy0uNjUuMjctLjkzLDAtLjYzLS4zNS0uOTQtMS4wNi0uOTQtLjUzLDAtMS4wNy4xOC0xLjY1LjU1LS41OC4zNi0xLjAyLjgxLTEuMzMsMS4zMmwtOC43NCwxNS4wNmMtLjI5LjU0LS43Mi45OS0xLjMyLDEuMzUtLjU4LjM3LTEuMTMuNTYtMS42Mi41NmgtOS40MWMtLjczLDAtMS4wOS0uMzEtMS4wOS0uOTQsMC0uMjguMDktLjU5LjI3LS45NGw5LjgyLTE2Ljk2Yy4yOC0uNTIuNzItLjk2LDEuMzEtMS4zM3MxLjE1LS41NSwxLjY3LS41NWgyNi40WiIvPgogICAgPHBhdGggY2xhc3M9InN0MCIgZD0iTTM3NC4yNywyMy45N2MuNywwLDEuMDUuMzEsMS4wNS45NCwwLC4yOS0uMS42LS4yNy45NGwtOS44MSwxNi45NmMtLjI5LjUzLS43NC45Ny0xLjMxLDEuMzMtLjU5LjM2LTEuMTQuNTUtMS42My41NWgtMjYuMzljLS43NCwwLTEuMS0uMzEtMS4xLS45NCwwLS4yOC4wOS0uNTkuMjctLjk0bDkuODEtMTYuOTZjLjI5LS41Mi43My0uOTYsMS4zMS0xLjMzLjU5LS4zNywxLjE1LS41NSwxLjY3LS41NWgyNi40Wk0zNjAuNzYsMjcuNzRjLjE4LS4zMy4yNy0uNjUuMjctLjkzLDAtLjYzLS4zNi0uOTQtMS4wNi0uOTQtLjUzLDAtMS4wNy4xOC0xLjY0LjU1LS41OC4zNi0xLjAyLjgxLTEuMzQsMS4zM2wtNy42MiwxMy4xOWMtLjE4LjM0LS4yOC42NS0uMjguOTMsMCwuNjMuMzYuOTQsMS4wNi45NC41MywwLDEuMDgtLjE4LDEuNjctLjU0LjU5LS4zNywxLjAzLS44MSwxLjMxLTEuMzRsNy42Mi0xMy4yaC4wMVoiLz4KICAgIDxwYXRoIGNsYXNzPSJzdDAiIGQ9Ik0zOTQuNTIsMzEuNWMtLjczLDAtMS4xLS4zMS0xLjEtLjk0LDAtLjI5LjA4LS42LjI4LS45M2wxLjA5LTEuODljLjE4LS4zNC4yNy0uNjUuMjctLjkzLDAtLjYzLS4zNi0uOTQtMS4wNi0uOTQtLjUzLDAtMS4wOC4xOC0xLjY1LjU1LS41Ny4zNi0xLjAyLjgxLTEuMzMsMS4zMmwtMi4xOSwzLjc1Yy0uMTguMzUtLjI4LjY3LS4yOC45NSwwLC42My4zNy45NCwxLjEuOTRoMTMuMmMuNzMsMCwxLjExLjMxLDEuMTEuOTQsMCwuMjktLjEyLjYxLS4zMi45M2wtNC4zNiw3LjU1Yy0uMjguNTMtLjcyLjk3LTEuMzEsMS4zMy0uNTguMzYtMS4xNC41NS0xLjYzLjU1aC0yNi4zOWMtLjczLDAtMS4xMS0uMzEtMS4xMS0uOTQsMC0uMjguMS0uNTkuMjgtLjk0bDIuMi0zLjc2Yy4yOS0uNTMuNzMtLjk2LDEuMzEtMS4zNC41OS0uMzYsMS4xNS0uNTUsMS42Ny0uNTVoOS40M2MuNzEsMCwxLjA2LjMyLDEuMDYuOTQsMCwuMjktLjA5LjYtLjI4Ljk0bC0xLjEsMS44OWMtLjE4LjM1LS4yNy42NS0uMjcuOTQsMCwuNjMuMzYuOTQsMS4wNy45NC41MywwLDEuMDctLjE4LDEuNjUtLjU0LjYtLjM3LDEuMDQtLjgxLDEuMzItMS4zNGwyLjIxLTMuNzZjLjE4LS4zNC4yNi0uNjYuMjYtLjk0LDAtLjYzLS4zNi0uOTUtMS4xLS45NWgtMTMuMTljLS43MSwwLTEuMDctLjMtMS4wNy0uOTMsMC0uMjguMS0uNTkuMjgtLjk0bDQuMzYtNy41NGMuMjgtLjUyLjczLS45NiwxLjMxLTEuMzMuNTktLjM3LDEuMTQtLjU1LDEuNjctLjU1aDI2LjM5Yy43LDAsMS4wNS4zMSwxLjA1Ljk0LDAsLjI5LS4xLjYtLjI3Ljk0bC0yLjIsMy43N2MtLjI5LjUzLS43My45Ny0xLjMyLDEuMzNzLTEuMTQuNTQtMS42Mi41NGgtOS40My4wMi0uMDFaIi8+CiAgPC9nPgogIDxnPgogICAgPHBhdGggY2xhc3M9InN0MCIgZD0iTTQ1LjAzLDM0LjhjLS42NSwwLTEuMzcuMjQtMi4xMy43MS0uNzcuNDktMS4zNSwxLjA3LTEuNzMsMS43N2wtMTAuMDQsMTcuM2MtLjI4LjQ0LS40NS44Ni0uNDUsMS4yNCwwLC44MS41LDEuMjMsMS40NywxLjIzLjY2LDAsMS40MS0uMjQsMi4xNS0uNzIuNzctLjQ3LDEuMzMtMS4wNywxLjc2LTEuNzVsMTAuMDQtMTcuM2guMDFjLjI0LS40NS4zNi0uODcuMzYtMS4yNCwwLS44My0uNDktMS4yNC0xLjQ0LTEuMjRaIi8+CiAgICA8cGF0aCBjbGFzcz0ic3QwIiBkPSJNNjIuNDgsMEg2LjI3QzIuODEsMCwwLDIuODEsMCw2LjI3djU2LjIxYzAsMy40NiwyLjgxLDYuMjcsNi4yNyw2LjI3aDU2LjIxYzMuNDYsMCw2LjI3LTIuODEsNi4yNy02LjI3VjYuMjdjMC0zLjQ2LTIuODEtNi4yNy02LjI3LTYuMjdaTTY0Ljc5LDM0LjgzbC0xMi44OSwyMi4yNGMtLjM3LjY5LS45NCwxLjI4LTEuNywxLjc2LS44LjQ4LTEuNTMuNzEtMi4yMi43MUgxMy4zNmMtLjkyLDAtMS4zOC0uNDEtMS4zOC0xLjI0LDAtLjM4LjEzLS43OS4zNy0xLjI0TDM2LjMzLDE1LjY4Yy4wNC0uMDYuMDktLjEzLjEyLS4xOWwxLjIzLTIuMWMuMjYtLjQ1LjM4LS44Ni4zOC0xLjI0LDAtLjgzLS40OS0xLjI0LTEuNDYtMS4yNC0uNjQsMC0xLjM1LjI0LTIuMTIuNzItLjc3LjQ5LTEuMzQsMS4wNy0xLjcyLDEuNzVsLTExLjUsMTkuNzdjLS4zNy43LS45NCwxLjI3LTEuNzIsMS43Ni0uNzguNDgtMS41MS43Mi0yLjIuNzJINC45OWMtLjkzLDAtMS4zOS0uNDItMS4zOS0xLjI1LDAtLjM3LjEyLS43OS4zNy0xLjI0bDEyLjg4LTIyLjI4Yy40My0uNjcsMS0xLjI2LDEuNzYtMS43My43NS0uNDksMS40OC0uNzMsMi4xNy0uNzNoMzQuNjFjLjk3LDAsMS40NC40MiwxLjQ0LDEuMjMsMCwuNC0uMTUuODEtLjQyLDEuMjRsLTIuODQsNC45N2MtLjM4LjY5LS45NSwxLjI3LTEuNzMsMS43NC0uNzguNDktMS41Mi43My0yLjE5LjczaC04Ljg1bDQuNzYsOC4xYy4yLjM0LjMuODEuMywxLjM5LDAsLjg2LS4yMSwxLjY0LS42MiwyLjM3LS4xNy4zMy0uMjYuNjctLjI2Ljk3LDAsLjU4LjI5Ljk1Ljg1LDEuMTEuMTguMDUuMzkuMDguNjQuMDhoMTcuMzEtLjAxYy45OC4wMSwxLjQ0LjQyLDEuNDQsMS4yNiwwLC4zNi0uMTQuNzktLjQyLDEuMjRaIi8+CiAgPC9nPgo8L3N2Zz4="}
+];
+const I18N = {
+  en:{
+    language:"Language", theme:"Theme",
+    light:"LIGHT", dark:"DARK",
+    uploadWatermarks:"UPLOAD WATERMARKS",
+    modePhoto:'<small>STEP 1</small><strong>MEDIA</strong>',
+    modeMark:'<small>STEP 2</small><strong>MARK</strong>',
+    modeText:'<small>STEP 3</small><strong>TEXT</strong>',
+    modeShare:'<small>STEP 4</small><strong>SHARE</strong>',
+    subAlbum:"ALBUM", subFolder:"FOLDER", subCamera:"CAMERA", subVideo:"VIDEO",
+    subAdd:"ADD", subSave:"SAVE",
+    emptyHint:"Tap to select a photo or video",
+    editText:"EDIT TEXT", textContent:"Text", color:"Color", opacity:"Opacity", fontSize:"Font Size",
+    cancel:"CANCEL", save:"SAVE",
+    pickWatermark:"PICK A WATERMARK",
+    noWatermarks:"No watermarks yet. Use the menu to upload.",
+    maxWms:"Max 4 watermarks. Delete one first.",
+    sharedOk:"Shared.", savedOk:"Saved.",
+    folderTip:"Folder picker is desktop-only. Album opened.",
+    needPhoto:"Load media first via MEDIA mode.",
+    deleteConfirm:"Delete this item?",
+    encodingVideo:"Encoding video…",
+    videoTooLong:"Video must be 60s or less."
+  },
+  zh:{
+    language:"語言", theme:"主題",
+    light:"亮色", dark:"暗色",
+    uploadWatermarks:"上傳浮水印",
+    modePhoto:'<small>步驟1</small><strong>媒體</strong>',
+    modeMark:'<small>步驟2</small><strong>浮水印</strong>',
+    modeText:'<small>步驟3</small><strong>文字</strong>',
+    modeShare:'<small>步驟4</small><strong>分享</strong>',
+    subAlbum:"相簿", subFolder:"資料夾", subCamera:"相機", subVideo:"影片",
+    subAdd:"新增", subSave:"儲存",
+    emptyHint:"點此選擇照片或影片",
+    editText:"編輯文字", textContent:"文字", color:"顏色", opacity:"透明度", fontSize:"字體大小",
+    cancel:"取消", save:"儲存",
+    pickWatermark:"選擇浮水印",
+    noWatermarks:"尚無浮水印，請從選單上傳。",
+    maxWms:"最多四個浮水印，請先刪除一個。",
+    sharedOk:"已分享。", savedOk:"已儲存。",
+    folderTip:"資料夾選取僅桌機可用，已改開相簿。",
+    needPhoto:"請先在「媒體」模式載入照片或影片。",
+    deleteConfirm:"刪除此元素？",
+    encodingVideo:"正在處理影片…",
+    videoTooLong:"影片長度需在 60 秒以內。"
+  }
+};
+
+/* HUB2: guarded storage — blocked storage or a corrupt value must not stop the app */
+function lsGet(k,d){try{const v=localStorage.getItem(k);return v==null?d:v;}catch(e){return d;}}
+function lsSet(k,v){try{localStorage.setItem(k,v);}catch(e){}}
+const userWms = (()=>{try{const a=JSON.parse(lsGet("pe_wms","[]"));return Array.isArray(a)?a:[];}catch(e){return [];}})();
+const defIds = DEFAULT_WATERMARKS.map(w=>w.id);
+const initialWms = [
+  ...DEFAULT_WATERMARKS.map(w=>({...w})),
+  ...userWms.filter(w=>!defIds.includes(w.id))
+];
+
+const state = {
+  lang: lsGet("pe_lang","en"),
+  theme: lsGet("pe_theme", document.documentElement.getAttribute("data-h2-theme")||"dark"),
+  mode: "photo",
+  photos: [],
+  activeIdx: -1,
+  seedConfigs: null,    // {seedKey: {src, ar, alpha, xPct, yPct, wPct}} — shared across all photos
+  watermarks: initialWms,
+  selectedItemId: null
+};
+const isMobile = matchMedia("(hover: none) and (pointer: coarse)").matches;
+document.body.dataset.mobile = isMobile ? "1" : "0";
+const SNAP_MARGIN = 0.04;
+
+const $  = sel => document.querySelector(sel);
+const $$ = sel => document.querySelectorAll(sel);
+const uid = () => Math.random().toString(36).slice(2,10);
+function toast(msg){
+  const t=$("#toast"); t.textContent=msg; t.classList.add("show");
+  clearTimeout(toast._t); toast._t=setTimeout(()=>t.classList.remove("show"),1800);
+}
+function fileToDataURL(f){return new Promise(res=>{const r=new FileReader();r.onload=()=>res(r.result);r.readAsDataURL(f);});}
+function loadImage(src){return new Promise((res,rej)=>{const i=new Image();if(!src.startsWith("data:")) i.crossOrigin="anonymous";i.onload=()=>res(i);i.onerror=rej;i.src=src;});}
+function loadVideo(src){
+  return new Promise((res,rej)=>{
+    const v=document.createElement("video");
+    v.muted=true; v.playsInline=true;
+    // preload="auto" rather than "metadata" — iOS Safari sometimes never fires
+    // loadedmetadata for MOV files unless it actually fetches the bytes.
+    v.preload="auto";
+    if(!src.startsWith("blob:") && !src.startsWith("data:")) v.crossOrigin="anonymous";
+    let done=false;
+    const finish=(ok)=>{ if(done) return; done=true; ok?res(v):rej(new Error("video load error")); };
+    v.addEventListener("loadedmetadata",()=>finish(true),{once:true});
+    v.addEventListener("loadeddata",   ()=>finish(true),{once:true});
+    v.addEventListener("canplay",      ()=>finish(true),{once:true});
+    v.addEventListener("error",        ()=>finish(false),{once:true});
+    setTimeout(()=>{
+      // iOS sometimes never fires the events but still loads the file.
+      // If we have any usable metadata, accept the video anyway.
+      if(v.videoWidth || v.videoHeight || (v.duration && isFinite(v.duration))) finish(true);
+      else finish(false);
+    }, 5000);
+    v.src=src;
+  });
+}
+// iOS Safari reports `duration` as Infinity for freshly captured MOV files
+// until the element is seeked past the end. Force a real value by seeking
+// to a huge time and waiting for `durationchange`.
+function resolveVideoDuration(v){
+  return new Promise(res=>{
+    if(v.duration && isFinite(v.duration) && v.duration > 0){ res(v.duration); return; }
+    let done=false;
+    const finish=(d)=>{
+      if(done) return; done=true;
+      v.removeEventListener("durationchange", onDur);
+      try{ v.currentTime = 0; }catch(_){}
+      res(d);
+    };
+    const onDur=()=>{
+      if(v.duration && isFinite(v.duration) && v.duration > 0) finish(v.duration);
+    };
+    v.addEventListener("durationchange", onDur);
+    try{ v.currentTime = 1e101; }catch(_){}
+    setTimeout(()=>finish(0), 2000); // 0 = unknown; we'll accept the video
+  });
+}
+// Capture a still frame from a video as a JPEG data URL (used for thumbnails
+// and for the auto-contrast text color probe). iOS Safari requires we wait
+// across multiple readiness events and may need the source video to "wake up"
+// before drawImage produces actual pixels.
+function captureVideoFrame(srcOrEl, atSec=0){
+  return new Promise((res,rej)=>{
+    const v=document.createElement("video");
+    v.muted=true; v.playsInline=true;
+    const src = (typeof srcOrEl === "string") ? srcOrEl : (srcOrEl.src || srcOrEl.currentSrc);
+    if(!src.startsWith("blob:") && !src.startsWith("data:")) v.crossOrigin="anonymous";
+    let captured=false;
+    const tryCapture=()=>{
+      if(captured) return;
+      if(!v.videoWidth || !v.videoHeight) return;
+      try{
+        const c=document.createElement("canvas");
+        c.width=v.videoWidth; c.height=v.videoHeight;
+        const ctx=c.getContext("2d");
+        ctx.drawImage(v,0,0,c.width,c.height);
+        captured=true;
+        res(c.toDataURL("image/jpeg",0.82));
+      }catch(_){ /* try again on the next event */ }
+    };
+    const seekToTarget=()=>{
+      try{
+        const dur=(v.duration && isFinite(v.duration)) ? v.duration : 0;
+        const t=Math.min(Math.max(0.05,atSec), Math.max(0.05, dur-0.05));
+        v.currentTime=t;
+      }catch(_){ tryCapture(); }
+    };
+    v.addEventListener("loadedmetadata", seekToTarget, {once:true});
+    v.addEventListener("seeked",     tryCapture);
+    v.addEventListener("canplay",    tryCapture);
+    v.addEventListener("loadeddata", tryCapture);
+    v.addEventListener("error", ()=>{ if(!captured) rej(new Error("frame capture failed")); }, {once:true});
+    v.src=src;
+    setTimeout(()=>{
+      if(captured) return;
+      if(v.videoWidth) tryCapture();
+      if(!captured) rej(new Error("frame capture timeout"));
+    }, 5000);
+  });
+}
+const DEFAULT_WM_ALPHA = 1.00;
+const MAX_WATERMARKS = 4;
+const SEED_WMS = [
+  // The three uploads are colour variants of the same lockup, so only one is
+  // auto-applied. Swap the id for X2 (black type) or X3 (all white) to change it.
+  { id:"RACINGBROS_VIS_LOGO_X1", wPct:0.45, pos:"bottom" }
+];
+
+async function autoContrastColor(photo,xPct,yPct,wPct,hPct){
+  try{
+    // For videos, use the poster frame for contrast probing.
+    const probeSrc = (photo.mediaType==="video") ? (photo.posterSrc || photo.src) : photo.src;
+    if(probeSrc && photo.mediaType!=="video"){
+      const img=await loadImage(probeSrc);
+      const c=document.createElement("canvas");
+      const W=120, H=Math.max(20,Math.round(120*photo.natH/photo.natW));
+      c.width=W; c.height=H;
+      const ctx=c.getContext("2d"); ctx.drawImage(img,0,0,W,H);
+      const sx=Math.max(0,Math.min(W-1,Math.floor(xPct*W)));
+      const sy=Math.max(0,Math.min(H-1,Math.floor(yPct*H)));
+      const sw=Math.max(1,Math.min(W-sx,Math.ceil(wPct*W)));
+      const sh=Math.max(1,Math.min(H-sy,Math.ceil(hPct*H)));
+      const data=ctx.getImageData(sx,sy,sw,sh).data;
+      let sum=0, n=0;
+      for(let i=0;i<data.length;i+=4){ sum += 0.299*data[i] + 0.587*data[i+1] + 0.114*data[i+2]; n++; }
+      return (sum/n) > 140 ? "#000000" : "#ffffff";
+    } else if(probeSrc && photo.mediaType==="video"){
+      // Probe using the cached poster image
+      const img=await loadImage(probeSrc);
+      const c=document.createElement("canvas");
+      const W=120, H=Math.max(20,Math.round(120*photo.natH/photo.natW));
+      c.width=W; c.height=H;
+      const ctx=c.getContext("2d"); ctx.drawImage(img,0,0,W,H);
+      const sx=Math.max(0,Math.min(W-1,Math.floor(xPct*W)));
+      const sy=Math.max(0,Math.min(H-1,Math.floor(yPct*H)));
+      const sw=Math.max(1,Math.min(W-sx,Math.ceil(wPct*W)));
+      const sh=Math.max(1,Math.min(H-sy,Math.ceil(hPct*H)));
+      const data=ctx.getImageData(sx,sy,sw,sh).data;
+      let sum=0, n=0;
+      for(let i=0;i<data.length;i+=4){ sum += 0.299*data[i] + 0.587*data[i+1] + 0.114*data[i+2]; n++; }
+      return (sum/n) > 140 ? "#000000" : "#ffffff";
+    }
+  }catch(_){}
+  return "#ffffff";
+}
+
+function applyI18N(){
+  const dict=I18N[state.lang];
+  $$("[data-i18n]").forEach(el=>{
+    const k=el.getAttribute("data-i18n");
+    if(dict[k]!==undefined) el.innerHTML=dict[k];
+  });
+  document.documentElement.lang = state.lang==="zh"?"zh-TW":"en";
+}
+function applyTheme(){
+  document.documentElement.setAttribute("data-theme",state.theme);
+  document.documentElement.setAttribute("data-h2-theme",state.theme);
+  $$("#themeToggle button").forEach(b=>b.classList.toggle("active",b.dataset.theme===state.theme));
+  $$("#langToggle button").forEach(b=>b.classList.toggle("active",b.dataset.lang===state.lang));
+}
+
+$("#menuBtn").addEventListener("click",e=>{e.stopPropagation();$("#menuPanel").classList.toggle("open");});
+document.addEventListener("click",e=>{
+  if(!$("#menuPanel").contains(e.target) && e.target!==$("#menuBtn")) $("#menuPanel").classList.remove("open");
+});
+$("#langToggle").addEventListener("click",e=>{
+  const b=e.target.closest("button"); if(!b) return;
+  state.lang=b.dataset.lang; lsSet("pe_lang",state.lang);
+  applyI18N(); applyTheme(); renderStrip1();
+});
+/* HUB2: follow the hub's light/dark choice when embedded */
+window.addEventListener("hub2:theme",e=>{
+  const t=e.detail&&e.detail.theme==="light"?"light":"dark";
+  if(t!==state.theme){ state.theme=t; applyTheme(); }
+});
+$("#themeToggle").addEventListener("click",e=>{
+  const b=e.target.closest("button"); if(!b) return;
+  state.theme=b.dataset.theme; lsSet("pe_theme",state.theme); applyTheme();
+});
+
+$("#fileWm").addEventListener("change",async e=>{
+  const f=e.target.files[0]; if(!f) return;
+  const src=await fileToDataURL(f);
+  state.watermarks.push({id:uid(),src});
+  saveUserWms(); renderLib(); e.target.value="";
+});
+function saveUserWms(){
+  const userOnly = state.watermarks.filter(w => !DEFAULT_WATERMARKS.some(d => d.id === w.id));
+  lsSet("pe_wms", JSON.stringify(userOnly));
+}
+function renderLib(){
+  const w=$("#wmList");
+  w.innerHTML="";
+  if(!state.watermarks.length){
+    w.innerHTML=`<div class="lib-empty">${I18N[state.lang].noWatermarks}</div>`;
+    return;
+  }
+  state.watermarks.forEach(it=>{
+    const d=document.createElement("div");
+    d.className="lib-thumb"; d.style.backgroundImage=`url(${it.src})`;
+    const x=document.createElement("button"); x.className="x"; x.textContent="×";
+    x.addEventListener("click",ev=>{
+      ev.stopPropagation();
+      state.watermarks=state.watermarks.filter(z=>z.id!==it.id);
+      saveUserWms(); renderLib();
+    });
+    d.appendChild(x); w.appendChild(d);
+  });
+}
+
+$("#strip0").addEventListener("click",e=>{
+  const b = e.target.closest(".cell[data-mode]"); if(!b) return;
+  setMode(b.dataset.mode);
+});
+function setMode(m){
+  if((m==="mark"||m==="text"||m==="share") && state.activeIdx<0){
+    toast(I18N[state.lang].needPhoto);
+    return;
+  }
+  state.mode = m;
+  $$("#strip0 .cell[data-mode]").forEach(c=>c.classList.toggle("active", c.dataset.mode===m));
+  renderStrip1();
+  renderStrip2();
+  refreshStage();
+  applyModeVisibility();
+}
+// Toggle .step1-hidden on existing watermark items so they fade in/out
+// when the user moves between Step 1 (PHOTO) and the other steps.
+function applyModeVisibility(){
+  const hide = state.mode === "photo";
+  document.querySelectorAll('.item').forEach(el=>{
+    if(el.dataset.type === "watermark"){
+      el.classList.toggle("step1-hidden", hide);
+    }
+  });
+}
+
+function renderStrip2(){
+  const s = $("#strip2"); if(!s) return;
+  s.innerHTML = "";
+  const p = activePhoto();
+  if(!p){ s.classList.add("hidden"); return; }
+
+  if(state.mode === "text"){
+    // -- TEXT EDITOR --
+    let item = p.items.find(x => x.id === state.selectedItemId && x.type === "text");
+    if(!item){
+      const texts = p.items.filter(x => x.type === "text");
+      if(texts.length) item = texts[texts.length - 1];
+    }
+    if(!item){ s.classList.add("hidden"); return; }
+    s.classList.remove("hidden");
+    state.selectedItemId = item.id;
+
+    const txt = document.createElement("input");
+    txt.type = "text"; txt.className = "ctrl txt-edit";
+    txt.value = item.text || "";
+    txt.placeholder = state.lang==="zh" ? "輸入文字" : "Type your text";
+    txt.addEventListener("input", e => { item.text = e.target.value; renderItems(); });
+    s.appendChild(txt);
+
+    const col = document.createElement("input");
+    col.type = "color"; col.className = "ctrl color-edit";
+    col.value = (item.color && /^#[0-9a-f]{6}$/i.test(item.color)) ? item.color : "#ffffff";
+    col.addEventListener("input", e => { item.color = e.target.value; renderItems(); });
+    s.appendChild(col);
+
+    const minus = document.createElement("button");
+    minus.type = "button"; minus.className = "ctrl size-edit"; minus.textContent = "A−";
+    minus.addEventListener("click", () => {
+      item.fontSize = Math.max(10, (item.fontSize||36) - 6);
+      renderItems();
+    });
+    s.appendChild(minus);
+    const plus = document.createElement("button");
+    plus.type = "button"; plus.className = "ctrl size-edit"; plus.textContent = "A+";
+    plus.addEventListener("click", () => {
+      item.fontSize = Math.min(160, (item.fontSize||36) + 6);
+      renderItems();
+    });
+    s.appendChild(plus);
+    return;
+  }
+
+  if(state.mode === "mark"){
+    // -- MARK / OPACITY EDITOR --
+    let item = p.items.find(x => x.id === state.selectedItemId && x.type === "watermark");
+    if(!item){
+      const wms = p.items.filter(x => x.type === "watermark");
+      if(wms.length) item = wms[wms.length - 1];
+    }
+    if(!item){ s.classList.add("hidden"); return; }
+    s.classList.remove("hidden");
+    state.selectedItemId = item.id;
+
+    const lbl = document.createElement("span"); lbl.className = "ctrl label-edit";
+    lbl.textContent = state.lang==="zh" ? "透明度" : "OPACITY";
+    s.appendChild(lbl);
+
+    const val = document.createElement("span"); val.className = "ctrl val-edit";
+    const startPct = Math.round((item.alpha??DEFAULT_WM_ALPHA)*100);
+    val.textContent = startPct + "%";
+
+    const range = document.createElement("input");
+    range.type = "range"; range.className = "ctrl range-edit";
+    range.min = "10"; range.max = "100"; range.step = "1";
+    range.value = startPct;
+    const update = (v)=>{
+      item.alpha = parseInt(v,10)/100;
+      val.textContent = v + "%";
+      // Mirror to default config so subsequent photos use the same alpha
+      if(item._fromDefault && state.defaultWmConfig){
+        state.defaultWmConfig.alpha = item.alpha;
+        propagateWatermarkPosition();
+      }
+      renderItems();
+    };
+    range.addEventListener("input", e => update(e.target.value));
+    s.appendChild(range);
+    s.appendChild(val);
+    return;
+  }
+
+  s.classList.add("hidden");
+}
+function renderStrip1(){
+  const dict=I18N[state.lang];
+  const s = $("#strip1"); s.innerHTML="";
+  const has = state.activeIdx>=0;
+  if(state.mode==="photo"){
+    s.appendChild(makeCell({text:dict.subAlbum,  asLabel:"fileAlbum"}));
+    s.appendChild(makeCell({text:dict.subFolder, onClick:()=>{
+      if(isMobile){ toast(dict.folderTip); $("#fileAlbum").click(); }
+      else { $("#fileFolder").click(); }
+    }}));
+    if(isMobile){
+      s.appendChild(makeCell({text:dict.subCamera, asLabel:"fileCamera"}));
+      s.appendChild(makeCell({text:dict.subVideo,  asLabel:"fileVideo"}));
+    }
+  } else if(state.mode==="mark"){
+    const wmCount = has ? activePhoto().items.filter(it=>it.type==="watermark").length : 0;
+    s.appendChild(makeCell({text:dict.subAdd, onClick:()=>addWmFlow(),
+      disabled: !has || wmCount >= MAX_WATERMARKS}));
+  } else if(state.mode==="text"){
+    s.appendChild(makeCell({text:dict.subAdd, onClick:()=>addTextFlow(), disabled:!has}));
+  } else if(state.mode==="share"){
+    s.appendChild(makeCell({text:dict.subSave, primary:true, onClick:()=>shareFlow(), disabled:!has}));
+  }
+}
+function makeCell({text, onClick, asLabel, primary, disabled, active}){
+  const el = asLabel
+    ? Object.assign(document.createElement("label"), {htmlFor: asLabel})
+    : Object.assign(document.createElement("button"), {type:"button"});
+  el.className = "cell" + (primary?" primary":"") + (disabled?" is-disabled":"") + (active?" active":"");
+  el.textContent = text;
+  if(onClick && !asLabel) el.addEventListener("click", onClick);
+  return el;
+}
+
+const stage=$("#stage"), canvas=$("#canvas"), bgImg=$("#bgImg"), bgVideo=$("#bgVideo");
+function activePhoto(){ return state.photos[state.activeIdx]; }
+
+function refreshStage(){
+  const has = state.activeIdx>=0;
+  $("#emptyState").style.display = has ? "none" : "flex";
+  $("#canvas").style.display = has ? "" : "none";
+  $("#thumbs").classList.toggle("hidden", !(has && state.photos.length>1));
+  if(has) fitCanvas();
+}
+
+["fileAlbum","fileFolder","fileCamera","fileVideo"].forEach(id=>{
+  $("#"+id).addEventListener("change",e=>handleFiles(e.target.files,e.target));
+});
+const MAX_VIDEO_SECONDS = 60;
+// On iOS Safari, File.type can be empty for certain camera-roll items.
+// Fall back to a filename-extension test so we still classify correctly.
+function classifyFile(f){
+  const t = (f.type || "").toLowerCase();
+  if(t.startsWith("image/")) return "image";
+  if(t.startsWith("video/")) return "video";
+  const n = (f.name || "").toLowerCase();
+  if(/\.(jpe?g|png|gif|webp|bmp|heic|heif|avif|tiff?)$/.test(n)) return "image";
+  if(/\.(mov|mp4|m4v|webm|avi|qt|3gp|3g2|mkv)$/.test(n))         return "video";
+  return null;
+}
+async function handleFiles(files,input){
+  const tagged = [...files].map(f => ({f, kind: classifyFile(f)})).filter(x => x.kind);
+  if(!tagged.length){ if(input) input.value=""; return; }
+  let addedAny = false;
+  for(const {f, kind} of tagged){
+    const isVideo = kind === "video";
+    // VIDEO PATH: use a blob: URL. Reading a video as a base64 data URL is
+    // unreliable on iOS Safari (HTMLMediaElement has a small data: src limit),
+    // which is why videos recorded via the camera input failed to import on iPhone.
+    // PHOTO PATH: keep the data URL — small, embeds cleanly, and lets us reuse the
+    // existing canvas export pipeline without changes.
+    const src = isVideo ? URL.createObjectURL(f) : await fileToDataURL(f);
+    let photo;
+    if(isVideo){
+      // Try to probe metadata. If anything fails, we STILL import the video
+      // with sensible defaults — better to let the user see their clip than
+      // silently drop it because iOS didn't fire an event.
+      let v=null, duration=0, natW=1280, natH=720, poster=null;
+      try{
+        v = await loadVideo(src);
+        duration = await resolveVideoDuration(v);
+        natW = v.videoWidth  || natW;
+        natH = v.videoHeight || natH;
+      }catch(_){ /* keep defaults */ }
+      // Only reject when we have a confirmed finite duration over the cap.
+      // Infinity / 0 / NaN = unknown → accept the video.
+      if(duration > 0 && duration > MAX_VIDEO_SECONDS){
+        toast(I18N[state.lang].videoTooLong);
+        try{ URL.revokeObjectURL(src); }catch(_){}
+        continue;
+      }
+      try{ poster = await captureVideoFrame(src, 0); }catch(_){}
+      photo = {
+        id:uid(), src,
+        mediaType:"video",
+        natW, natH,
+        duration: duration || 0,
+        posterSrc: poster,
+        items:[]
+      };
+    } else {
+      try{
+        const img=await loadImage(src);
+        photo={id:uid(),src,mediaType:"photo",natW:img.naturalWidth,natH:img.naturalHeight,items:[]};
+      }catch(_){ continue; }
+    }
+    applySeedsToPhoto(photo);
+    state.photos.push(photo);
+    addedAny = true;
+  }
+  state.activeIdx = state.activeIdx<0 ? 0 : state.activeIdx;
+  loadActive(); renderThumbs(); renderStrip1(); renderStrip2(); refreshStage();
+  if(input) input.value="";
+  // Auto-advance to MARK so the watermarks fade in. The renderItems pass above
+  // created watermark items with .step1-hidden (since mode is still "photo"),
+  // so toggling mode here triggers the CSS opacity transition.
+  if(addedAny && state.photos.length){
+    // Two rAFs ensure the initial dimmed paint is committed before we remove the class.
+    requestAnimationFrame(()=>requestAnimationFrame(()=>setMode("mark")));
+  }
+}
+
+function applySeedsToPhoto(photo){
+  // Initialize seedConfigs on first call (per session, in-memory only)
+  if(!state.seedConfigs){
+    state.seedConfigs = {};
+    for(const seed of SEED_WMS){
+      const entry = DEFAULT_WATERMARKS.find(w => w.id === seed.id);
+      if(!entry) continue;
+      const wPct = seed.wPct;
+      const hPct = wPct * (photo.natW / photo.natH) / entry.ar;
+      const xPct = 0.5 - wPct/2;
+      const yPct = (seed.pos==="top") ? 0.04 : Math.max(0.04, 1 - hPct - 0.04);
+      state.seedConfigs[seed.id] = {
+        src: entry.src, ar: entry.ar, alpha: DEFAULT_WM_ALPHA,
+        xPct, yPct, wPct
+      };
+    }
+  }
+  // Apply each seed config to the photo; hPct is derived per-photo from its AR
+  for(const seedKey in state.seedConfigs){
+    const cfg = state.seedConfigs[seedKey];
+    const hPct = cfg.wPct * (photo.natW / photo.natH) / cfg.ar;
+    photo.items.push({
+      id: uid(), type:"watermark",
+      src: cfg.src, ar: cfg.ar, alpha: cfg.alpha,
+      xPct: cfg.xPct, yPct: cfg.yPct, wPct: cfg.wPct, hPct,
+      _seedKey: seedKey, _fromDefault: true
+    });
+  }
+}
+function cloneItemFromDefault(cfg){
+  return {id:uid(),type:"watermark",src:cfg.src,alpha:cfg.alpha,ar:cfg.ar,
+    xPct:cfg.xPct,yPct:cfg.yPct,wPct:cfg.wPct,hPct:cfg.hPct,_fromDefault:true};
+}
+
+function loadActive(){
+  const p=activePhoto();
+  if(!p){ canvas.style.display="none"; return; }
+  canvas.style.display="";
+  // Pause any previously-playing video first
+  try{ bgVideo.pause(); }catch(_){}
+  if(p.mediaType === "video"){
+    bgImg.style.display="none";
+    bgVideo.style.display="";
+    if(bgVideo.src !== p.src){ bgVideo.src = p.src; }
+    bgVideo.muted = true;
+    bgVideo.loop  = true;
+    bgVideo.playsInline = true;
+    // Attempt autoplay (muted, so allowed on mobile)
+    const tryPlay = ()=>{ const pr = bgVideo.play(); if(pr && pr.catch) pr.catch(()=>{}); };
+    tryPlay();
+    canvas.style.background="#000000";
+  } else if(p.src){
+    bgVideo.style.display="none";
+    bgImg.src=p.src; bgImg.style.display="";
+    canvas.style.background="#ffffff";
+  } else {
+    bgImg.style.display="none";
+    bgVideo.style.display="none";
+    canvas.style.background="#ffffff";
+  }
+  fitCanvas(); renderItems();
+}
+function fitCanvas(){
+  const p=activePhoto(); if(!p) return;
+  const sw=stage.clientWidth, sh=stage.clientHeight;
+  const ar=p.natW/p.natH;
+  let w=sw, h=sw/ar;
+  if(h>sh){ h=sh; w=sh*ar; }
+  w*=0.95; h*=0.95;
+  canvas.style.width=w+"px"; canvas.style.height=h+"px";
+}
+window.addEventListener("resize",()=>fitCanvas());
+
+function renderItems(){
+  canvas.querySelectorAll(".item").forEach(n=>n.remove());
+  const p=activePhoto(); if(!p) return;
+  p.items.forEach(it=>{
+    const el=document.createElement("div");
+    el.className="item"; el.dataset.id=it.id; el.dataset.type=it.type;
+    if(it.id===state.selectedItemId) el.classList.add("selected");
+    // In Step 1 (photo mode) watermarks are hidden — they fade in once user advances.
+    if(it.type==="watermark" && state.mode==="photo") el.classList.add("step1-hidden");
+    positionItem(el,it);
+    if(it.type==="watermark"){
+      const im=document.createElement("img"); im.src=it.src; im.style.opacity=it.alpha;
+      el.appendChild(im);
+    } else if(it.type==="text"){
+      const tx=document.createElement("div"); tx.className="text-content";
+      tx.textContent=it.text||""; tx.style.color=it.color;
+      tx.style.opacity=it.alpha; tx.style.fontSize=it.fontSize+"px"; tx.style.fontWeight="700";
+      el.appendChild(tx);
+    }
+    const hbr=document.createElement("div"); hbr.className="handle h-br"; el.appendChild(hbr);
+    const hdel=document.createElement("button"); hdel.className="handle h-del"; hdel.textContent="×"; el.appendChild(hdel);
+    canvas.appendChild(el);
+    attachItemHandlers(el,it,hbr,hdel);
+  });
+}
+function positionItem(el,it){
+  el.style.left=(it.xPct*100)+"%";
+  el.style.top=(it.yPct*100)+"%";
+  el.style.width=(it.wPct*100)+"%";
+  el.style.height=(it.hPct*100)+"%";
+}
+
+function attachItemHandlers(el,it,hbr,hdel){
+  let mode=null,sx=0,sy=0,start=null,lastTap=0,moved=0;
+  const onDown=(e)=>{
+    if(e.target===hdel){
+      e.stopPropagation();
+      if(confirm(I18N[state.lang].deleteConfirm)) deleteItem(it.id);
+      return;
+    }
+    e.preventDefault();
+    state.selectedItemId=it.id;
+    canvas.querySelectorAll(".item").forEach(n=>n.classList.remove("selected"));
+    el.classList.add("selected");
+    const rect=canvas.getBoundingClientRect();
+    sx=e.clientX; sy=e.clientY; moved=0;
+    start={x:it.xPct,y:it.yPct,w:it.wPct,h:it.hPct,cw:rect.width,ch:rect.height};
+    mode = (e.target===hbr) ? "resize" : "drag";
+    el.setPointerCapture(e.pointerId);
+    // Refresh strip2 whenever selection changes so the editor binds to the tapped item
+    if((it.type==="text"      && state.mode==="text") ||
+       (it.type==="watermark" && state.mode==="mark")){
+      renderStrip2();
+    }
+  };
+  const onMove=(e)=>{
+    if(!mode) return;
+    const dx=e.clientX-sx, dy=e.clientY-sy;
+    moved=Math.max(moved,Math.abs(dx)+Math.abs(dy));
+    const p=activePhoto();
+    if(mode==="drag"){
+      let newX=Math.max(-it.wPct*0.5,Math.min(1-it.wPct*0.5,start.x+dx/start.cw));
+      const newY=Math.max(-it.hPct*0.5,Math.min(1-it.hPct*0.5,start.y+dy/start.ch));
+      const itemCenter = newX + it.wPct/2;
+      if(Math.abs(itemCenter - 0.5) < SNAP_MARGIN){
+        newX = 0.5 - it.wPct/2;
+      }
+      it.xPct=newX; it.yPct=newY;
+    } else {
+      if(it.type==="watermark" && it.ar && p){
+        const newW=Math.max(0.05,Math.min(2,start.w+dx/start.cw));
+        it.wPct=newW;
+        it.hPct=newW * (p.natW/p.natH) / it.ar;
+      } else {
+        it.wPct=Math.max(0.05,Math.min(2,start.w+dx/start.cw));
+        it.hPct=Math.max(0.04,Math.min(2,start.h+dy/start.ch));
+      }
+    }
+    positionItem(el,it);
+  };
+  const onUp=(e)=>{
+    if(mode && it.type==="watermark" && it._seedKey){
+      updateDefaultFromItem(it);
+      propagateWatermarkPosition(it._seedKey);
+    }
+    mode=null;
+    try{el.releasePointerCapture(e.pointerId);}catch(_){}
+  };
+  el.addEventListener("pointerdown",onDown);
+  el.addEventListener("pointermove",onMove);
+  el.addEventListener("pointerup",onUp);
+  el.addEventListener("pointercancel",onUp);
+}
+function deleteItem(id){
+  const p=activePhoto(); if(!p) return;
+  const target = p.items.find(i=>i.id===id);
+  p.items = p.items.filter(i=>i.id!==id);
+  // If we deleted a seed-derived watermark, drop the same seed from all other photos
+  // (and from the seed config), so subsequent photos don't auto-restore it.
+  if(target && target.type==="watermark" && target._seedKey){
+    const key = target._seedKey;
+    state.photos.forEach(ph=>{ ph.items = ph.items.filter(it => !(it.type==="watermark" && it._seedKey===key)); });
+    if(state.seedConfigs) delete state.seedConfigs[key];
+  }
+  renderItems(); renderStrip1(); renderStrip2();
+}
+function updateDefaultFromItem(it){
+  // Mirror a seed-derived watermark's current state back into the shared seedConfigs
+  if(!it._seedKey) return;
+  if(!state.seedConfigs) state.seedConfigs={};
+  state.seedConfigs[it._seedKey] = {
+    src: it.src, ar: it.ar, alpha: it.alpha,
+    xPct: it.xPct, yPct: it.yPct, wPct: it.wPct
+  };
+}
+function propagateWatermarkPosition(seedKey){
+  if(!state.seedConfigs) return;
+  const ap = activePhoto();
+  state.photos.forEach(ph=>{
+    if(ph===ap) return;
+    const keys = seedKey ? [seedKey] : Object.keys(state.seedConfigs);
+    for(const k of keys){
+      const cfg = state.seedConfigs[k]; if(!cfg) continue;
+      const target = ph.items.find(x => x.type==="watermark" && x._seedKey===k);
+      const hPct = cfg.wPct * (ph.natW / ph.natH) / cfg.ar;
+      if(target){
+        target.src=cfg.src; target.ar=cfg.ar; target.alpha=cfg.alpha;
+        target.xPct=cfg.xPct; target.yPct=cfg.yPct; target.wPct=cfg.wPct; target.hPct=hPct;
+      }
+    }
+  });
+}
+
+function addWmFlow(){
+  const p = activePhoto();
+  if(p){
+    const wmCount = p.items.filter(it => it.type === "watermark").length;
+    if(wmCount >= MAX_WATERMARKS){ toast(I18N[state.lang].maxWms); return; }
+  }
+  if(!state.watermarks.length){ toast(I18N[state.lang].noWatermarks); return; }
+  if(state.watermarks.length===1){ addWatermarkToActive(state.watermarks[0].src); return; }
+  openWmPicker();
+}
+function openWmPicker(){
+  const list=$("#pickWmList"); list.innerHTML="";
+  state.watermarks.forEach(w=>{
+    const b=document.createElement("button"); b.type="button";
+    b.style.backgroundImage=`url(${w.src})`;
+    b.addEventListener("click",()=>{
+      addWatermarkToActive(w.src);
+      $("#pickWmModal").classList.remove("open");
+    });
+    list.appendChild(b);
+  });
+  $("#pickWmModal").classList.add("open");
+}
+$("#pickWmCancel").addEventListener("click",()=>$("#pickWmModal").classList.remove("open"));
+
+async function addWatermarkToActive(src){
+  const p=activePhoto(); if(!p) return;
+  // Prefer stored AR (defaults & user uploads keep it); fall back to image-load
+  const entry = state.watermarks.find(x => x.src === src);
+  let wmAR = entry && entry.ar;
+  if(!wmAR){
+    try{ const img = await loadImage(src); wmAR = img.naturalWidth / img.naturalHeight; }
+    catch(_){ wmAR = 4.5; }
+  }
+  const wPct = 0.40;
+  const hPct = wPct * (p.natW / p.natH) / wmAR;
+  const xPct = 0.5 - wPct/2;
+  const yPct = Math.max(0.04, 1 - hPct - 0.04);
+  const item={id:uid(),type:"watermark",src,alpha:DEFAULT_WM_ALPHA,xPct,yPct,wPct,hPct,ar:wmAR};
+  // User-added watermark — NOT a seed, no propagation. Max-cap is enforced in addWmFlow.
+  p.items.push(item);
+  state.selectedItemId=item.id;
+ renderItems(); renderStrip2();
+}
+
+function addTextFlow(){
+  const p=activePhoto(); if(!p) return;
+  const wPct=0.6, hPct=0.12;
+  const xPct=0.5 - wPct/2, yPct=0.45;
+  const item={id:uid(),type:"text",
+    text:state.lang==="zh"?"輸入文字":"Your text",
+    color:"#ffffff", fontSize:36, alpha:1, xPct,yPct,wPct,hPct};
+  p.items.push(item);
+  state.selectedItemId=item.id;
+  renderItems();
+  renderStrip2();
+  setTimeout(() => {
+    const inp = document.querySelector("#strip2 .txt-edit");
+    if(inp){ try{ inp.focus(); inp.select(); }catch(_){} }
+  }, 80);
+  autoContrastColor(p,xPct,yPct,wPct,hPct).then(c=>{
+    if(c && item.color === "#ffffff"){
+      item.color = c;
+      const cp = document.querySelector("#strip2 .color-edit"); if(cp) cp.value = c;
+      renderItems();
+    }
+  }).catch(()=>{});
+}
+
+function renderStrip2(){
+  const s = $("#strip2"); if(!s) return;
+  s.innerHTML = "";
+  const p = activePhoto();
+  if(!p){ s.classList.add("hidden"); return; }
+
+  if(state.mode === "text"){
+    let item = p.items.find(x => x.id === state.selectedItemId && x.type === "text");
+    if(!item){
+      const texts = p.items.filter(x => x.type === "text");
+      if(texts.length) item = texts[texts.length - 1];
+    }
+    if(!item){ s.classList.add("hidden"); return; }
+    s.classList.remove("hidden");
+    state.selectedItemId = item.id;
+
+    const txt = document.createElement("input");
+    txt.type = "text"; txt.className = "ctrl txt-edit";
+    txt.value = item.text || "";
+    txt.placeholder = state.lang==="zh" ? "輸入文字" : "Type your text";
+    txt.addEventListener("input", e => { item.text = e.target.value; renderItems(); });
+    s.appendChild(txt);
+
+    const col = document.createElement("input");
+    col.type = "color"; col.className = "ctrl color-edit";
+    col.value = (item.color && /^#[0-9a-f]{6}$/i.test(item.color)) ? item.color : "#ffffff";
+    col.addEventListener("input", e => { item.color = e.target.value; renderItems(); });
+    s.appendChild(col);
+
+    const minus = document.createElement("button");
+    minus.type = "button"; minus.className = "ctrl size-edit"; minus.textContent = "A−";
+    minus.addEventListener("click", () => {
+      item.fontSize = Math.max(10, (item.fontSize||36) - 6);
+      renderItems();
+    });
+    s.appendChild(minus);
+    const plus = document.createElement("button");
+    plus.type = "button"; plus.className = "ctrl size-edit"; plus.textContent = "A+";
+    plus.addEventListener("click", () => {
+      item.fontSize = Math.min(160, (item.fontSize||36) + 6);
+      renderItems();
+    });
+    s.appendChild(plus);
+    return;
+  }
+
+  if(state.mode === "mark"){
+    let item = p.items.find(x => x.id === state.selectedItemId && x.type === "watermark");
+    if(!item){
+      const wms = p.items.filter(x => x.type === "watermark");
+      if(wms.length) item = wms[wms.length - 1];
+    }
+    if(!item){ s.classList.add("hidden"); return; }
+    s.classList.remove("hidden");
+    state.selectedItemId = item.id;
+
+    const lbl = document.createElement("span"); lbl.className = "ctrl label-edit";
+    lbl.textContent = state.lang==="zh" ? "透明度" : "OPACITY";
+    s.appendChild(lbl);
+
+    const val = document.createElement("span"); val.className = "ctrl val-edit";
+    const startPct = Math.round((item.alpha??DEFAULT_WM_ALPHA)*100);
+    val.textContent = startPct + "%";
+
+    const range = document.createElement("input");
+    range.type = "range"; range.className = "ctrl range-edit";
+    range.min = "10"; range.max = "100"; range.step = "1";
+    range.value = startPct;
+    range.addEventListener("input", e => {
+      const v = e.target.value;
+      item.alpha = parseInt(v,10)/100;
+      val.textContent = v + "%";
+      if(item._seedKey){
+        updateDefaultFromItem(item);
+        propagateWatermarkPosition(item._seedKey);
+      }
+      renderItems();
+    });
+    s.appendChild(range);
+    s.appendChild(val);
+    return;
+  }
+
+  s.classList.add("hidden");
+}
+
+function renderThumbs(){
+  const t=$("#thumbs"); t.innerHTML="";
+  state.photos.forEach((p,i)=>{
+    const wrap=document.createElement("div");
+    wrap.className="thumb-wrap";
+    const im=document.createElement("img");
+    im.className="thumb"+(i===state.activeIdx?" active":"");
+    im.src = (p.mediaType==="video")
+      ? (p.posterSrc || "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7")
+      : p.src;
+    im.addEventListener("click",()=>{
+      state.activeIdx=i; state.selectedItemId=null; loadActive(); renderThumbs(); renderStrip2();
+    });
+    wrap.appendChild(im);
+    if(p.mediaType==="video"){
+      const b=document.createElement("div"); b.className="vbadge"; wrap.appendChild(b);
+    }
+    t.appendChild(wrap);
+  });
+  $("#thumbs").classList.toggle("hidden", !(state.photos.length>1));
+}
+
+async function exportActiveBlob(){
+  const p=activePhoto(); if(!p) return null;
+  if(p.mediaType === "video"){
+    return await exportVideoWithOverlays(p);
+  }
+  // -- PHOTO PATH (unchanged behavior) --
+  const W=p.natW, H=p.natH;
+  const c=document.createElement("canvas"); c.width=W; c.height=H;
+  const ctx=c.getContext("2d");
+  if(p.src){ const bg=await loadImage(p.src); ctx.drawImage(bg,0,0,W,H); }
+  for(const it of p.items){
+    const x=it.xPct*W, y=it.yPct*H, w=it.wPct*W, h=it.hPct*H;
+    ctx.save(); ctx.globalAlpha = it.alpha ?? 1;
+    if(it.type==="watermark"){
+      const im=await loadImage(it.src);
+      ctx.drawImage(im,x,y,w,h);
+    } else if(it.type==="text"){
+      const dispW=canvas.clientWidth || 1;
+      const scale=W/dispW;
+      const fs=it.fontSize*scale;
+      ctx.fillStyle=it.color;
+      ctx.font=`700 ${fs}px -apple-system,"Helvetica Neue","PingFang TC","Microsoft JhengHei",Arial,sans-serif`;
+      ctx.textAlign="center"; ctx.textBaseline="middle";
+      const lines=wrapText(ctx,it.text||"",w);
+      const lh=fs*1.1, total=lines.length*lh;
+      let cy=y+h/2-total/2+lh/2;
+      lines.forEach(l=>{ ctx.fillText(l,x+w/2,cy); cy+=lh; });
+    }
+    ctx.restore();
+  }
+  const blob = await new Promise(res=>c.toBlob(res,"image/png"));
+  return { blob, ext:"png", mime:"image/png" };
+}
+
+// Record a video (with watermarks + text baked in) from the active photo state.
+// Strategy: an offscreen <video> playing the source, drawn into an offscreen canvas
+// each frame along with overlays. Canvas.captureStream feeds a MediaRecorder.
+// Audio (if present) is taken from the offscreen video element's audio track.
+function showEnc(show){
+  const o=$("#encOverlay"); if(!o) return;
+  o.classList.toggle("show", !!show);
+  if(!show){ const b=$("#encBar"); if(b) b.style.width="0%"; }
+}
+function setEncProgress(pct){
+  const b=$("#encBar"); if(b) b.style.width=Math.max(0,Math.min(100,pct))+"%";
+}
+function pickRecorderMime(){
+  const cands=[
+    "video/webm;codecs=vp9,opus",
+    "video/webm;codecs=vp8,opus",
+    "video/webm;codecs=vp9",
+    "video/webm;codecs=vp8",
+    "video/webm",
+    "video/mp4;codecs=h264,aac",
+    "video/mp4"
+  ];
+  for(const m of cands){
+    if(window.MediaRecorder && MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported(m)) return m;
+  }
+  return "";
+}
+async function exportVideoWithOverlays(p){
+  if(!window.MediaRecorder){
+    // Fallback: snapshot current frame as PNG
+    return await snapshotVideoFrameAsPng(p);
+  }
+  showEnc(true); setEncProgress(0);
+
+  // Offscreen video (independent of preview so playback isn't fighting the UI)
+  const off=document.createElement("video");
+  off.src=p.src; off.muted=false; off.playsInline=true;
+  // Only flag CORS for genuinely cross-origin sources. iOS taints blob streams
+  // when crossOrigin is set, which can later break drawImage into the canvas.
+  if(!p.src.startsWith("blob:") && !p.src.startsWith("data:")) off.crossOrigin="anonymous";
+  await new Promise((res,rej)=>{
+    off.onloadedmetadata=()=>res();
+    off.onloadeddata=()=>res();
+    off.oncanplay=()=>res();
+    off.onerror=()=>rej(new Error("video meta error"));
+    setTimeout(()=>res(), 5000); // proceed even if iOS never fires the event
+  });
+  // Resolve Infinity-duration (iOS captured MOV) before recording, otherwise
+  // the `ended` event never arrives because the file has no known end.
+  const dur = await resolveVideoDuration(off);
+  // Some browsers need a paint tick to grab dimensions
+  const W = off.videoWidth || p.natW || 1280;
+  const H = off.videoHeight || p.natH || 720;
+  // Pre-load watermark images
+  const wmCache = new Map();
+  for(const it of p.items){
+    if(it.type==="watermark" && !wmCache.has(it.src)){
+      try{ wmCache.set(it.src, await loadImage(it.src)); }catch(_){}
+    }
+  }
+  const c=document.createElement("canvas"); c.width=W; c.height=H;
+  const ctx=c.getContext("2d");
+
+  const fps=30;
+  const stream=c.captureStream(fps);
+  // Mix in audio from the source video if any audio tracks are exposed
+  let audioCleanup=null;
+  try{
+    if(off.captureStream){
+      const vstream=off.captureStream();
+      const atracks=vstream.getAudioTracks();
+      atracks.forEach(t=>stream.addTrack(t));
+      audioCleanup=()=>atracks.forEach(t=>{ try{t.stop();}catch(_){}});
+    } else if(off.mozCaptureStream){
+      const vstream=off.mozCaptureStream();
+      const atracks=vstream.getAudioTracks();
+      atracks.forEach(t=>stream.addTrack(t));
+      audioCleanup=()=>atracks.forEach(t=>{ try{t.stop();}catch(_){}});
+    }
+  }catch(_){ /* audio capture not supported; record video only */ }
+
+  const mime=pickRecorderMime();
+  let rec;
+  try{
+    rec = mime ? new MediaRecorder(stream, { mimeType: mime }) : new MediaRecorder(stream);
+  }catch(_){
+    showEnc(false);
+    return await snapshotVideoFrameAsPng(p);
+  }
+  const chunks=[];
+  rec.ondataavailable = e => { if(e.data && e.data.size) chunks.push(e.data); };
+  const done = new Promise(res => { rec.onstop = () => res(); });
+
+  // Draw loop: render current video frame + overlays into canvas
+  let stopped=false;
+  function drawFrame(){
+    if(stopped) return;
+    try{ ctx.drawImage(off, 0, 0, W, H); }catch(_){}
+    for(const it of p.items){
+      const x=it.xPct*W, y=it.yPct*H, w=it.wPct*W, h=it.hPct*H;
+      ctx.save(); ctx.globalAlpha = it.alpha ?? 1;
+      if(it.type==="watermark"){
+        const im = wmCache.get(it.src);
+        if(im){ ctx.drawImage(im, x, y, w, h); }
+      } else if(it.type==="text"){
+        const dispW = canvas.clientWidth || 1;
+        const scale = W / dispW;
+        const fs = (it.fontSize || 36) * scale;
+        ctx.fillStyle = it.color || "#ffffff";
+        ctx.font = `700 ${fs}px -apple-system,"Helvetica Neue","PingFang TC","Microsoft JhengHei",Arial,sans-serif`;
+        ctx.textAlign = "center"; ctx.textBaseline = "middle";
+        const lines = wrapText(ctx, it.text || "", w);
+        const lh = fs * 1.1, total = lines.length * lh;
+        let cy = y + h/2 - total/2 + lh/2;
+        lines.forEach(l => { ctx.fillText(l, x + w/2, cy); cy += lh; });
+      }
+      ctx.restore();
+    }
+    if(off.duration > 0){
+      const pct = Math.round(100 * Math.min(1, off.currentTime / off.duration));
+      setEncProgress(pct);
+    }
+    requestAnimationFrame(drawFrame);
+  }
+
+  await new Promise((res,rej)=>{
+    let resolved=false;
+    const finish=()=>{ if(resolved) return; resolved=true; res(); };
+    off.onended = finish;
+    off.onerror = () => rej(new Error("video play error"));
+    off.currentTime = 0;
+    // Hard stop after duration (+ small grace) in case `ended` never fires —
+    // common for iOS-captured MOV clips re-loaded via blob URL.
+    if(dur > 0){
+      setTimeout(finish, Math.ceil((dur + 0.5) * 1000));
+    } else {
+      // Unknown duration → cap recording at MAX_VIDEO_SECONDS so we never hang.
+      setTimeout(finish, MAX_VIDEO_SECONDS * 1000);
+    }
+    const startRec = () => {
+      try{ rec.start(100); }catch(_){}
+      requestAnimationFrame(drawFrame);
+    };
+    off.play().then(startRec).catch(()=>{
+      // iOS Safari may refuse sound playback in this context. Retry muted so
+      // we at least produce a silent video with overlays burned in.
+      try{ off.muted = true; }catch(_){}
+      off.play().then(startRec).catch(rej);
+    });
+  }).catch(()=>{});
+
+  stopped = true;
+  try{ rec.state !== "inactive" && rec.stop(); }catch(_){}
+  await done;
+  if(audioCleanup) audioCleanup();
+  showEnc(false);
+
+  const blobMime = (rec.mimeType || mime || "video/webm").split(";")[0];
+  const ext = blobMime.includes("mp4") ? "mp4" : "webm";
+  const blob = new Blob(chunks, { type: blobMime });
+  return { blob, ext, mime: blobMime };
+}
+
+// Fallback when MediaRecorder isn't available: export current frame as PNG.
+async function snapshotVideoFrameAsPng(p){
+  const W=p.natW, H=p.natH;
+  const c=document.createElement("canvas"); c.width=W; c.height=H;
+  const ctx=c.getContext("2d");
+  try{ ctx.drawImage(bgVideo, 0, 0, W, H); }
+  catch(_){ if(p.posterSrc){ const im=await loadImage(p.posterSrc); ctx.drawImage(im,0,0,W,H); } }
+  for(const it of p.items){
+    const x=it.xPct*W, y=it.yPct*H, w=it.wPct*W, h=it.hPct*H;
+    ctx.save(); ctx.globalAlpha = it.alpha ?? 1;
+    if(it.type==="watermark"){
+      const im=await loadImage(it.src);
+      ctx.drawImage(im,x,y,w,h);
+    } else if(it.type==="text"){
+      const dispW=canvas.clientWidth || 1;
+      const scale=W/dispW;
+      const fs=it.fontSize*scale;
+      ctx.fillStyle=it.color;
+      ctx.font=`700 ${fs}px -apple-system,"Helvetica Neue","PingFang TC","Microsoft JhengHei",Arial,sans-serif`;
+      ctx.textAlign="center"; ctx.textBaseline="middle";
+      const lines=wrapText(ctx,it.text||"",w);
+      const lh=fs*1.1, total=lines.length*lh;
+      let cy=y+h/2-total/2+lh/2;
+      lines.forEach(l=>{ ctx.fillText(l,x+w/2,cy); cy+=lh; });
+    }
+    ctx.restore();
+  }
+  const blob = await new Promise(res=>c.toBlob(res,"image/png"));
+  return { blob, ext:"png", mime:"image/png" };
+}
+function wrapText(ctx,text,maxW){
+  const words=(text||"").split(/(\s+)/);
+  const lines=[]; let cur="";
+  for(const w of words){
+    const t=cur+w;
+    if(ctx.measureText(t).width>maxW && cur){ lines.push(cur.trimEnd()); cur=w.trimStart(); }
+    else cur=t;
+  }
+  if(cur) lines.push(cur);
+  return lines.length?lines:[""];
+}
+
+async function shareFlow(){
+  const result = await exportActiveBlob(); if(!result) return;
+  const { blob, ext, mime } = result;
+  const fname = "project-pe." + ext;
+  const file = new File([blob], fname, { type: mime });
+  if(navigator.canShare && navigator.canShare({files:[file]})){
+    try{ await navigator.share({files:[file],title:"PROJECT-PE"}); toast(I18N[state.lang].sharedOk); return; }
+    catch(err){ if(err && err.name==="AbortError") return; }
+  }
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a"); a.href=url; a.download=fname;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),1500);
+  toast(I18N[state.lang].savedOk);
+}
+
+applyI18N(); applyTheme(); renderLib(); renderStrip1(); renderStrip2(); refreshStage();
+window.addEventListener("orientationchange",()=>setTimeout(fitCanvas,200));
+</script>
+<script id="hub2-glue">/*HUB2:GLUE — source glue/PE.js*/
+/* HUB2 glue — SAVE TO LIBRARY: the active photo / video with its marks and text (download path, never the OS share sheet) */
+window.HUB2_SAVES = ['jpg','jpeg','png','webp','gif','bmp','avif','mp4','mov','webm','m4v'];
+window.HUB2_SAVE = function(ext){
+  exportActiveBlob().then(function(r){
+    if(!r) return;
+    var url = URL.createObjectURL(r.blob), a = document.createElement('a');
+    a.href = url; a.download = 'project-pe.' + r.ext; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function(){ URL.revokeObjectURL(url); }, 1500);
+  });
+  return true;
+};
+</script>
+</body>
+</html>

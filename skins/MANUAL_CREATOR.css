@@ -1,0 +1,57 @@
+/* chrome → HUB 2.0 tokens; the manual page (.mn-frame) keeps its print palette */
+:root,[data-theme=light],[data-theme=dark]{
+  --bg:var(--h2-bg); --surface:var(--h2-surface); --border:var(--h2-line); --border2:var(--h2-line-strong);
+  --text:var(--h2-fg); --text2:var(--h2-fg-dim); --text3:var(--h2-fg-mute);
+  --btn-bg:var(--h2-fg); --btn-txt:var(--h2-bg);
+  --strip-bg:var(--h2-surface-2); --panel-bg:var(--h2-surface); --input-bg:var(--h2-bg);
+  --sel:var(--h2-fg); --sel-txt:var(--h2-bg); --accent:var(--h2-accent);
+}
+body{font-family:var(--h2-font);font-size:14px;letter-spacing:.02em}
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-thumb{background:var(--h2-line-strong)}
+#s1{height:48px;background:var(--h2-bg);border-bottom-color:var(--h2-line);gap:6px}
+.logo{order:-1;display:flex;align-items:center;height:22px;margin:0 6px 0 0;padding:0 14px 0 10px;border-left:4px solid var(--h2-accent);font-size:13px;letter-spacing:.16em}
+.tbtn{height:30px;font-size:11px;font-weight:700;letter-spacing:.16em;background:var(--h2-accent);border-color:var(--h2-accent);color:var(--h2-accent-fg)}
+.tbtn:hover{opacity:1;background:var(--h2-accent-hover);border-color:var(--h2-accent-hover)}
+.tbtn.g{background:transparent;color:var(--h2-fg);border-color:var(--h2-line-strong)}
+.tbtn.g:hover{background:var(--h2-surface-2);color:var(--h2-fg);border-color:var(--h2-fg-dim)}
+.meta,#hint{font-family:var(--h2-font);letter-spacing:.14em;color:var(--h2-fg-mute);font-size:10.5px}
+.slbl{font-size:10px;letter-spacing:.2em;font-weight:700;color:var(--h2-fg-mute)}
+.seg button{height:26px;font-size:10.5px;font-weight:700;letter-spacing:.14em;border-color:var(--h2-line-strong);color:var(--h2-fg-dim);line-height:1.05}
+.seg button.act,.seg button:hover{background:var(--h2-fg);color:var(--h2-bg);border-color:var(--h2-fg)}
+#s2{background:var(--h2-surface);border-bottom-color:var(--h2-line);padding:6px 12px 0;height:40px}
+.tab{height:34px;padding:0 14px;font-weight:700;letter-spacing:.14em;border-color:var(--h2-line);color:var(--h2-fg-dim)}
+.tab.act{background:var(--h2-bg);border-color:var(--h2-line);box-shadow:inset 0 2px 0 var(--h2-accent);color:var(--h2-fg)}
+.tab.tnew:hover{background:var(--h2-surface-2);color:var(--h2-fg);border-color:var(--h2-fg-dim)}
+.tab .tx:hover{color:var(--h2-accent)}
+#stage{background:var(--h2-bg);
+  background-image:radial-gradient(color-mix(in srgb,var(--h2-fg) 8%,transparent) 1px,transparent 1px);background-size:18px 18px}
+#page-root .mn-frame{border-color:var(--h2-line-strong);box-shadow:var(--h2-shadow)}
+#sb{width:220px;background:var(--h2-surface);border-right-color:var(--h2-line);padding:12px 14px 30px}
+.sb-h{font-size:10.5px;letter-spacing:.2em;color:var(--h2-fg-dim);background:var(--h2-mark) 0 50%/3px 11px no-repeat;padding-left:12px}
+.sb-btn{height:30px;padding:0 10px;font-size:11.5px;font-weight:600;letter-spacing:.12em;border-color:var(--h2-line-strong)}
+.sb-btn:hover{background:var(--h2-surface-3);color:var(--h2-fg);border-color:var(--h2-fg-dim)}
+.sb-btn.al-i{height:30px}
+.sld label{font-size:10.5px;letter-spacing:.14em;color:var(--h2-fg-dim)}
+.sld label b{font-family:var(--h2-mono);font-weight:600}
+.sld input[type=range]::-webkit-slider-runnable-track{height:2px;background:var(--h2-line-strong)}
+.sld input[type=range]::-webkit-slider-thumb{width:10px;height:14px;margin-top:-6px;background:var(--h2-accent)}
+.sld input[type=range]::-moz-range-thumb{width:10px;height:14px;background:var(--h2-accent)}
+.sb-note{font-size:10px;letter-spacing:.08em;line-height:1.6}
+.ovl{background:var(--h2-backdrop)}
+.mbox{background:var(--h2-bg);border-color:var(--h2-line-strong);border-top:3px solid var(--h2-accent);box-shadow:var(--h2-shadow);padding:20px}
+.mbox h3{letter-spacing:.18em}
+.mbox label{color:var(--h2-fg-dim);letter-spacing:.16em}
+.mbox input[type=text],.mbox textarea{height:34px;border-color:var(--h2-line-strong);background:var(--h2-surface)}
+.mbox textarea{height:140px;font-family:var(--h2-mono)}
+.mbox input[type=text]:focus,.mbox textarea:focus{border-color:var(--h2-accent)}
+.wopt button{height:34px;border-color:var(--h2-line-strong)}
+.wopt button.act{background:var(--h2-fg);color:var(--h2-bg);border-color:var(--h2-fg)}
+#addmenu{background:var(--h2-bg);border-color:var(--h2-line-strong);box-shadow:var(--h2-shadow)}
+#addmenu button{padding:8px 14px;font-weight:600;letter-spacing:.12em}
+#addmenu button:hover{background:var(--h2-accent);color:var(--h2-accent-fg)}
+#toast{background:var(--h2-fg);color:var(--h2-bg);font-weight:700;letter-spacing:.16em;font-size:11px;padding:10px 16px}
+.bctl button:hover,.phbtn:hover,.mn-it .itx:hover{background:var(--h2-accent)}
+#s1{overflow-x:auto;overflow-y:hidden}
+#s1::-webkit-scrollbar{height:2px}
+@media (max-width:1720px){#hint{display:none}}
